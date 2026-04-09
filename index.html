@@ -6,159 +6,84 @@
 <title>SPEED I AM NHT</title>
 
 <style>
-body {
-  margin:0;
-  font-family:-apple-system;
-  background:#0f0f0f;
-  color:white;
-}
+body {margin:0;font-family:-apple-system;background:#0f0f0f;color:white}
 
 /* LOADING */
 #loader {
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:#0f0f0f;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
+position:fixed;width:100%;height:100%;
+background:#0f0f0f;display:flex;
+justify-content:center;align-items:center;z-index:9999;
 }
+.loader {width:60px;height:60px;border:6px solid #1c1c1e;border-top:6px solid #0a84ff;border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin {100%{transform:rotate(360deg);}}
 
-.loader-circle {
-  width:60px;
-  height:60px;
-  border:6px solid #1c1c1e;
-  border-top:6px solid #0a84ff;
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-}
+/* HEADER */
+header{text-align:center;padding:15px;font-size:22px;font-weight:bold}
 
-@keyframes spin {
-  100% { transform:rotate(360deg); }
-}
+/* LOGO */
+.logo{text-align:center}
+.logo img{width:120px;border-radius:50%;box-shadow:0 0 25px #0a84ff}
 
-/* Header */
-header {
-  text-align:center;
-  font-size:22px;
-  padding:15px;
-  font-weight:bold;
-}
+/* SEARCH */
+.search{padding:10px}
+.search input{width:100%;padding:10px;border-radius:10px;border:none;background:#1c1c1e;color:white}
 
-/* Logo */
-.logo {
-  text-align:center;
-}
-.logo img {
-  width:120px;
-  border-radius:50%;
-  box-shadow:0 0 25px #0a84ff;
-}
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;padding:15px}
 
-/* Search */
-.search {
-  padding:10px;
-}
-.search input {
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  background:#1c1c1e;
-  color:white;
-}
+/* CARD */
+.app{background:#1c1c1e;border-radius:20px;padding:15px;text-align:center;transition:0.3s}
+.app:hover{transform:scale(1.05)}
 
-/* Grid */
-.grid {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
-  padding:15px;
-}
+.app img{width:70px;border-radius:15px}
 
-/* Card */
-.app {
-  background:#1c1c1e;
-  border-radius:20px;
-  padding:15px;
-  text-align:center;
-  transition:0.3s;
-}
+/* BUTTON */
+.btn{margin-top:10px;padding:10px 15px;background:#0a84ff;border-radius:12px;color:white;cursor:pointer}
 
-.app:hover {
-  transform:scale(1.05);
-}
+/* ESIGN */
+.esign{text-align:center;margin:20px}
+.esign button{background:#34c759;padding:15px 25px;border:none;border-radius:15px;color:white;font-size:18px;box-shadow:0 0 20px #34c759}
 
-/* App icon */
-.app img {
-  width:70px;
-  border-radius:15px;
-}
+/* VIDEO */
+.video{text-align:center;margin:20px}
+.video iframe{width:100%;max-width:320px;height:550px;border-radius:20px}
 
-/* Button */
-.btn {
-  display:inline-block;
-  margin-top:10px;
-  padding:10px 15px;
-  background:#0a84ff;
-  border-radius:12px;
-  color:white;
-  cursor:pointer;
-}
+/* TOAST */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0a84ff;padding:12px 20px;border-radius:12px;display:none}
 
-/* Video */
-.video {
-  margin:20px;
-  background:#1c1c1e;
-  border-radius:15px;
-  padding:10px;
-}
-
-iframe {
-  width:100%;
-  border-radius:10px;
-}
-
-/* Toast */
-#toast {
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#0a84ff;
-  padding:12px 20px;
-  border-radius:12px;
-  display:none;
-}
-
-/* Footer */
-footer {
-  text-align:center;
-  padding:20px;
-}
+/* FOOTER */
+footer{text-align:center;padding:20px}
 </style>
 
 <script>
-function searchApp() {
-  let input = document.getElementById("search").value.toLowerCase();
-  let apps = document.getElementsByClassName("app");
-
-  for (let i = 0; i < apps.length; i++) {
-    let name = apps[i].innerText.toLowerCase();
-    apps[i].style.display = name.includes(input) ? "" : "none";
-  }
+function searchApp(){
+let input=document.getElementById("search").value.toLowerCase();
+let apps=document.getElementsByClassName("app");
+for(let i=0;i<apps.length;i++){
+let name=apps[i].innerText.toLowerCase();
+apps[i].style.display=name.includes(input)?"":"none";
+}
 }
 
-function copyLink(link) {
-  navigator.clipboard.writeText(link);
-  let toast = document.getElementById("toast");
-  toast.style.display = "block";
-  setTimeout(() => { toast.style.display = "none"; }, 2000);
+function copyLink(link){
+navigator.clipboard.writeText(link);
+showToast("✅ Đã sao chép link!");
 }
 
-window.onload = function() {
-  document.getElementById("loader").style.display = "none";
+function copyCert(){
+navigator.clipboard.writeText("0349333397");
+showToast("💎 Đã sao chép số chứng chỉ!");
+}
+
+function showToast(text){
+let toast=document.getElementById("toast");
+toast.innerText=text;
+toast.style.display="block";
+setTimeout(()=>{toast.style.display="none"},2000);
+}
+
+window.onload=function(){
+document.getElementById("loader").style.display="none";
 }
 </script>
 
@@ -167,9 +92,7 @@ window.onload = function() {
 <body>
 
 <!-- LOADING -->
-<div id="loader">
-<div class="loader-circle"></div>
-</div>
+<div id="loader"><div class="loader"></div></div>
 
 <header>🚀 SPEED I AM NHT</header>
 
@@ -209,8 +132,14 @@ Sao chép link
 
 </div>
 
-<!-- VIDEO HƯỚNG DẪN -->
+<!-- ESIGN -->
+<div class="esign">
+<button onclick="window.open('https://khoipa.com/esign')">
+⚡ Cài Esign trực tiếp
+</button>
+</div>
 
+<!-- VIDEO -->
 <div class="video">
 <p>📥 Hướng dẫn tải Esign</p>
 <iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
@@ -222,16 +151,15 @@ Sao chép link
 </div>
 
 <div class="video">
-<p>💎 Hướng dẫn mua chứng chỉ</p>
+<p>💎 Hướng dẫn cài cho khách mua chứng chỉ</p>
 <iframe src="https://www.youtube.com/embed/-IoGLILtqNQ"></iframe>
 </div>
 
-<div id="toast">✅ Đã sao chép link!</div>
+<div id="toast"></div>
 
 <footer>
-👑 <a href="https://zalo.me/g/ccltdg215" style="color:#0a84ff;">Nhóm Zalo</a><br>
-💎 Liên hệ: 0349 3333 97
-</footer>
+👑 <a href="https://zalo.me/g/ccltdg215" style="color:#0a84ff;">Nhóm Zalo</a><br><br>
 
-</body>
-</html>
+💎 Chứng chỉ:
+<span onclick="copyCert()" style="color:#0a84ff;cursor:pointer;">
+0349 3333
