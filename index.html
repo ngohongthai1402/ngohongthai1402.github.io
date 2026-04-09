@@ -6,16 +6,12 @@
 <title>SPEED I AM NHT</title>
 
 <style>
-body {margin:0;font-family:-apple-system;background:#0f0f0f;color:white}
+body{margin:0;font-family:-apple-system;background:#0f0f0f;color:white}
 
 /* LOADING */
-#loader {
-position:fixed;width:100%;height:100%;
-background:#0f0f0f;display:flex;
-justify-content:center;align-items:center;z-index:9999;
-}
-.loader {width:60px;height:60px;border:6px solid #1c1c1e;border-top:6px solid #0a84ff;border-radius:50%;animation:spin 1s linear infinite;}
-@keyframes spin {100%{transform:rotate(360deg);}}
+#loader{position:fixed;width:100%;height:100%;background:#0f0f0f;display:flex;justify-content:center;align-items:center;z-index:9999}
+.loader{width:60px;height:60px;border:6px solid #1c1c1e;border-top:6px solid #0a84ff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{100%{transform:rotate(360deg)}}
 
 /* HEADER */
 header{text-align:center;padding:15px;font-size:22px;font-weight:bold}
@@ -34,15 +30,20 @@ header{text-align:center;padding:15px;font-size:22px;font-weight:bold}
 /* CARD */
 .app{background:#1c1c1e;border-radius:20px;padding:15px;text-align:center;transition:0.3s}
 .app:hover{transform:scale(1.05)}
-
 .app img{width:70px;border-radius:15px}
 
 /* BUTTON */
 .btn{margin-top:10px;padding:10px 15px;background:#0a84ff;border-radius:12px;color:white;cursor:pointer}
 
-/* ESIGN */
-.esign{text-align:center;margin:20px}
-.esign button{background:#34c759;padding:15px 25px;border:none;border-radius:15px;color:white;font-size:18px;box-shadow:0 0 20px #34c759}
+/* ESIGN BLOCK */
+.esign-box{
+margin:20px;
+padding:20px;
+background:#1c1c1e;
+border-radius:20px;
+text-align:center;
+box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
 
 /* VIDEO */
 .video{text-align:center;margin:20px}
@@ -104,6 +105,7 @@ document.getElementById("loader").style.display="none";
 <input id="search" onkeyup="searchApp()" placeholder="🔍 Tìm ứng dụng...">
 </div>
 
+<!-- APP LIST -->
 <div class="grid">
 
 <div class="app">
@@ -132,11 +134,33 @@ Sao chép link
 
 </div>
 
-<!-- ESIGN -->
-<div class="esign">
-<button onclick="window.open('https://khoipa.com/esign')">
-⚡ Cài Esign trực tiếp
+<!-- ESIGN AXITAT -->
+<div class="esign-box">
+
+<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/esign.png"
+style="width:90px;border-radius:20px;box-shadow:0 0 15px #34c759;margin-bottom:10px;">
+
+<h2>⚡ ESIGN AXITAT</h2>
+<p style="opacity:0.7;">Cài ứng dụng iOS nhanh chóng</p>
+
+<button onclick="
+navigator.clipboard.writeText('https://ccnht.io.vn/uploads/ipa/69d82081b4c73_AXIATANHT.ipa');
+window.open('https://ccnht.io.vn/uploads/ipa/69d82081b4c73_AXIATANHT.ipa');
+"
+style="
+margin-top:10px;
+background:#34c759;
+padding:12px 25px;
+border:none;
+border-radius:15px;
+color:white;
+font-size:16px;
+box-shadow:0 0 20px #34c759;
+cursor:pointer;
+">
+⚡ Tải & Sao chép ESIGN
 </button>
+
 </div>
 
 <!-- VIDEO -->
@@ -151,7 +175,7 @@ Sao chép link
 </div>
 
 <div class="video">
-<p>💎 Hướng dẫn cài cho khách mua chứng chỉ</p>
+<p>💎 Hướng dẫn mua chứng chỉ</p>
 <iframe src="https://www.youtube.com/embed/-IoGLILtqNQ"></iframe>
 </div>
 
@@ -162,4 +186,9 @@ Sao chép link
 
 💎 Chứng chỉ:
 <span onclick="copyCert()" style="color:#0a84ff;cursor:pointer;">
-0349 3333
+0349 3333 97
+</span>
+</footer>
+
+</body>
+</html>
