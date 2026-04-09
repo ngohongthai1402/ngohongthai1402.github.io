@@ -14,9 +14,22 @@ body {
 }
 
 header {
-  padding:20px;
-  font-size:24px;
+  padding:15px;
+  font-size:22px;
   font-weight:bold;
+}
+
+.search {
+  padding:10px;
+}
+
+.search input {
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  background:#1c1c1e;
+  color:white;
 }
 
 .grid {
@@ -31,6 +44,11 @@ header {
   border-radius:20px;
   padding:15px;
   text-align:center;
+  transition:0.2s;
+}
+
+.app:hover {
+  transform:scale(1.05);
 }
 
 .app img {
@@ -47,7 +65,26 @@ header {
   color:white;
   text-decoration:none;
 }
+
+footer {
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+  opacity:0.7;
+}
 </style>
+
+<script>
+function searchApp() {
+  let input = document.getElementById("search").value.toLowerCase();
+  let apps = document.getElementsByClassName("app");
+
+  for (let i = 0; i < apps.length; i++) {
+    let name = apps[i].innerText.toLowerCase();
+    apps[i].style.display = name.includes(input) ? "" : "none";
+  }
+}
+</script>
 
 </head>
 
@@ -55,35 +92,36 @@ header {
 
 <header>📦 Kho IPA NHT</header>
 
+<div class="search">
+<input id="search" onkeyup="searchApp()" placeholder="🔍 Tìm ứng dụng...">
+</div>
+
 <div class="grid">
 
 <div class="app">
 <img src="https://via.placeholder.com/100">
 <h3>🎮 Đếm vòng 1</h3>
-<a class="btn" href="dv1.html">Xem</a>
+<a class="btn" href="dv1.html">Cài ngay</a>
 </div>
 
 <div class="app">
 <img src="https://via.placeholder.com/100">
 <h3>🔥 Đếm vòng 2</h3>
-<a class="btn" href="dv2.html">Xem</a>
+<a class="btn" href="dv2.html">Cài ngay</a>
 </div>
 
 <div class="app">
 <img src="https://via.placeholder.com/100">
 <h3>💎 IGG</h3>
-<a class="btn" href="igg.html">Xem</a>
+<a class="btn" href="igg.html">Cài ngay</a>
 </div>
 
 </div>
 
-<p style="text-align:center;">
-👑 <a href="https://zalo.me/g/ccltdg215" style="color:#0a84ff;">Nhóm giao lưu</a>
-</p>
-
-<p style="text-align:center;">
+<footer>
+👑 <a href="https://zalo.me/g/ccltdg215" style="color:#0a84ff;">Nhóm Zalo</a><br>
 💎 Liên hệ: 0349 3333 97
-</p>
+</footer>
 
 </body>
 </html>
