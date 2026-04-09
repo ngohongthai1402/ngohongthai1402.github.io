@@ -7,31 +7,96 @@
 
 <style>
 body{margin:0;font-family:-apple-system;background:#0f0f0f;color:white}
+
+/* LOADING */
 #loader{position:fixed;width:100%;height:100%;background:#0f0f0f;display:flex;justify-content:center;align-items:center;z-index:9999}
 .loader{width:60px;height:60px;border:6px solid #1c1c1e;border-top:6px solid #0a84ff;border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{100%{transform:rotate(360deg)}}
 
 header{text-align:center;padding:15px;font-size:22px;font-weight:bold}
+
+/* LOGO */
 .logo{text-align:center}
 .logo img{width:120px;border-radius:50%;box-shadow:0 0 25px #0a84ff}
 
+/* SEARCH */
 .search{padding:10px}
 .search input{width:100%;padding:10px;border-radius:10px;border:none;background:#1c1c1e;color:white}
 
+/* GRID */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;padding:15px}
 
+/* APP */
 .app{background:#1c1c1e;border-radius:20px;padding:15px;text-align:center}
 .app img{width:70px;border-radius:15px}
 
-.btn{margin:10px;padding:10px 15px;background:#0a84ff;border-radius:12px;color:white;cursor:pointer}
+/* BUTTON */
+.btn{
+margin:10px;
+padding:10px 15px;
+background:#0a84ff;
+border-radius:12px;
+color:white;
+cursor:pointer;
+transition:0.2s;
+}
+.btn:active{
+transform:scale(0.95);
+box-shadow:0 0 20px #0a84ff;
+}
 
-.esign-box{margin:20px;padding:20px;background:#1c1c1e;border-radius:20px;text-align:center}
+/* ESIGN BOX */
+.esign-box{
+margin:20px;
+padding:20px;
+background:#1c1c1e;
+border-radius:20px;
+text-align:center;
+}
 
+/* GLOW BUTTON */
+.glow-btn{
+padding:12px 25px;
+border:none;
+border-radius:15px;
+color:white;
+font-size:16px;
+cursor:pointer;
+margin-top:10px;
+transition:0.2s;
+}
+.glow-btn:active{
+transform:scale(0.95);
+}
+
+/* ESIGN GLOW */
+.esign{
+background:#34c759;
+box-shadow:0 0 20px #34c759;
+}
+
+/* CERT GLOW */
+.cert{
+background:#ff9f0a;
+box-shadow:0 0 20px #ff9f0a;
+}
+
+/* ICON */
+.icon{
+width:70px;
+border-radius:20px;
+margin-bottom:10px;
+box-shadow:0 0 15px #34c759;
+}
+
+/* VIDEO */
 .video{display:none;text-align:center;margin:15px}
 .video iframe{width:100%;max-width:320px;height:550px;border-radius:20px}
 
+/* TOAST */
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0a84ff;padding:12px 20px;border-radius:12px;display:none}
 
+/* FOOTER */
 footer{text-align:center;padding:20px}
 .zalo-btn{display:inline-block;background:#0a84ff;padding:12px 20px;border-radius:12px;color:white;text-decoration:none}
 </style>
@@ -139,32 +204,32 @@ Sao chép link
 
 </div>
 
-<!-- ESIGN -->
+<!-- ESIGN + CERT -->
 <div class="esign-box">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/esign.png" style="width:90px;border-radius:20px;margin-bottom:10px;">
+
+<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/esign.png" class="icon">
 
 <h2>⚡ ESIGN AXITAT</h2>
 <p style="opacity:0.7;">Cài trực tiếp trên iOS</p>
 
 <a href="itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist"
 onclick="addDownload('esign')">
-<button style="background:#34c759;padding:12px 25px;border:none;border-radius:15px;color:white;font-size:16px;">
-⚡ Cài ESIGN
-</button>
+<button class="glow-btn esign">⚡ Cài ESIGN</button>
 </a>
 
-<div id="esign" style="font-size:12px;opacity:0.7;"></div>
-</div>
+<!-- ICON CHỨNG CHỈ -->
+<img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" class="icon">
 
-<!-- CHỨNG CHỈ -->
-<div class="esign-box">
-<h2>💎 CHỨNG CHỈ AXITAT</h2>
-<p style="opacity:0.7;">Dùng để cài app iOS</p>
-
-<button onclick="window.open('https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/refs/heads/main/Chu%CC%9B%CC%81ng%20Chi%CC%89%20Axitat.zip')"
-style="background:#ff9f0a;padding:12px 25px;border:none;border-radius:15px;color:white;font-size:16px;">
-Tải chứng chỉ AXITAT📥
+<button onclick="
+window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertificateAxitat.zip';
+showToast('📥 Đang tải chứng chỉ...');
+"
+class="glow-btn cert">
+📥 Tải chứng chỉ AXITAT
 </button>
+
+<div id="esign" style="font-size:12px;opacity:0.7;"></div>
+
 </div>
 
 <!-- VIDEO -->
