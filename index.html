@@ -6,28 +6,73 @@
 <title>SPEED I AM NHT</title>
 
 <style>
-body{margin:0;font-family:-apple-system;background:#0f0f0f;color:white}
+body{
+margin:0;
+font-family:-apple-system;
+background:#0f0f0f;
+color:white
+}
 
 /* LOADING */
-#loader{position:fixed;width:100%;height:100%;background:#0f0f0f;display:flex;justify-content:center;align-items:center;z-index:9999}
-.loader{width:60px;height:60px;border:6px solid #1c1c1e;border-top:6px solid #0a84ff;border-radius:50%;animation:spin 1s linear infinite}
+#loader{
+position:fixed;
+width:100%;
+height:100%;
+background:#0f0f0f;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999
+}
+.loader{
+width:60px;
+height:60px;
+border:6px solid #1c1c1e;
+border-top:6px solid #0a84ff;
+border-radius:50%;
+animation:spin 1s linear infinite
+}
 @keyframes spin{100%{transform:rotate(360deg)}}
 
+/* HEADER */
 header{text-align:center;padding:15px;font-size:22px;font-weight:bold}
 
 /* LOGO */
 .logo{text-align:center}
-.logo img{width:120px;border-radius:50%;box-shadow:0 0 25px #0a84ff}
+.logo img{
+width:120px;
+border-radius:50%;
+box-shadow:0 0 25px #0a84ff
+}
 
 /* SEARCH */
 .search{padding:10px}
-.search input{width:100%;padding:10px;border-radius:10px;border:none;background:#1c1c1e;color:white}
+.search input{
+width:100%;
+padding:10px;
+border-radius:10px;
+border:none;
+background:#1c1c1e;
+color:white
+}
 
 /* GRID */
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;padding:15px}
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+padding:15px
+}
 
-/* APP */
-.app{background:#1c1c1e;border-radius:20px;padding:15px;text-align:center}
+/* CARD */
+.app{
+background:#1c1c1e;
+border-radius:20px;
+padding:15px;
+text-align:center;
+transition:0.3s
+}
+.app:hover{transform:scale(1.05)}
 .app img{width:70px;border-radius:15px}
 
 /* BUTTON */
@@ -37,12 +82,7 @@ padding:10px 15px;
 background:#0a84ff;
 border-radius:12px;
 color:white;
-cursor:pointer;
-transition:0.2s;
-}
-.btn:active{
-transform:scale(0.95);
-box-shadow:0 0 20px #0a84ff;
+cursor:pointer
 }
 
 /* ESIGN BOX */
@@ -50,55 +90,87 @@ box-shadow:0 0 20px #0a84ff;
 margin:20px;
 padding:20px;
 background:#1c1c1e;
-border-radius:20px;
+border-radius:25px;
 text-align:center;
+box-shadow:0 0 25px rgba(0,0,0,0.6)
 }
 
-/* GLOW BUTTON */
-.glow-btn{
+/* BUTTON STYLE */
+.btn-green{
+background:#34c759;
 padding:12px 25px;
 border:none;
 border-radius:15px;
 color:white;
 font-size:16px;
-cursor:pointer;
-margin-top:10px;
-transition:0.2s;
-}
-.glow-btn:active{
-transform:scale(0.95);
-}
-
-/* ESIGN GLOW */
-.esign{
-background:#34c759;
 box-shadow:0 0 20px #34c759;
+cursor:pointer;
+transition:0.3s
+}
+.btn-green:active{
+transform:scale(0.95);
+box-shadow:0 0 30px #34c759;
 }
 
-/* CERT GLOW */
-.cert{
+.btn-orange{
 background:#ff9f0a;
+padding:12px 25px;
+border:none;
+border-radius:15px;
+color:white;
+font-size:16px;
 box-shadow:0 0 20px #ff9f0a;
+cursor:pointer;
+transition:0.3s
+}
+.btn-orange:active{
+transform:scale(0.95);
+box-shadow:0 0 30px #ff9f0a;
 }
 
-/* ICON */
-.icon{
-width:70px;
-border-radius:20px;
-margin-bottom:10px;
-box-shadow:0 0 15px #34c759;
+/* FLOAT ICON */
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-8px)}
+100%{transform:translateY(0)}
 }
 
 /* VIDEO */
-.video{display:none;text-align:center;margin:15px}
-.video iframe{width:100%;max-width:320px;height:550px;border-radius:20px}
+.video{
+display:none;
+text-align:center;
+margin:15px
+}
+.video iframe{
+width:100%;
+max-width:320px;
+height:550px;
+border-radius:20px
+}
 
 /* TOAST */
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0a84ff;padding:12px 20px;border-radius:12px;display:none}
+#toast{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#0a84ff;
+padding:12px 20px;
+border-radius:12px;
+display:none
+}
 
 /* FOOTER */
 footer{text-align:center;padding:20px}
-.zalo-btn{display:inline-block;background:#0a84ff;padding:12px 20px;border-radius:12px;color:white;text-decoration:none}
+.zalo-btn{
+display:inline-block;
+background:#0a84ff;
+padding:12px 20px;
+border-radius:12px;
+color:white;
+text-decoration:none;
+box-shadow:0 0 15px #0a84ff;
+}
 </style>
 
 <script>
@@ -139,11 +211,11 @@ function addDownload(id){
 let count=localStorage.getItem(id) || 0;
 count++;
 localStorage.setItem(id, count);
-document.getElementById(id).innerText = "🔥 Lượt tải: " + count;
+document.getElementById(id).innerText="🔥 Lượt tải: "+count;
 }
 
 function loadStats(){
-let ids=["app1","app2","app3","esign"];
+let ids=["app1","app2","app3","esign","cert"];
 ids.forEach(id=>{
 let count=localStorage.getItem(id)||0;
 let el=document.getElementById(id);
@@ -181,7 +253,7 @@ loadStats();
 <div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa'); addDownload('app1')">
 Sao chép link
 </div>
-<div id="app1" style="font-size:12px;opacity:0.7;"></div>
+<div id="app1"></div>
 </div>
 
 <div class="app">
@@ -190,7 +262,7 @@ Sao chép link
 <div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa'); addDownload('app2')">
 Sao chép link
 </div>
-<div id="app2" style="font-size:12px;opacity:0.7;"></div>
+<div id="app2"></div>
 </div>
 
 <div class="app">
@@ -199,36 +271,64 @@ Sao chép link
 <div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa'); addDownload('app3')">
 Sao chép link
 </div>
-<div id="app3" style="font-size:12px;opacity:0.7;"></div>
+<div id="app3"></div>
 </div>
 
 </div>
 
-<!-- ESIGN + CERT -->
+<!-- ESIGN -->
 <div class="esign-box">
 
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/esign.png" class="icon">
+<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/esign.png"
+style="width:100px;border-radius:25px;box-shadow:0 0 20px #34c759;margin-bottom:10px;">
 
 <h2>⚡ ESIGN AXITAT</h2>
 <p style="opacity:0.7;">Cài trực tiếp trên iOS</p>
 
+<div style="position:relative;display:inline-block">
+
 <a href="itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist"
 onclick="addDownload('esign')">
-<button class="glow-btn esign">⚡ Cài ESIGN</button>
+
+<button class="btn-green">⚡ Cài ESIGN</button>
+
 </a>
 
-<!-- ICON CHỨNG CHỈ -->
-<img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" class="icon">
+<img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png"
+style="
+width:55px;
+position:absolute;
+right:-25px;
+top:-20px;
+animation:float 2s infinite;
+filter:drop-shadow(0 0 10px #34c759);
+">
 
-<button onclick="
-window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertificateAxitat.zip';
-showToast('📥 Đang tải chứng chỉ...');
-"
-class="glow-btn cert">
-📥 Tải chứng chỉ AXITAT
+</div>
+
+<div id="esign"></div>
+
+<br>
+
+<div style="position:relative;display:inline-block">
+
+<button class="btn-orange"
+onclick="addDownload('cert'); window.location.href='https://ngohongthai1402.github.io/CertificateAxitat.zip'">
+🔒 Tải chứng chỉ AXITAT
 </button>
 
-<div id="esign" style="font-size:12px;opacity:0.7;"></div>
+<img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png"
+style="
+width:50px;
+position:absolute;
+right:-25px;
+top:-15px;
+animation:float 2s infinite;
+filter:drop-shadow(0 0 10px #ff9f0a);
+">
+
+</div>
+<div id="cert"></div>
 
 </div>
 
