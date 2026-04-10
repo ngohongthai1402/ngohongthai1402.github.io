@@ -6,6 +6,8 @@
 <title>SPEED I AM NHT</title>
 
 <style>
+*{box-sizing:border-box;}
+
 body{
 margin:0;
 font-family:-apple-system;
@@ -54,6 +56,7 @@ margin:15px;
 background:#1c1c1e;
 border-radius:20px;
 padding:15px;
+overflow:hidden; /* FIX TRÀN */
 }
 
 /* MENU */
@@ -108,17 +111,23 @@ width:60px;border-radius:15px;
 margin-bottom:10px;
 box-shadow:0 0 15px #0a84ff;
 }
+
+/* FIX NÚT CHUẨN */
 .copy-btn{
 background:#0a84ff;
 box-shadow:0 0 15px #0a84ff;
-padding:12px;
-border-radius:12px;
-width:80%;
+padding:14px;
+border-radius:14px;
+width:100%;
+max-width:100%;
 text-align:center;
 cursor:pointer;
 position:relative;
 overflow:hidden;
+margin-top:10px;
 }
+
+/* ripple */
 .copy-btn::after{
 content:"";
 position:absolute;
@@ -256,6 +265,18 @@ t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
+function downloadDNS(btn){
+btn.classList.add("ripple");
+setTimeout(()=>btn.classList.remove("ripple"),600);
+
+window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
+
+let t=document.getElementById("toast");
+t.innerHTML="📥 Đang tải NHT DNS...";
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),2000);
+}
+
 function toggleVideo(id,btn){
 if(currentVideo===id){
 players[id].pauseVideo();
@@ -343,22 +364,22 @@ Ngô Hồng Thái <span class="tick"></span>
 <!-- DNS -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menuDNS',this.querySelector('.arrow'))">
-<span> DNS CHẶN THU HỒI</span>
+<span>DNS CHẶN THU HỒI</span>
 <span class="arrow">▼</span>
 </div>
 
 <div id="menuDNS" class="menu-content" style="text-align:center;">
 
-<div class="esign-btn"
-onclick="window.open('https://www.mediafire.com/file/f69zhmh0t160v9p/dns.mobileconfig/file?dkey=9oop7yvvyu9&r=1255','_blank')">
+<div class="copy-btn" onclick="downloadDNS(this)">
 TẢI NHT DNS🔫
 </div>
 
-<div style="font-size:13px;opacity:0.9;margin-top:10px;text-align:center;line-height:1.6;">
-📥 <b>TẢI XONG NHT DNS</b> <br>
-⚙️ Vào <b>Cài đặt</b> → <b>Đã tải về hồ sơ</b><br>
-🚀 Ấn <b>NHT DNS🔫</b> → <b>Cài đặt</b>
+<div style="font-size:13px;opacity:0.9;margin-top:10px;line-height:1.6;">
+<div>📥 <b>TẢI XONG NHT DNS</b></div>
+<div>⚙️ Vào <b>Cài đặt</b> → <b>Đã tải về hồ sơ</b></div>
+<div>🚀 Ấn <b>NHT DNS🔫</b> → <b>Cài đặt</b></div>
 </div>
+
 </div>
 </div>
 
