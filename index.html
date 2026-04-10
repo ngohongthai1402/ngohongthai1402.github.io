@@ -85,7 +85,6 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 }
-
 .menu-content{
 display:none;
 margin-top:10px;
@@ -150,7 +149,7 @@ border-radius:15px;
 margin-bottom:10px;
 box-shadow:0 0 20px #0a84ff;
 }
-.esign-btn, .cert-btn{
+.esign-btn{
 display:flex;
 justify-content:center;
 align-items:center;
@@ -163,7 +162,21 @@ box-shadow:0 0 15px #0a84ff;
 cursor:pointer;
 }
 
-/* DOT NÚT */
+/* CERT */
+.cert-btn{
+display:flex;
+justify-content:center;
+align-items:center;
+padding:14px;
+border-radius:14px;
+font-weight:700;
+margin-top:10px;
+background:#0a84ff;
+box-shadow:0 0 15px #0a84ff;
+cursor:pointer;
+}
+
+/* DOT */
 .dot{
 width:10px;
 height:10px;
@@ -281,41 +294,11 @@ Ngô Hồng Thái<span class="tick"></span>
 <img src="logo.png">
 </div>
 
-<!-- SPEED -->
-<div class="box">
-<div class="menu-title" onclick="toggleMenu('menu1')">
-DANH SÁCH SPEED ▼
-</div>
-
-<div id="menu1" class="menu-content">
-
-<div class="app-item">
-<img src="logogame.png">
-<div class="app-title">ĐẾM VÒNG V1</div>
-<div class="copy-btn" onclick="copyLink('link1')">SAO CHÉP</div>
-</div>
-
-<div class="app-item">
-<img src="logogame.png">
-<div class="app-title">ĐẾM VÒNG V2</div>
-<div class="copy-btn" onclick="copyLink('link2')">SAO CHÉP</div>
-</div>
-
-<div class="app-item">
-<img src="logogame.png">
-<div class="app-title">SPEED IGG</div>
-<div class="copy-btn" onclick="copyLink('link3')">SAO CHÉP</div>
-</div>
-
-</div>
-</div>
-
 <!-- ESIGN -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu2')">
 <span style="display:flex;align-items:center;">
-ESIGN AXITAT
-<span class="menu-dot"></span>
+ESIGN AXITAT <span class="menu-dot"></span>
 </span>
 <span>▼</span>
 </div>
@@ -324,39 +307,15 @@ ESIGN AXITAT
 
 <img src="esign.png" class="esign-logo">
 
-<a href="#">
+<a href="itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist">
 <div class="esign-btn">
 CÀI ĐẶT APP ESIGN <span class="dot"></span>
 </div>
 </a>
 
-<div class="cert-btn">
+<div class="cert-btn"
+onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/main/CertificateAxitat.zip'">
 📥 TẢI CHỨNG CHỈ AXITAT
-</div>
-
-</div>
-</div>
-
-<!-- VIDEO -->
-<div class="box">
-<div class="menu-title" onclick="toggleMenu('menu3')">
-XEM VIDEO HƯỚNG DẪN ▼
-</div>
-
-<div id="menu3" class="menu-content">
-
-<div class="video-btn" onclick="showVideo('v1',this)">
-HƯỚNG DẪN TẢI ESIGN + SPEED
-</div>
-<div id="v1" class="video">
-<iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
-</div>
-
-<div class="video-btn" onclick="showVideo('v2',this)">
-HƯỚNG DẪN CẬP NHẬT COIN MASTER
-</div>
-<div id="v2" class="video">
-<iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
 </div>
 
 </div>
