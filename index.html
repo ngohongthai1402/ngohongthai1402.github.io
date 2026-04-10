@@ -44,10 +44,26 @@ font-weight:700;
 display:flex;
 justify-content:space-between;
 cursor:pointer;
+align-items:center;
 }
 .menu-content{display:none;margin-top:10px}
 
-/* ===== GLOW RIÊNG ===== */
+/* DOT MENU */
+.menu-dot{
+width:10px;height:10px;
+background:#00ffcc;
+border-radius:50%;
+margin-left:6px;
+box-shadow:0 0 10px #00ffcc;
+animation:blink 1s infinite;
+}
+@keyframes blink{
+0%{opacity:1}
+50%{opacity:0.3}
+100%{opacity:1}
+}
+
+/* ===== GLOW ===== */
 .glow-blue{box-shadow:0 0 15px #0a84ff;}
 .glow-green{box-shadow:0 0 15px #34c759;}
 .glow-orange{box-shadow:0 0 15px #ff9f0a;}
@@ -97,6 +113,37 @@ animation:ripple 0.6s;
 100%{transform:scale(20);opacity:0;}
 }
 
+/* ESIGN */
+.esign-logo{
+width:80px;
+border-radius:15px;
+margin-bottom:10px;
+box-shadow:0 0 20px #0a84ff;
+}
+
+.esign-btn,.cert-btn{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+background:#0a84ff;
+padding:14px;
+border-radius:14px;
+margin-top:10px;
+font-weight:700;
+cursor:pointer;
+}
+
+/* ICON NHẤP NHÁY */
+.dot{
+width:10px;
+height:10px;
+background:#00ffcc;
+border-radius:50%;
+box-shadow:0 0 10px #00ffcc;
+animation:blink 1s infinite;
+}
+
 /* VIDEO BTN */
 .video-btn{
 display:flex;
@@ -125,17 +172,11 @@ gap:10px;
 background:#0a84ff;
 }
 
-/* ICON */
-.icon{
-font-size:16px;
-}
-
 /* VIDEO */
 .video{
 display:none;
 margin-top:10px;
 text-align:center;
-animation:fade 0.3s;
 }
 .video iframe{
 width:100%;
@@ -144,27 +185,20 @@ height:550px;
 border-radius:15px;
 border:none;
 }
-@keyframes fade{
-from{opacity:0;transform:scale(0.95)}
-to{opacity:1;transform:scale(1)}
-}
 
 /* TOAST */
 #toast{
 position:fixed;
 bottom:30px;
 left:50%;
-transform:translateX(-50%) translateY(20px);
+transform:translateX(-50%);
 background:#111;
 padding:12px 20px;
 border-radius:14px;
 opacity:0;
 transition:0.3s;
 }
-#toast.show{
-opacity:1;
-transform:translateX(-50%);
-}
+#toast.show{opacity:1;}
 </style>
 
 <script>
@@ -172,7 +206,7 @@ let currentVideo=null;
 let players={};
 let muteState={};
 
-/* LOAD YOUTUBE API */
+/* YT API */
 let tag=document.createElement('script');
 tag.src="https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
@@ -192,7 +226,6 @@ el.style.display=el.style.display==="block"?"none":"block";
 /* COPY */
 function copyLink(link,btn){
 navigator.clipboard.writeText(link);
-
 btn.classList.add("ripple");
 setTimeout(()=>btn.classList.remove("ripple"),600);
 
@@ -202,7 +235,7 @@ t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-/* PLAY / PAUSE */
+/* VIDEO */
 function toggleVideo(id,btn){
 
 if(currentVideo===id){
@@ -214,15 +247,13 @@ currentVideo=null;
 return;
 }
 
-/* pause others */
 for(let v in players){
 players[v].pauseVideo();
 document.getElementById(v).style.display="none";
-document.querySelector(`[data-id="${v}"] .play`).innerHTML="▶";
 document.querySelector(`[data-id="${v}"]`).classList.remove("active");
+document.querySelector(`[data-id="${v}"] .play`).innerHTML="▶";
 }
 
-/* play */
 document.getElementById(id).style.display="block";
 players[id].playVideo();
 
@@ -232,7 +263,7 @@ btn.querySelector(".play").innerHTML="⏸";
 currentVideo=id;
 }
 
-/* MUTE */
+/* SOUND */
 function toggleSound(id,icon){
 if(muteState[id]){
 players[id].unMute();
@@ -282,6 +313,32 @@ muteState[id]=!muteState[id];
 </div>
 </div>
 
+<!-- ESIGN -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('menu2')">
+<span style="display:flex;align-items:center;">
+ESIGN AXITAT <span class="menu-dot"></span>
+</span>
+<span>▼</span>
+</div>
+
+<div id="menu2" class="menu-content" style="text-align:center;">
+
+<img src="esign.png" class="esign-logo">
+
+<div class="esign-btn"
+onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
+CÀI ĐẶT APP ESIGN <span class="dot"></span>
+</div>
+
+<div class="cert-btn"
+onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/main/CertificateAxitat.zip'">
+TẢI CHỨNG CHỈ AXITAT
+</div>
+
+</div>
+</div>
+
 <!-- VIDEO -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu3')">
@@ -290,15 +347,13 @@ XEM VIDEO HƯỚNG DẪN ▼
 
 <div id="menu3" class="menu-content">
 
-<!-- VIDEO 1 -->
 <div class="video-btn" data-id="v1">
 <div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
-<span class="icon play">▶</span>
+<span class="play">▶</span>
 <span>HƯỚNG DẪN TẢI ESIGN</span>
 </div>
-
 <div class="video-controls">
-<span class="icon" onclick="toggleSound('v1',this)">🔇</span>
+<span onclick="toggleSound('v1',this)">🔇</span>
 </div>
 </div>
 
@@ -306,15 +361,13 @@ XEM VIDEO HƯỚNG DẪN ▼
 <iframe id="v1-frame" src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1"></iframe>
 </div>
 
-<!-- VIDEO 2 -->
 <div class="video-btn" data-id="v2">
 <div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
-<span class="icon play">▶</span>
+<span class="play">▶</span>
 <span>HƯỚNG DẪN CẬP NHẬT</span>
 </div>
-
 <div class="video-controls">
-<span class="icon" onclick="toggleSound('v2',this)">🔇</span>
+<span onclick="toggleSound('v2',this)">🔇</span>
 </div>
 </div>
 
