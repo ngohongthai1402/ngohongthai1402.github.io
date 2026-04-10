@@ -10,7 +10,7 @@ body{
 margin:0;
 font-family:-apple-system;
 background:#0f0f0f;
-color:white;
+color:white
 }
 
 /* HEADER */
@@ -26,7 +26,7 @@ font-weight:700;
 .logo img{
 width:120px;
 border-radius:50%;
-box-shadow:0 0 25px #0a84ff;
+box-shadow:0 0 25px #0a84ff
 }
 
 /* BOX */
@@ -43,6 +43,7 @@ font-size:18px;
 font-weight:700;
 display:flex;
 justify-content:space-between;
+align-items:center;
 cursor:pointer;
 }
 .menu-content{display:none;margin-top:10px}
@@ -52,7 +53,7 @@ cursor:pointer;
 width:10px;height:10px;
 background:#0a84ff;
 border-radius:50%;
-margin-left:6px;
+box-shadow:0 0 10px #0a84ff;
 animation:blink 1s infinite;
 }
 @keyframes blink{
@@ -61,7 +62,7 @@ animation:blink 1s infinite;
 100%{opacity:1}
 }
 
-/* APP */
+/* ===== SPEED CHUNG MÀU ===== */
 .app-item{
 display:flex;
 flex-direction:column;
@@ -71,20 +72,23 @@ padding:15px;
 border-radius:18px;
 margin:12px 0;
 }
+
 .app-item img{
 width:60px;
 border-radius:15px;
 margin-bottom:10px;
-box-shadow:0 0 20px #0a84ff;
+box-shadow:0 0 15px #0a84ff;
 }
+
 .app-title{
 font-weight:700;
 margin-bottom:10px;
 }
 
-/* COPY BUTTON */
+/* COPY BUTTON (CHUNG BLUE) */
 .copy-btn{
 background:#0a84ff;
+box-shadow:0 0 15px #0a84ff;
 padding:12px;
 border-radius:12px;
 width:80%;
@@ -92,11 +96,9 @@ text-align:center;
 cursor:pointer;
 position:relative;
 overflow:hidden;
-box-shadow:0 0 12px #0a84ff;
 }
-.copy-btn:active{transform:scale(0.9);}
 
-/* RIPPLE */
+/* ripple */
 .copy-btn::after{
 content:"";
 position:absolute;
@@ -104,17 +106,16 @@ width:10px;height:10px;
 background:rgba(255,255,255,0.5);
 border-radius:50%;
 transform:scale(0);
-opacity:0;
 }
 .copy-btn.ripple::after{
-animation:ripple 0.6s ease;
+animation:ripple 0.6s;
 }
 @keyframes ripple{
-0%{transform:scale(0);opacity:0.8;}
+0%{transform:scale(0);opacity:1;}
 100%{transform:scale(20);opacity:0;}
 }
 
-/* ESIGN (GIỐNG MÀU SPEED) */
+/* ESIGN */
 .esign-logo{
 width:80px;
 border-radius:15px;
@@ -123,46 +124,57 @@ box-shadow:0 0 20px #0a84ff;
 }
 
 .esign-btn,.cert-btn{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
 background:#0a84ff;
 padding:14px;
 border-radius:14px;
 margin-top:10px;
 font-weight:700;
 cursor:pointer;
-text-align:center;
 box-shadow:0 0 15px #0a84ff;
 }
 
-/* DOT NHẤP NHÁY */
+/* ICON NHẤP NHÁY */
 .dot{
-display:inline-block;
-width:10px;height:10px;
+width:10px;
+height:10px;
 background:#0a84ff;
 border-radius:50%;
-margin-left:6px;
+box-shadow:0 0 10px #0a84ff;
 animation:blink 1s infinite;
 }
 
-/* VIDEO BUTTON */
+/* VIDEO BTN */
 .video-btn{
 display:flex;
 align-items:center;
-gap:10px;
+justify-content:space-between;
 padding:14px;
 border-radius:14px;
 margin-top:10px;
 font-weight:700;
 cursor:pointer;
 background:#2c2c2e;
-transition:0.2s;
 }
+
 .video-btn.active{
 background:#0a84ff;
 box-shadow:0 0 15px #0a84ff;
 }
 
-/* ICON */
-.video-icon{width:20px}
+.video-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.video-controls{
+display:flex;
+gap:10px;
+}
 
 /* VIDEO */
 .video{
@@ -176,20 +188,11 @@ width:100%;
 max-width:320px;
 height:550px;
 border-radius:15px;
+border:none;
 }
 @keyframes fade{
 from{opacity:0;transform:scale(0.95)}
 to{opacity:1;transform:scale(1)}
-}
-
-/* SOUND BTN */
-.sound-btn{
-margin-top:5px;
-padding:8px;
-background:#0a84ff;
-border-radius:10px;
-font-size:13px;
-cursor:pointer;
 }
 
 /* TOAST */
@@ -197,24 +200,34 @@ cursor:pointer;
 position:fixed;
 bottom:30px;
 left:50%;
-transform:translateX(-50%) translateY(20px);
-background:rgba(20,20,20,0.95);
+transform:translateX(-50%);
+background:#111;
 padding:12px 20px;
 border-radius:14px;
-font-weight:600;
 opacity:0;
-transition:0.35s;
+transition:0.3s;
 }
-#toast.show{
-opacity:1;
-transform:translateX(-50%) translateY(0);
-}
+#toast.show{opacity:1;}
 </style>
 
 <script>
-let currentPlayer=null;
-let currentBtn=null;
+let currentVideo=null;
+let players={};
+let muteState={};
 
+/* YT API */
+let tag=document.createElement('script');
+tag.src="https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+
+function onYouTubeIframeAPIReady(){
+["v1","v2"].forEach(id=>{
+players[id]=new YT.Player(id+"-frame");
+muteState[id]=true;
+});
+}
+
+/* MENU */
 function toggleMenu(id){
 let el=document.getElementById(id);
 el.style.display=el.style.display==="block"?"none":"block";
@@ -236,45 +249,43 @@ setTimeout(()=>t.classList.remove("show"),2000);
 /* VIDEO */
 function toggleVideo(id,btn){
 
-let iframe=document.querySelector("#"+id+" iframe");
-
-/* click lại = tắt */
-if(currentBtn===btn){
-iframe.src=iframe.src.replace("&autoplay=1","");
+if(currentVideo===id){
+players[id].pauseVideo();
 document.getElementById(id).style.display="none";
 btn.classList.remove("active");
-btn.querySelector(".video-icon").innerHTML="▶";
-currentBtn=null;
-currentPlayer=null;
+btn.querySelector(".play").innerHTML="▶";
+currentVideo=null;
 return;
 }
 
-/* tắt video cũ (pause thật) */
-if(currentPlayer){
-currentPlayer.src=currentPlayer.src.replace("&autoplay=1","");
+/* tắt video cũ */
+for(let v in players){
+players[v].pauseVideo();
+document.getElementById(v).style.display="none";
+document.querySelector(`[data-id="${v}"]`).classList.remove("active");
+document.querySelector(`[data-id="${v}"] .play`).innerHTML="▶";
 }
 
-/* reset */
-document.querySelectorAll(".video").forEach(v=>v.style.display="none");
-document.querySelectorAll(".video-btn").forEach(b=>{
-b.classList.remove("active");
-b.querySelector(".video-icon").innerHTML="▶";
-});
-
-/* bật video */
-iframe.src=iframe.src + "&autoplay=1";
+/* mở video mới */
 document.getElementById(id).style.display="block";
-btn.classList.add("active");
-btn.querySelector(".video-icon").innerHTML="⏸";
+players[id].playVideo();
 
-currentPlayer=iframe;
-currentBtn=btn;
+btn.classList.add("active");
+btn.querySelector(".play").innerHTML="⏸";
+
+currentVideo=id;
 }
 
-/* bật tiếng */
-function enableSound(id){
-let iframe=document.querySelector("#"+id+" iframe");
-iframe.src=iframe.src.replace("mute=1","mute=0")+"&autoplay=1";
+/* SOUND */
+function toggleSound(id,icon){
+if(muteState[id]){
+players[id].unMute();
+icon.innerHTML="🔊";
+}else{
+players[id].mute();
+icon.innerHTML="🔇";
+}
+muteState[id]=!muteState[id];
 }
 </script>
 
@@ -320,7 +331,7 @@ DANH SÁCH SPEED ▼
 <!-- ESIGN -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu2')">
-<span style="display:flex;align-items:center;">
+<span style="display:flex;align-items:center;gap:6px;">
 ESIGN AXITAT <span class="menu-dot"></span>
 </span>
 <span>▼</span>
@@ -351,24 +362,32 @@ XEM VIDEO HƯỚNG DẪN ▼
 
 <div id="menu3" class="menu-content">
 
-<div class="video-btn" onclick="toggleVideo('v1',this)">
-<div class="video-icon">▶</div>
-<span>HƯỚNG DẪN TẢI ESIGN + SPEED</span>
+<div class="video-btn" data-id="v1">
+<div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
+<span class="play">▶</span>
+<span>HƯỚNG DẪN TẢI ESIGN</span>
+</div>
+<div class="video-controls">
+<span onclick="toggleSound('v1',this)">🔇</span>
+</div>
 </div>
 
 <div id="v1" class="video">
-<iframe src="https://www.youtube.com/embed/8ynQoiww9d4?mute=1"></iframe>
-<div class="sound-btn" onclick="enableSound('v1')">🔊 Bật tiếng</div>
+<iframe id="v1-frame" src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1"></iframe>
 </div>
 
-<div class="video-btn" onclick="toggleVideo('v2',this)">
-<div class="video-icon">▶</div>
-<span>HƯỚNG DẪN CẬP NHẬT COIN MASTER</span>
+<div class="video-btn" data-id="v2">
+<div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
+<span class="play">▶</span>
+<span>HƯỚNG DẪN CẬP NHẬT</span>
+</div>
+<div class="video-controls">
+<span onclick="toggleSound('v2',this)">🔇</span>
+</div>
 </div>
 
 <div id="v2" class="video">
-<iframe src="https://www.youtube.com/embed/e74h1eb3b0c?mute=1"></iframe>
-<div class="sound-btn" onclick="enableSound('v2')">🔊 Bật tiếng</div>
+<iframe id="v2-frame" src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1"></iframe>
 </div>
 
 </div>
