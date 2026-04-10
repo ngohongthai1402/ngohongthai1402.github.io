@@ -150,6 +150,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 gap:8px;
+text-align:center; /* FIX lệch */
 background:#0a84ff;
 padding:14px;
 border-radius:14px;
@@ -166,6 +167,7 @@ background:#00ffcc;
 border-radius:50%;
 box-shadow:0 0 10px #00ffcc;
 animation:blink 1s infinite;
+display:inline-block; /* FIX lệch */
 }
 
 /* VIDEO BTN */
@@ -234,7 +236,6 @@ let currentVideo=null;
 let players={};
 let muteState={};
 
-/* YOUTUBE API */
 let tag=document.createElement('script');
 tag.src="https://www.youtube.com/iframe_api";
 document.head.appendChild(tag);
@@ -246,13 +247,11 @@ muteState[id]=true;
 });
 }
 
-/* MENU */
 function toggleMenu(id,arrow){
 document.getElementById(id).classList.toggle("open");
 arrow.classList.toggle("rotate");
 }
 
-/* COPY */
 function copyLink(link,btn){
 navigator.clipboard.writeText(link);
 btn.classList.add("ripple");
@@ -264,7 +263,6 @@ t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-/* VIDEO */
 function toggleVideo(id,btn){
 
 if(currentVideo===id){
@@ -292,7 +290,6 @@ btn.querySelector(".play").innerHTML="⏸";
 currentVideo=id;
 }
 
-/* SOUND */
 function toggleSound(id,icon){
 if(muteState[id]){
 players[id].unMute();
@@ -362,12 +359,13 @@ ESIGN AXITAT <span class="menu-dot"></span>
 
 <div class="esign-btn"
 onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
-CÀI ĐẶT APP ESIGN <span class="active-dot"></span>
+<span>CÀI ĐẶT APP ESIGN</span>
+<span class="active-dot"></span>
 </div>
 
 <div class="cert-btn"
 onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/refs/heads/main/CertificateAxitat.zip'">
-📥 TẢI CHỨNG CHỈ
+<span>TẢI CHỨNG CHỈ</span>
 </div>
 
 </div>
