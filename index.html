@@ -8,7 +8,7 @@
 <style>
 body{
 margin:0;
-font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+font-family:-apple-system, BlinkMacSystemFont, "Segoe UI";
 background:#0f0f0f;
 color:white
 }
@@ -51,28 +51,24 @@ display:none;
 margin-top:10px;
 }
 
-/* ITEM */
+/* APP ITEM */
 .app-item{
 display:flex;
 flex-direction:column;
 align-items:center;
-text-align:center;
 background:#2c2c2e;
 padding:15px;
 border-radius:18px;
 margin:12px 0;
 }
 
-/* LOGO GAME */
 .app-item img{
 width:60px;
-height:60px;
 border-radius:15px;
 margin-bottom:10px;
 box-shadow:0 0 20px #0a84ff;
 }
 
-/* TITLE */
 .app-title{
 font-size:17px;
 font-weight:700;
@@ -99,46 +95,30 @@ cursor:pointer;
 transform:scale(0.95);
 }
 
-/* ESIGN */
-.esign-logo{
-width:80px;
-border-radius:15px;
-margin-bottom:10px;
-box-shadow:0 0 20px #0a84ff;
-}
-
-.esign-btn, .cert-btn{
+/* VIDEO BUTTON */
+.video-btn{
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 padding:14px;
 border-radius:14px;
-font-weight:700;
 margin-top:10px;
+cursor:pointer;
+background:#2c2c2e;
+font-size:15px;
+font-weight:700;
+letter-spacing:0.5px;
+transition:0.2s;
+}
+
+.video-btn.active{
 background:#0a84ff;
 box-shadow:0 0 15px #0a84ff;
-cursor:pointer;
+transform:scale(0.97);
 }
 
-a{
-text-decoration:none;
-color:inherit;
-}
-
-/* DOT */
-.dot{
-width:10px;
-height:10px;
-background:#00ffcc;
-border-radius:50%;
-margin-left:8px;
-animation:blink 1s infinite;
-}
-
-@keyframes blink{
-0%{opacity:1;}
-50%{opacity:0.3;}
-100%{opacity:1;}
+.video-btn:hover{
+box-shadow:0 0 10px rgba(10,132,255,0.4);
 }
 
 /* VIDEO */
@@ -146,6 +126,7 @@ animation:blink 1s infinite;
 display:none;
 margin-top:10px;
 text-align:center;
+animation:fadeIn 0.25s ease;
 }
 
 .video iframe{
@@ -153,6 +134,12 @@ width:100%;
 max-width:320px;
 height:550px;
 border-radius:15px;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+from{opacity:0; transform:scale(0.95);}
+to{opacity:1; transform:scale(1);}
 }
 
 /* TOAST */
@@ -186,10 +173,26 @@ t.style.display="block";
 setTimeout(()=>t.style.display="none",2000);
 }
 
-function showVideo(id){
-let videos=document.getElementsByClassName("video");
-for(let v of videos){v.style.display="none";}
+/* VIDEO */
+function showVideo(id,btn){
+let videos=document.querySelectorAll(".video");
+let buttons=document.querySelectorAll(".video-btn");
+
+videos.forEach(v=>v.style.display="none");
+buttons.forEach(b=>b.classList.remove("active"));
+
 document.getElementById(id).style.display="block";
+btn.classList.add("active");
+}
+
+/* PASS VIP */
+function checkPass(btn){
+let pass=prompt("🔒 Nhập mật khẩu:");
+if(pass==="1402"){
+showVideo("v3",btn);
+}else{
+alert("❌ Sai mật khẩu!");
+}
 }
 </script>
 
@@ -238,24 +241,33 @@ document.getElementById(id).style.display="block";
 </div>
 </div>
 
-<!-- ESIGN -->
+<!-- VIDEO -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('menu2')">
-⚡ Xem Tải ESign ▼
+<div class="menu-title" onclick="toggleMenu('menu3')">
+📺 XEM VIDEO HƯỚNG DẪN ▼
 </div>
 
-<div id="menu2" class="menu-content" style="text-align:center">
+<div id="menu3" class="menu-content">
 
-<img src="esign.png" class="esign-logo">
-
-<a href="#">
-<div class="esign-btn">
-CÀI ĐẶT APP ESIGN <span class="dot"></span>
+<div class="video-btn" onclick="showVideo('v1',this)">
+📥 Hướng dẫn tải ESIGN + SPEED
 </div>
-</a>
+<div id="v1" class="video">
+<iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
+</div>
 
-<div class="cert-btn">
-📥 TẢI CHỨNG CHỈ
+<div class="video-btn" onclick="showVideo('v2',this)">
+🔄 Hướng dẫn cập nhật Coin Master
+</div>
+<div id="v2" class="video">
+<iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
+</div>
+
+<div class="video-btn" onclick="checkPass(this)">
+💎 Video dành cho khách mua
+</div>
+<div id="v3" class="video">
+<iframe src="https://www.youtube.com/embed/-IoGLILtqNQ"></iframe>
 </div>
 
 </div>
