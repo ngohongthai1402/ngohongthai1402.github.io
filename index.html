@@ -28,16 +28,19 @@ header{text-align:center;padding:15px;font-size:22px;font-weight:bold}
 font-size:18px;
 font-weight:bold;
 cursor:pointer;
-display:flex;
-justify-content:center;
-align-items:center;
-gap:6px;
+text-align:center;
 }
 
-.menu-content{display:none;margin-top:10px}
+.menu-content{
+display:none;
+margin-top:10px;
+animation:fade 0.3s ease;
+}
 
-/* APP */
-.app{text-align:center;margin:10px 0}
+@keyframes fade{
+from{opacity:0;transform:translateY(-5px)}
+to{opacity:1;transform:translateY(0)}
+}
 
 /* BUTTON */
 .btn, .btn-lock{
@@ -53,8 +56,6 @@ cursor:pointer;
 border:none;
 }
 
-.btn:active,.btn-lock:active{transform:scale(0.93)}
-
 .blue{background:#0a84ff;box-shadow:0 0 15px #0a84ff;}
 .green{background:#34c759;box-shadow:0 0 15px #34c759;}
 
@@ -64,7 +65,6 @@ width:10px;height:10px;background:#00ff88;border-radius:50%;
 box-shadow:0 0 10px #00ff88;
 animation:blink 1.2s infinite;
 }
-
 @keyframes blink{
 0%{opacity:1;}
 50%{opacity:0.3;}
@@ -72,19 +72,23 @@ animation:blink 1.2s infinite;
 }
 
 /* VIDEO */
-.video{display:none;text-align:center;margin:15px}
-.video iframe{width:100%;max-width:320px;height:550px;border-radius:20px}
-
-/* TOAST */
-#toast{
-position:fixed;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-background:#0a84ff;
-padding:12px 20px;
-border-radius:12px;
+.video{
 display:none;
+opacity:0;
+transition:0.3s;
+text-align:center;
+margin:10px;
+}
+.video.show{
+display:block;
+opacity:1;
+}
+
+iframe{
+width:100%;
+max-width:320px;
+height:550px;
+border-radius:20px;
 }
 
 /* FOOTER */
@@ -96,64 +100,44 @@ padding:12px 20px;
 border-radius:12px;
 color:white;
 text-decoration:none;
-box-shadow:0 0 15px #0a84ff;
 }
 </style>
 
 <script>
 function toggleMenu(id, el){
 let m=document.getElementById(id);
-
 if(m.style.display==="block"){
 m.style.display="none";
 el.innerHTML=el.innerHTML.replace("▲","▼");
 }else{
 m.style.display="block";
 el.innerHTML=el.innerHTML.replace("▼","▲");
-m.scrollIntoView({behavior:"smooth"});
 }
 }
 
-function copyLink(link){
-navigator.clipboard.writeText(link);
-showToast("✅ Đã sao chép link!");
+/* VIDEO VIP */
+let currentVideo=null;
+
+function playVideo(id, videoId){
+if(currentVideo){
+currentVideo.innerHTML="";
+currentVideo.classList.remove("show");
+}
+let container=document.getElementById(id);
+container.innerHTML=`<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1"></iframe>`;
+container.classList.add("show");
+container.scrollIntoView({behavior:"smooth"});
+currentVideo=container;
 }
 
-function showToast(text){
-let t=document.getElementById("toast");
-t.innerText=text;
-t.style.display="block";
-setTimeout(()=>t.style.display="none",2000);
-}
+/* PASS VIDEO 3 */
+function checkPass(){
+let pass=prompt("🔐 Nhập mã để xem video:");
 
-/* VIDEO XỊN */
-function toggleVideoOnly(id, btn){
-
-let videos=document.getElementsByClassName("video");
-let buttons=document.querySelectorAll(".video-btn");
-
-/* ẩn tất cả */
-for(let i=0;i<videos.length;i++){
-videos[i].style.display="none";
-}
-
-/* reset text */
-buttons.forEach(b=>{
-if(b.innerText.includes("Ẩn")){
-b.innerText=b.innerText.replace("Ẩn","Hiện");
-}
-});
-
-/* toggle */
-let current=document.getElementById(id);
-
-if(current.style.display==="block"){
-current.style.display="none";
-btn.innerText=btn.innerText.replace("Ẩn","Hiện");
-}else{
-current.style.display="block";
-btn.innerText=btn.innerText.replace("Hiện","Ẩn");
-current.scrollIntoView({behavior:"smooth"});
+if(pass==="1402"){
+playVideo('v3','-IoGLILtqNQ');
+}else if(pass!==null){
+alert("❌ Sai mật khẩu!");
 }
 }
 
@@ -174,7 +158,7 @@ document.getElementById("loader").style.display="none";
 <img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
 </div>
 
-<!-- MENU SPEED -->
+<!-- SPEED -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('m1',this)">
 🎮 Speed Coin Master ▼
@@ -182,40 +166,33 @@ document.getElementById("loader").style.display="none";
 
 <div id="m1" class="menu-content">
 
-<div class="app">
-<h3>🎮 Đếm vòng 1</h3>
-<div class="btn blue" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa')">Sao chép link</div>
+<div class="btn blue" onclick="navigator.clipboard.writeText('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa')">
+🎮 Đếm vòng 1
 </div>
 
-<div class="app">
-<h3>🔥 Đếm vòng 2</h3>
-<div class="btn blue" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa')">Sao chép link</div>
+<div class="btn blue" onclick="navigator.clipboard.writeText('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa')">
+🔥 Đếm vòng 2
 </div>
 
-<div class="app">
-<h3>💎 Speed IGG</h3>
-<div class="btn blue" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa')">Sao chép link</div>
+<div class="btn blue" onclick="navigator.clipboard.writeText('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa')">
+💎 Speed IGG
 </div>
 
 </div>
 </div>
 
-<!-- MENU ESIGN -->
+<!-- ESIGN -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('m2',this)">
 ⚡ Xem Tải ESign Miễn Phí ▼
 </div>
 
-<div id="m2" class="menu-content">
+<div id="m2" class="menu-content" style="text-align:center;">
 
 <img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/esign.png"
-style="width:90px;border-radius:20px;display:block;margin:auto;box-shadow:0 0 15px #34c759;">
+style="width:90px;border-radius:20px;box-shadow:0 0 15px #34c759;">
 
-<h3 style="text-align:center;">
-ESIGN AXITAT <span class="dot"></span>
-</h3>
-
-<div style="text-align:center;">
+<h3>ESIGN AXITAT <span class="dot"></span></h3>
 
 <a href="itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist">
 <button class="btn-lock green">⚡ Cài ESIGN</button>
@@ -227,304 +204,37 @@ onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai140
 </button>
 
 </div>
+</div>
+
+<!-- VIDEO VIP -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('m3',this)">
+📺 XEM VIDEO HƯỚNG DẪN ▼
+</div>
+
+<div id="m3" class="menu-content" style="text-align:center;">
+
+<div class="btn blue" onclick="playVideo('v1','8ynQoiww9d4')">
+📥 Hướng dẫn tải
+</div>
+<div id="v1" class="video"></div>
+
+<div class="btn blue" onclick="playVideo('v2','e74h1eb3b0c')">
+🔄 Hướng dẫn cập nhật
+</div>
+<div id="v2" class="video"></div>
+
+<div class="btn blue" onclick="checkPass()">
+💎 Mua certificate mới xem được 🔒
+</div>
+<div id="v3" class="video"></div>
 
 </div>
 </div>
-
-<!-- VIDEO -->
-<div style="text-align:center;margin:20px;">
-
-<div class="btn blue video-btn" onclick="toggleVideoOnly('v1',this)">
-📥 Hướng dẫn tải (Hiện)
-</div>
-<div id="v1" class="video">
-<iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
-</div>
-
-<div class="btn blue video-btn" onclick="toggleVideoOnly('v2',this)">
-🔄 Hướng dẫn cập nhật (Hiện)
-</div>
-<div id="v2" class="video">
-<iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
-</div>
-
-<div class="btn blue video-btn" onclick="toggleVideoOnly('v3',this)">
-💎 Hướng dẫn chứng chỉ (Hiện)
-</div>
-<div id="v3" class="video">
-<iframe src="https://www.youtube.com/embed/-IoGLILtqNQ"></iframe>
-</div>
-
-</div>
-
-<div id="toast"></div>
 
 <footer>
 <a href="https://zalo.me/0349333397" target="_blank" class="zalo-btn">
-💎 Mua chứng chỉ cài speed liên hệ 0349 3333 97
-</a>
-</footer>
-
-</body>
-</html>padding:12px 25px;
-border:none;
-border-radius:15px;
-color:white;
-font-size:16px;
-box-shadow:0 0 20px #34c759;
-cursor:pointer;
-transition:0.3s
-}
-.btn-green:active{
-transform:scale(0.95);
-box-shadow:0 0 30px #34c759;
-}
-
-.btn-orange{
-background:#ff9f0a;
-padding:12px 25px;
-border:none;
-border-radius:15px;
-color:white;
-font-size:16px;
-box-shadow:0 0 20px #ff9f0a;
-cursor:pointer;
-transition:0.3s
-}
-.btn-orange:active{
-transform:scale(0.95);
-box-shadow:0 0 30px #ff9f0a;
-}
-
-/* FLOAT ICON */
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-8px)}
-100%{transform:translateY(0)}
-}
-
-/* VIDEO */
-.video{
-display:none;
-text-align:center;
-margin:15px
-}
-.video iframe{
-width:100%;
-max-width:320px;
-height:550px;
-border-radius:20px
-}
-
-/* TOAST */
-#toast{
-position:fixed;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-background:#0a84ff;
-padding:12px 20px;
-border-radius:12px;
-display:none
-}
-
-/* FOOTER */
-footer{text-align:center;padding:20px}
-.zalo-btn{
-display:inline-block;
-background:#0a84ff;
-padding:12px 20px;
-border-radius:12px;
-color:white;
-text-decoration:none;
-box-shadow:0 0 15px #0a84ff;
-}
-</style>
-
-<script>
-function searchApp(){
-let input=document.getElementById("search").value.toLowerCase();
-let apps=document.getElementsByClassName("app");
-for(let i=0;i<apps.length;i++){
-let name=apps[i].innerText.toLowerCase();
-apps[i].style.display=name.includes(input)?"":"none";
-}
-}
-
-function copyLink(link){
-navigator.clipboard.writeText(link);
-showToast("✅ Đã sao chép link!");
-}
-
-function showToast(text){
-let toast=document.getElementById("toast");
-toast.innerText=text;
-toast.style.display="block";
-setTimeout(()=>{toast.style.display="none"},2000);
-}
-
-function toggleSingle(id, btn){
-let video=document.getElementById(id);
-if(video.style.display==="block"){
-video.style.display="none";
-btn.innerText=btn.innerText.replace("Ẩn","Hiện");
-}else{
-video.style.display="block";
-btn.innerText=btn.innerText.replace("Hiện","Ẩn");
-video.scrollIntoView({behavior:"smooth"});
-}
-}
-
-function addDownload(id){
-let count=localStorage.getItem(id) || 0;
-count++;
-localStorage.setItem(id, count);
-document.getElementById(id).innerText="🔥 Lượt tải: "+count;
-}
-
-function loadStats(){
-let ids=["app1","app2","app3","esign","cert"];
-ids.forEach(id=>{
-let count=localStorage.getItem(id)||0;
-let el=document.getElementById(id);
-if(el) el.innerText="🔥 Lượt tải: "+count;
-});
-}
-
-window.onload=function(){
-document.getElementById("loader").style.display="none";
-loadStats();
-}
-</script>
-
-</head>
-
-<body>
-
-<div id="loader"><div class="loader"></div></div>
-
-<header>🚀 SPEED I AM NHT</header>
-
-<div class="logo">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
-</div>
-
-<div class="search">
-<input id="search" onkeyup="searchApp()" placeholder="🔍 Tìm kiếm...">
-</div>
-
-<div class="grid">
-
-<div class="app">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
-<h3>🎮 Đếm vòng 1</h3>
-<div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa'); addDownload('app1')">
-Sao chép link
-</div>
-<div id="app1"></div>
-</div>
-
-<div class="app">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
-<h3>🔥 Đếm vòng 2</h3>
-<div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa'); addDownload('app2')">
-Sao chép link
-</div>
-<div id="app2"></div>
-</div>
-
-<div class="app">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
-<h3>💎 IGG</h3>
-<div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa'); addDownload('app3')">
-Sao chép link
-</div>
-<div id="app3"></div>
-</div>
-
-</div>
-
-<!-- ESIGN -->
-<div class="esign-box">
-
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/esign.png"
-style="width:100px;border-radius:25px;box-shadow:0 0 20px #34c759;margin-bottom:10px;">
-
-<h2>⚡ ESIGN AXITAT</h2>
-<p style="opacity:0.7;">Cài trực tiếp trên iOS</p>
-
-<div style="position:relative;display:inline-block">
-
-<a href="itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist"
-onclick="addDownload('esign')">
-
-<button class="btn-green">⚡ Cài ESIGN</button>
-
-</a>
-
-<img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png"
-style="
-width:55px;
-position:absolute;
-right:-25px;
-top:-20px;
-animation:float 2s infinite;
-filter:drop-shadow(0 0 10px #34c759);
-">
-
-</div>
-
-<div id="esign"></div>
-
-<br>
-
-<div style="position:relative;display:inline-block">
-
-<button class="btn-orange"
-onclick="addDownload('cert'); window.location.href='https://ngohongthai1402.github.io/CertificateAxitat.zip'">
-🔒 Tải chứng chỉ AXITAT
-</button>
-
-<img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png"
-style="
-width:50px;
-position:absolute;
-right:-25px;
-top:-15px;
-animation:float 2s infinite;
-filter:drop-shadow(0 0 10px #ff9f0a);
-">
-
-</div>
-<div id="cert"></div>
-
-</div>
-
-<!-- VIDEO -->
-<div style="text-align:center;margin:20px;">
-
-<div class="btn" onclick="toggleSingle('v1', this)">📥 Hướng dẫn tải (Hiện)</div>
-<div id="v1" class="video">
-<iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
-</div>
-
-<div class="btn" onclick="toggleSingle('v2', this)">🔄 Hướng dẫn cập nhật (Hiện)</div>
-<div id="v2" class="video">
-<iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
-</div>
-
-<div class="btn" onclick="toggleSingle('v3', this)">💎 Hướng dẫn chứng chỉ (Hiện)</div>
-<div id="v3" class="video">
-<iframe src="https://www.youtube.com/embed/-IoGLILtqNQ"></iframe>
-</div>
-
-</div>
-
-<div id="toast"></div>
-
-<footer>
-<a href="https://zalo.me/0349333397" target="_blank" class="zalo-btn">
-💎 Mua chứng chỉ cài speed liên hệ 0349 3333 97
+💎 Liên hệ Zalo 0349 3333 97
 </a>
 </footer>
 
