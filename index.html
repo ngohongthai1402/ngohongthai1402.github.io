@@ -40,7 +40,7 @@ display:none;
 margin-top:10px;
 }
 
-/* APP ITEM (FIX LỆCH) */
+/* APP ITEM */
 .app-item{
 display:flex;
 align-items:center;
@@ -49,13 +49,28 @@ background:#2c2c2e;
 padding:12px;
 border-radius:15px;
 margin:10px 0;
+transition:0.2s;
 }
 
+/* 🔥 GLOW LOGO GAME */
 .app-item img{
 width:55px;
 height:55px;
 border-radius:15px;
-box-shadow:0 0 10px #0a84ff;
+flex-shrink:0;
+animation:glowGame 2s infinite alternate;
+}
+
+@keyframes glowGame{
+0%{box-shadow:0 0 8px #0a84ff;}
+50%{box-shadow:0 0 25px #0a84ff,0 0 40px rgba(10,132,255,0.6);}
+100%{box-shadow:0 0 10px #0a84ff;}
+}
+
+/* HOVER */
+.app-item:hover{
+transform:scale(1.03);
+box-shadow:0 0 15px rgba(10,132,255,0.4);
 }
 
 .app-info{
@@ -88,7 +103,7 @@ width:140px;
 transform:scale(0.95);
 }
 
-/* ESIGN BUTTON */
+/* COLORS */
 .green{background:#34c759;box-shadow:0 0 15px #34c759;}
 .blue{background:#0a84ff;box-shadow:0 0 15px #0a84ff;}
 
@@ -137,7 +152,7 @@ function showVideo(id){
 document.getElementById(id).style.display="block";
 }
 
-/* PASS VIDEO 3 */
+/* PASS VIDEO */
 function checkPass(){
 let pass=prompt("🔒 Nhập mật khẩu:");
 if(pass==="1402"){
@@ -155,7 +170,7 @@ alert("❌ Sai mật khẩu!");
 <header>🚀 SPEED I AM NHT</header>
 
 <div class="logo">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
+<img src="logogame.png">
 </div>
 
 <!-- MENU SPEED -->
@@ -165,7 +180,7 @@ alert("❌ Sai mật khẩu!");
 <div id="menu1" class="menu-content">
 
 <div class="app-item">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
+<img src="logogame.png">
 <div class="app-info">
 <div class="app-title">🎮 Đếm vòng 1</div>
 <div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa')">📋 Sao chép</div>
@@ -173,7 +188,7 @@ alert("❌ Sai mật khẩu!");
 </div>
 
 <div class="app-item">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
+<img src="logogame.png">
 <div class="app-info">
 <div class="app-title">🔥 Đếm vòng 2</div>
 <div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa')">📋 Sao chép</div>
@@ -181,7 +196,7 @@ alert("❌ Sai mật khẩu!");
 </div>
 
 <div class="app-item">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
+<img src="logogame.png">
 <div class="app-info">
 <div class="app-title">💎 Speed IGG</div>
 <div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa')">📋 Sao chép</div>
