@@ -47,20 +47,6 @@ cursor:pointer;
 }
 .menu-content{display:none;margin-top:10px}
 
-/* DOT MENU */
-.menu-dot{
-width:10px;height:10px;
-background:#00ffcc;
-border-radius:50%;
-margin-left:6px;
-animation:blink 1s infinite;
-}
-@keyframes blink{
-0%{opacity:1}
-50%{opacity:0.3}
-100%{opacity:1}
-}
-
 /* APP */
 .app-item{
 display:flex;
@@ -129,15 +115,6 @@ cursor:pointer;
 text-align:center;
 }
 
-/* DOT */
-.dot{
-width:10px;height:10px;
-background:#00ffcc;
-border-radius:50%;
-margin-left:6px;
-animation:blink 1s infinite;
-}
-
 /* VIDEO BUTTON */
 .video-btn{
 display:flex;
@@ -174,6 +151,7 @@ width:100%;
 max-width:320px;
 height:550px;
 border-radius:15px;
+border:none;
 }
 @keyframes fade{
 from{opacity:0;transform:scale(0.95)}
@@ -202,6 +180,11 @@ transform:translateX(-50%) translateY(0);
 <script>
 let currentVideo=null;
 
+const videoData={
+v1:"https://www.youtube.com/embed/8ynQoiww9d4?autoplay=1&mute=1",
+v2:"https://www.youtube.com/embed/e74h1eb3b0c?autoplay=1&mute=1"
+};
+
 function toggleMenu(id){
 let el=document.getElementById(id);
 el.style.display=el.style.display==="block"?"none":"block";
@@ -220,30 +203,44 @@ t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-/* VIDEO PRO */
+/* VIDEO AUTO PLAY */
 function toggleVideo(id,btn){
 
 let videos=document.querySelectorAll(".video");
 let buttons=document.querySelectorAll(".video-btn");
 
-/* click lại = tắt */
+/* CLICK LẠI = TẮT */
 if(currentVideo===id){
+let iframe=document.querySelector(`#${id} iframe`);
+iframe.src="";
+
 document.getElementById(id).style.display="none";
 btn.classList.remove("active");
 btn.querySelector(".video-icon").innerHTML="▶";
+
 currentVideo=null;
 return;
 }
 
-/* tắt hết */
-videos.forEach(v=>v.style.display="none");
+/* TẮT HẾT */
+videos.forEach(v=>{
+let iframe=v.querySelector("iframe");
+if(iframe) iframe.src="";
+v.style.display="none";
+});
+
 buttons.forEach(b=>{
 b.classList.remove("active");
 b.querySelector(".video-icon").innerHTML="▶";
 });
 
-/* mở */
-document.getElementById(id).style.display="block";
+/* MỞ VIDEO */
+let box=document.getElementById(id);
+let iframe=box.querySelector("iframe");
+
+iframe.src=videoData[id];
+box.style.display="block";
+
 btn.classList.add("active");
 btn.querySelector(".video-icon").innerHTML="⏸";
 
@@ -293,10 +290,7 @@ DANH SÁCH SPEED ▼
 <!-- ESIGN -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu2')">
-<span style="display:flex;align-items:center;">
-ESIGN AXITAT <span class="menu-dot"></span>
-</span>
-<span>▼</span>
+ESIGN AXITAT ▼
 </div>
 
 <div id="menu2" class="menu-content" style="text-align:center;">
@@ -305,7 +299,7 @@ ESIGN AXITAT <span class="menu-dot"></span>
 
 <div class="esign-btn"
 onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
-CÀI ĐẶT APP ESIGN <span class="dot"></span>
+CÀI ĐẶT APP ESIGN
 </div>
 
 <div class="cert-btn"
@@ -330,7 +324,7 @@ XEM VIDEO HƯỚNG DẪN ▼
 </div>
 
 <div id="v1" class="video">
-<iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
+<iframe></iframe>
 </div>
 
 <div class="video-btn" onclick="toggleVideo('v2',this)">
@@ -339,7 +333,7 @@ XEM VIDEO HƯỚNG DẪN ▼
 </div>
 
 <div id="v2" class="video">
-<iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
+<iframe></iframe>
 </div>
 
 </div>
