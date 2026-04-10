@@ -9,7 +9,13 @@
 body{margin:0;font-family:-apple-system;background:#0f0f0f;color:white}
 
 /* HEADER */
-header{text-align:center;padding:15px;font-size:22px;font-weight:bold}
+header{
+text-align:center;
+padding:15px;
+font-size:20px;
+font-weight:600;
+letter-spacing:1px;
+}
 
 /* LOGO */
 .logo{text-align:center}
@@ -37,13 +43,8 @@ justify-content:space-between;
 align-items:center;
 }
 
-.arrow{
-transition:0.3s;
-}
-
-.rotate{
-transform:rotate(180deg);
-}
+.arrow{transition:0.3s;}
+.rotate{transform:rotate(180deg);}
 
 .menu-content{
 display:none;
@@ -103,6 +104,30 @@ box-shadow:0 0 15px #34c759;
 .blue{background:#0a84ff}
 
 .btn:active{transform:scale(0.95)}
+
+/* ESIGN */
+.esign-logo{
+width:70px;
+border-radius:15px;
+margin-bottom:10px;
+box-shadow:0 0 20px #34c759;
+}
+
+/* ICON NHẤP NHÁY */
+.dot{
+width:10px;
+height:10px;
+background:#34c759;
+border-radius:50%;
+box-shadow:0 0 10px #34c759;
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:0.3;}
+100%{opacity:1;}
+}
 
 /* VIDEO */
 .video{
@@ -168,26 +193,23 @@ t.style.display="block";
 setTimeout(()=>t.style.display="none",2000);
 }
 
-/* VIDEO PRO */
+/* VIDEO */
 function showVideo(id,btn){
-
 let videos=document.getElementsByClassName("video");
 let buttons=document.querySelectorAll("#menu3 .btn");
 
-/* reset */
 for(let i=0;i<videos.length;i++){
 videos[i].style.display="none";
 }
 buttons.forEach(b=>b.classList.remove("active"));
 
-/* show */
 document.getElementById(id).style.display="block";
 btn.classList.add("active");
 
 document.getElementById(id).scrollIntoView({behavior:"smooth"});
 }
 
-/* VIP */
+/* PASS VIP */
 function checkPass(btn){
 let pass=prompt("🔒 Nhập mật khẩu:");
 if(pass==="1402"){
@@ -202,16 +224,16 @@ alert("❌ Sai mật khẩu!");
 
 <body>
 
-<header>🚀 SPEED I AM NHT</header>
+<header>SPEED I AM NHT - Ngô Hồng Thái</header>
 
 <div class="logo">
-<img src="logogame.png">
+<img src="logo.png">
 </div>
 
 <!-- SPEED -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu1',this)">
-🎮 Speed Coin Master <span class="arrow">▼</span>
+TỔNG HỢP CẬP NHẬT SPEED <span class="arrow">▼</span>
 </div>
 
 <div id="menu1" class="menu-content">
@@ -219,7 +241,7 @@ alert("❌ Sai mật khẩu!");
 <div class="app-item">
 <img src="logogame.png">
 <div class="app-info">
-<div>🎮 Đếm vòng 1</div>
+<div>ĐẾM VÒNG V1</div>
 <div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa')">📋 Sao chép</div>
 </div>
 </div>
@@ -227,7 +249,7 @@ alert("❌ Sai mật khẩu!");
 <div class="app-item">
 <img src="logogame.png">
 <div class="app-info">
-<div>🔥 Đếm vòng 2</div>
+<div>ĐẾM VÒNG V2</div>
 <div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa')">📋 Sao chép</div>
 </div>
 </div>
@@ -235,7 +257,7 @@ alert("❌ Sai mật khẩu!");
 <div class="app-item">
 <img src="logogame.png">
 <div class="app-info">
-<div>💎 Speed IGG</div>
+<div>SPEED IGG</div>
 <div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa')">📋 Sao chép</div>
 </div>
 </div>
@@ -246,18 +268,23 @@ alert("❌ Sai mật khẩu!");
 <!-- ESIGN -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu2',this)">
-⚡ Xem Tải ESign Miễn Phí <span class="arrow">▼</span>
+XEM TẢI ESIGN SPEED MIỄN PHÍ <span class="arrow">▼</span>
 </div>
 
-<div id="menu2" class="menu-content">
+<div id="menu2" class="menu-content" style="text-align:center;">
+
+<img src="logoesign.png" class="esign-logo">
 
 <a href="itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist">
-<div class="btn green">⚡ Cài ESIGN</div>
+<div class="btn green" style="gap:10px;">
+<div class="dot"></div>
+CÀI ĐẶT APP ESIGN
+</div>
 </a>
 
 <div class="btn blue"
 onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/main/CertificateAxitat.zip'">
-🔒 Tải chứng chỉ AXITAT
+📥 TẢI CHỨNG CHỈ
 </div>
 
 </div>
@@ -266,7 +293,7 @@ onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai140
 <!-- VIDEO -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu3',this)">
-📺 XEM VIDEO HƯỚNG DẪN <span class="arrow">▼</span>
+XEM VIDEO HƯỚNG DẪN <span class="arrow">▼</span>
 </div>
 
 <div id="menu3" class="menu-content">
