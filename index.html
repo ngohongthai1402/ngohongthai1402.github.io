@@ -15,41 +15,17 @@ color:white
 
 /* HEADER */
 header{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:3px;
+text-align:center;
 padding:15px;
 font-size:20px;
 font-weight:700;
 }
 
-/* TICK XOAY */
-.tick{
-width:18px;height:18px;position:relative;
-}
-.tick::before{
-content:"";
-position:absolute;
-width:100%;height:100%;
-background:#0a84ff;
-border-radius:50%;
-box-shadow:0 0 10px #0a84ff;
-animation:spin 3s linear infinite;
-}
-.tick::after{
-content:"✔";
-position:absolute;
-top:50%;left:50%;
-transform:translate(-50%,-50%);
-font-size:10px;
-}
-@keyframes spin{100%{transform:rotate(360deg)}}
-
 /* LOGO */
 .logo{text-align:center}
 .logo img{
-width:120px;border-radius:50%;
+width:120px;
+border-radius:50%;
 box-shadow:0 0 25px #0a84ff
 }
 
@@ -79,6 +55,11 @@ border-radius:50%;
 margin-left:6px;
 animation:blink 1s infinite;
 }
+@keyframes blink{
+0%{opacity:1}
+50%{opacity:0.3}
+100%{opacity:1}
+}
 
 /* APP */
 .app-item{
@@ -91,26 +72,26 @@ border-radius:18px;
 margin:12px 0;
 }
 .app-item img{
-width:60px;border-radius:15px;
+width:60px;
+border-radius:15px;
 margin-bottom:10px;
 box-shadow:0 0 20px #0a84ff;
 }
-.app-title{font-weight:700;margin-bottom:10px}
+.app-title{
+font-weight:700;
+margin-bottom:10px;
+}
 
-/* COPY BUTTON */
+/* COPY */
 .copy-btn{
 background:#0a84ff;
 padding:12px;
 border-radius:12px;
 width:80%;
 text-align:center;
-box-shadow:0 0 15px #0a84ff;
 cursor:pointer;
 position:relative;
 overflow:hidden;
-}
-.copy-btn:active{
-transform:scale(0.92);
 }
 
 /* RIPPLE */
@@ -124,18 +105,19 @@ transform:scale(0);
 opacity:0;
 }
 .copy-btn.ripple::after{
-animation:rippleEffect 0.6s ease;
+animation:ripple 0.6s ease;
 }
-@keyframes rippleEffect{
+@keyframes ripple{
 0%{transform:scale(0);opacity:0.8;}
 100%{transform:scale(20);opacity:0;}
 }
 
 /* ESIGN */
 .esign-logo{
-width:80px;border-radius:15px;
-box-shadow:0 0 20px #0a84ff;
+width:80px;
+border-radius:15px;
 margin-bottom:10px;
+box-shadow:0 0 20px #0a84ff;
 }
 .esign-btn,.cert-btn{
 background:#0a84ff;
@@ -144,6 +126,7 @@ border-radius:14px;
 margin-top:10px;
 font-weight:700;
 cursor:pointer;
+text-align:center;
 }
 
 /* DOT */
@@ -154,30 +137,37 @@ border-radius:50%;
 margin-left:6px;
 animation:blink 1s infinite;
 }
-@keyframes blink{
-0%{opacity:1}
-50%{opacity:0.3}
-100%{opacity:1}
-}
 
-/* VIDEO */
+/* VIDEO BUTTON */
 .video-btn{
-background:#2c2c2e;
+display:flex;
+align-items:center;
+gap:10px;
 padding:14px;
 border-radius:14px;
 margin-top:10px;
 font-weight:700;
 cursor:pointer;
-text-align:center;
+background:#2c2c2e;
 }
+
 .video-btn.active{
 background:#0a84ff;
 box-shadow:0 0 15px #0a84ff;
 }
+
+/* ICON */
+.video-icon{
+width:20px;
+text-align:center;
+}
+
+/* VIDEO */
 .video{
 display:none;
 margin-top:10px;
 text-align:center;
+animation:fade 0.3s;
 }
 .video iframe{
 width:100%;
@@ -185,68 +175,79 @@ max-width:320px;
 height:550px;
 border-radius:15px;
 }
+@keyframes fade{
+from{opacity:0;transform:scale(0.95)}
+to{opacity:1;transform:scale(1)}
+}
 
-/* TOAST XỊN */
+/* TOAST */
 #toast{
 position:fixed;
 bottom:30px;
 left:50%;
 transform:translateX(-50%) translateY(20px);
 background:rgba(20,20,20,0.95);
-backdrop-filter:blur(12px);
-padding:14px 22px;
-border-radius:16px;
+padding:12px 20px;
+border-radius:14px;
 font-weight:600;
-display:flex;
-align-items:center;
-gap:10px;
 opacity:0;
-transition:0.4s;
+transition:0.35s;
 }
 #toast.show{
 opacity:1;
 transform:translateX(-50%) translateY(0);
 }
-.toast-icon{
-color:#34c759;
-font-size:18px;
-animation:pop 0.3s ease;
-}
-@keyframes pop{
-0%{transform:scale(0);}
-100%{transform:scale(1);}
-}
 </style>
 
 <script>
+let currentVideo=null;
+
 function toggleMenu(id){
 let el=document.getElementById(id);
 el.style.display=el.style.display==="block"?"none":"block";
 }
 
+/* COPY */
 function copyLink(link,btn){
 navigator.clipboard.writeText(link);
 
-/* ripple */
 btn.classList.add("ripple");
 setTimeout(()=>btn.classList.remove("ripple"),600);
 
-/* toast */
 let t=document.getElementById("toast");
-t.innerHTML='<span class="toast-icon">✔</span> Đã sao chép link';
+t.innerHTML="✔ Đã sao chép link";
 t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-function showVideo(id,btn){
+/* VIDEO PRO */
+function toggleVideo(id,btn){
+
 let videos=document.querySelectorAll(".video");
 let buttons=document.querySelectorAll(".video-btn");
 
-videos.forEach(v=>v.style.display="none");
-buttons.forEach(b=>b.classList.remove("active"));
+/* click lại = tắt */
+if(currentVideo===id){
+document.getElementById(id).style.display="none";
+btn.classList.remove("active");
+btn.querySelector(".video-icon").innerHTML="▶";
+currentVideo=null;
+return;
+}
 
+/* tắt hết */
+videos.forEach(v=>v.style.display="none");
+buttons.forEach(b=>{
+b.classList.remove("active");
+b.querySelector(".video-icon").innerHTML="▶";
+});
+
+/* mở */
 document.getElementById(id).style.display="block";
 btn.classList.add("active");
+btn.querySelector(".video-icon").innerHTML="⏸";
+
+currentVideo=id;
 }
 </script>
 
@@ -254,9 +255,7 @@ btn.classList.add("active");
 
 <body>
 
-<header>
-Ngô Hồng Thái <span class="tick"></span>
-</header>
+<header>Ngô Hồng Thái</header>
 
 <div class="logo">
 <img src="logo.png">
@@ -273,19 +272,19 @@ DANH SÁCH SPEED ▼
 <div class="app-item">
 <img src="logogame.png">
 <div class="app-title">ĐẾM VÒNG V1</div>
-<div class="copy-btn" onclick="copyLink('link1',this)">SAO CHÉP</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa',this)">📋 SAO CHÉP</div>
 </div>
 
 <div class="app-item">
 <img src="logogame.png">
 <div class="app-title">ĐẾM VÒNG V2</div>
-<div class="copy-btn" onclick="copyLink('link2',this)">SAO CHÉP</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa',this)">📋 SAO CHÉP</div>
 </div>
 
 <div class="app-item">
 <img src="logogame.png">
 <div class="app-title">SPEED IGG</div>
-<div class="copy-btn" onclick="copyLink('link3',this)">SAO CHÉP</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa',this)">📋 SAO CHÉP</div>
 </div>
 
 </div>
@@ -325,16 +324,20 @@ XEM VIDEO HƯỚNG DẪN ▼
 
 <div id="menu3" class="menu-content">
 
-<div class="video-btn" onclick="showVideo('v1',this)">
-HƯỚNG DẪN TẢI ESIGN + SPEED
+<div class="video-btn" onclick="toggleVideo('v1',this)">
+<div class="video-icon">▶</div>
+<span>HƯỚNG DẪN TẢI ESIGN + SPEED</span>
 </div>
+
 <div id="v1" class="video">
 <iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
 </div>
 
-<div class="video-btn" onclick="showVideo('v2',this)">
-HƯỚNG DẪN CẬP NHẬT COIN MASTER
+<div class="video-btn" onclick="toggleVideo('v2',this)">
+<div class="video-icon">▶</div>
+<span>HƯỚNG DẪN CẬP NHẬT COIN MASTER</span>
 </div>
+
 <div id="v2" class="video">
 <iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
 </div>
