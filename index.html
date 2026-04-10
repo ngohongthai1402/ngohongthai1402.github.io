@@ -64,6 +64,7 @@ align-items:center;
 cursor:pointer;
 font-weight:700;
 }
+
 .arrow{transition:0.3s;}
 .arrow.rotate{transform:rotate(180deg);}
 
@@ -71,7 +72,7 @@ font-weight:700;
 max-height:0;
 overflow:hidden;
 opacity:0;
-transition:0.4s;
+transition:0.4s ease;
 }
 .menu-content.open{
 max-height:1200px;
@@ -140,7 +141,7 @@ animation:ripple 0.6s;
 /* ESIGN */
 .esign-logo{
 width:90px;border-radius:20px;
-margin:10px auto;
+margin:15px auto;
 display:block;
 box-shadow:0 0 25px #0a84ff;
 }
@@ -150,11 +151,10 @@ display:flex;
 align-items:center;
 justify-content:center;
 gap:8px;
-text-align:center; /* FIX lệch */
 background:#0a84ff;
 padding:14px;
 border-radius:14px;
-margin-top:10px;
+margin-top:12px;
 font-weight:700;
 box-shadow:0 0 15px #0a84ff;
 cursor:pointer;
@@ -167,10 +167,9 @@ background:#00ffcc;
 border-radius:50%;
 box-shadow:0 0 10px #00ffcc;
 animation:blink 1s infinite;
-display:inline-block; /* FIX lệch */
 }
 
-/* VIDEO BTN */
+/* VIDEO */
 .video-btn{
 display:flex;
 justify-content:space-between;
@@ -195,7 +194,6 @@ display:flex;
 gap:10px;
 }
 
-/* VIDEO */
 .video{
 max-height:0;
 overflow:hidden;
@@ -236,22 +234,21 @@ let currentVideo=null;
 let players={};
 let muteState={};
 
-let tag=document.createElement('script');
-tag.src="https://www.youtube.com/iframe_api";
-document.head.appendChild(tag);
-
-function onYouTubeIframeAPIReady(){
-["v1","v2"].forEach(id=>{
-players[id]=new YT.Player(id+"-frame");
-muteState[id]=true;
+/* FIX: đảm bảo menu hoạt động */
+document.addEventListener("DOMContentLoaded",()=>{
+document.querySelectorAll(".menu-content").forEach(el=>{
+el.classList.remove("open");
 });
-}
+});
 
+/* MENU */
 function toggleMenu(id,arrow){
-document.getElementById(id).classList.toggle("open");
+let el=document.getElementById(id);
+el.classList.toggle("open");
 arrow.classList.toggle("rotate");
 }
 
+/* COPY */
 function copyLink(link,btn){
 navigator.clipboard.writeText(link);
 btn.classList.add("ripple");
@@ -263,10 +260,10 @@ t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
+/* VIDEO */
 function toggleVideo(id,btn){
 
 if(currentVideo===id){
-players[id].pauseVideo();
 document.getElementById(id).classList.remove("open");
 btn.classList.remove("active");
 btn.querySelector(".play").innerHTML="▶";
@@ -274,31 +271,14 @@ currentVideo=null;
 return;
 }
 
-for(let v in players){
-players[v].pauseVideo();
-document.getElementById(v).classList.remove("open");
-document.querySelector(`[data-id="${v}"]`).classList.remove("active");
-document.querySelector(`[data-id="${v}"] .play`).innerHTML="▶";
-}
+document.querySelectorAll(".video").forEach(v=>v.classList.remove("open"));
+document.querySelectorAll(".video-btn").forEach(b=>b.classList.remove("active"));
 
 document.getElementById(id).classList.add("open");
-players[id].playVideo();
-
 btn.classList.add("active");
 btn.querySelector(".play").innerHTML="⏸";
 
 currentVideo=id;
-}
-
-function toggleSound(id,icon){
-if(muteState[id]){
-players[id].unMute();
-icon.innerHTML="🔊";
-}else{
-players[id].mute();
-icon.innerHTML="🔇";
-}
-muteState[id]=!muteState[id];
 }
 </script>
 
@@ -359,13 +339,12 @@ ESIGN AXITAT <span class="menu-dot"></span>
 
 <div class="esign-btn"
 onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
-<span>CÀI ĐẶT APP ESIGN</span>
-<span class="active-dot"></span>
+CÀI ĐẶT APP ESIGN <span class="active-dot"></span>
 </div>
 
 <div class="cert-btn"
 onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/refs/heads/main/CertificateAxitat.zip'">
-<span>TẢI CHỨNG CHỈ</span>
+TẢI CHỨNG CHỈ
 </div>
 
 </div>
@@ -380,32 +359,26 @@ onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai140
 
 <div id="menu3" class="menu-content">
 
-<div class="video-btn" data-id="v1">
-<div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
+<div class="video-btn" data-id="v1" onclick="toggleVideo('v1',this)">
+<div class="video-left">
 <span class="play">▶</span>
 <span>HƯỚNG DẪN ESIGN</span>
-</div>
-<div class="video-controls">
-<span onclick="toggleSound('v1',this)">🔇</span>
 </div>
 </div>
 
 <div id="v1" class="video">
-<iframe id="v1-frame" src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1"></iframe>
+<iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
 </div>
 
-<div class="video-btn" data-id="v2">
-<div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
+<div class="video-btn" data-id="v2" onclick="toggleVideo('v2',this)">
+<div class="video-left">
 <span class="play">▶</span>
 <span>HƯỚNG DẪN CẬP NHẬT</span>
-</div>
-<div class="video-controls">
-<span onclick="toggleSound('v2',this)">🔇</span>
 </div>
 </div>
 
 <div id="v2" class="video">
-<iframe id="v2-frame" src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1"></iframe>
+<iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
 </div>
 
 </div>
