@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPEED I AM NHT</title>
 
 <style>
 body{
@@ -51,10 +50,10 @@ align-items:center;
 /* DOT MENU */
 .menu-dot{
 width:10px;height:10px;
-background:#00ffcc;
+background:#0a84ff;
 border-radius:50%;
 margin-left:6px;
-box-shadow:0 0 10px #00ffcc;
+box-shadow:0 0 10px #0a84ff;
 animation:blink 1s infinite;
 }
 @keyframes blink{
@@ -62,11 +61,6 @@ animation:blink 1s infinite;
 50%{opacity:0.3}
 100%{opacity:1}
 }
-
-/* ===== GLOW ===== */
-.glow-blue{box-shadow:0 0 15px #0a84ff;}
-.glow-green{box-shadow:0 0 15px #34c759;}
-.glow-orange{box-shadow:0 0 15px #ff9f0a;}
 
 /* APP */
 .app-item{
@@ -79,25 +73,37 @@ border-radius:18px;
 margin:12px 0;
 }
 .app-item img{
-width:60px;
-border-radius:15px;
+width:70px;
+border-radius:18px;
+margin-bottom:10px;
+box-shadow:0 0 20px #0a84ff;
+}
+.app-title{
+font-weight:700;
 margin-bottom:10px;
 }
-.app-title{font-weight:700;margin-bottom:10px}
 
-/* COPY */
-.copy-btn{
-padding:12px;
-border-radius:12px;
+/* NÚT CHUNG */
+.main-btn{
+background:#0a84ff;
+padding:14px;
+border-radius:14px;
 width:80%;
 text-align:center;
+font-weight:700;
 cursor:pointer;
+box-shadow:0 0 20px #0a84ff;
 position:relative;
 overflow:hidden;
+transition:0.2s;
+}
+
+.main-btn:active{
+transform:scale(0.95);
 }
 
 /* ripple */
-.copy-btn::after{
+.main-btn::after{
 content:"";
 position:absolute;
 width:10px;height:10px;
@@ -105,85 +111,33 @@ background:rgba(255,255,255,0.5);
 border-radius:50%;
 transform:scale(0);
 }
-.copy-btn.ripple::after{
+.main-btn.ripple::after{
 animation:ripple 0.6s;
 }
 @keyframes ripple{
-0%{transform:scale(0);opacity:1;}
-100%{transform:scale(20);opacity:0;}
+0%{transform:scale(0);opacity:1}
+100%{transform:scale(20);opacity:0}
 }
 
-/* ESIGN */
+/* ===== FIX LOGO ESIGN ===== */
 .esign-logo{
-width:80px;
-border-radius:15px;
-margin-bottom:10px;
-box-shadow:0 0 20px #0a84ff;
+width:90px;
+height:90px;
+object-fit:cover;
+border-radius:20px;
+margin:10px auto;
+display:block;
+box-shadow:0 0 25px #0a84ff;
+background:#2c2c2e;
 }
 
-.esign-btn,.cert-btn{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-background:#0a84ff;
-padding:14px;
-border-radius:14px;
-margin-top:10px;
-font-weight:700;
-cursor:pointer;
-}
-
-/* ICON NHẤP NHÁY */
+/* DOT */
 .dot{
-width:10px;
-height:10px;
+width:10px;height:10px;
 background:#00ffcc;
 border-radius:50%;
 box-shadow:0 0 10px #00ffcc;
 animation:blink 1s infinite;
-}
-
-/* VIDEO BTN */
-.video-btn{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:14px;
-border-radius:14px;
-margin-top:10px;
-font-weight:700;
-cursor:pointer;
-background:#2c2c2e;
-}
-
-.video-left{
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.video-controls{
-display:flex;
-gap:10px;
-}
-
-.video-btn.active{
-background:#0a84ff;
-}
-
-/* VIDEO */
-.video{
-display:none;
-margin-top:10px;
-text-align:center;
-}
-.video iframe{
-width:100%;
-max-width:320px;
-height:550px;
-border-radius:15px;
-border:none;
 }
 
 /* TOAST */
@@ -202,30 +156,14 @@ transition:0.3s;
 </style>
 
 <script>
-let currentVideo=null;
-let players={};
-let muteState={};
-
-/* YT API */
-let tag=document.createElement('script');
-tag.src="https://www.youtube.com/iframe_api";
-document.head.appendChild(tag);
-
-function onYouTubeIframeAPIReady(){
-["v1","v2"].forEach(id=>{
-players[id]=new YT.Player(id+"-frame");
-muteState[id]=true;
-});
-}
-
 function toggleMenu(id){
 let el=document.getElementById(id);
 el.style.display=el.style.display==="block"?"none":"block";
 }
 
-/* COPY */
 function copyLink(link,btn){
 navigator.clipboard.writeText(link);
+
 btn.classList.add("ripple");
 setTimeout(()=>btn.classList.remove("ripple"),600);
 
@@ -233,46 +171,6 @@ let t=document.getElementById("toast");
 t.innerHTML="✔ Đã sao chép link";
 t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
-}
-
-/* VIDEO */
-function toggleVideo(id,btn){
-
-if(currentVideo===id){
-players[id].pauseVideo();
-document.getElementById(id).style.display="none";
-btn.classList.remove("active");
-btn.querySelector(".play").innerHTML="▶";
-currentVideo=null;
-return;
-}
-
-for(let v in players){
-players[v].pauseVideo();
-document.getElementById(v).style.display="none";
-document.querySelector(`[data-id="${v}"]`).classList.remove("active");
-document.querySelector(`[data-id="${v}"] .play`).innerHTML="▶";
-}
-
-document.getElementById(id).style.display="block";
-players[id].playVideo();
-
-btn.classList.add("active");
-btn.querySelector(".play").innerHTML="⏸";
-
-currentVideo=id;
-}
-
-/* SOUND */
-function toggleSound(id,icon){
-if(muteState[id]){
-players[id].unMute();
-icon.innerHTML="🔊";
-}else{
-players[id].mute();
-icon.innerHTML="🔇";
-}
-muteState[id]=!muteState[id];
 }
 </script>
 
@@ -288,26 +186,40 @@ muteState[id]=!muteState[id];
 
 <!-- SPEED -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('menu1')">DANH SÁCH SPEED ▼</div>
+<div class="menu-title" onclick="toggleMenu('menu1')">
+<span style="display:flex;align-items:center;">
+DANH SÁCH SPEED <span class="menu-dot"></span>
+</span>
+<span>▼</span>
+</div>
 
 <div id="menu1" class="menu-content">
 
 <div class="app-item">
-<img src="logogame.png">
+<img src="logo.png">
 <div class="app-title">ĐẾM VÒNG V1</div>
-<div class="copy-btn glow-blue" onclick="copyLink('link1',this)">📋 SAO CHÉP</div>
+<div class="main-btn"
+onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa',this)">
+📋 SAO CHÉP
+</div>
 </div>
 
 <div class="app-item">
-<img src="logogame.png">
+<img src="logo.png">
 <div class="app-title">ĐẾM VÒNG V2</div>
-<div class="copy-btn glow-green" onclick="copyLink('link2',this)">📋 SAO CHÉP</div>
+<div class="main-btn"
+onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa',this)">
+📋 SAO CHÉP
+</div>
 </div>
 
 <div class="app-item">
-<img src="logogame.png">
+<img src="logo.png">
 <div class="app-title">SPEED IGG</div>
-<div class="copy-btn glow-orange" onclick="copyLink('link3',this)">📋 SAO CHÉP</div>
+<div class="main-btn"
+onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa',this)">
+📋 SAO CHÉP
+</div>
 </div>
 
 </div>
@@ -324,55 +236,19 @@ ESIGN AXITAT <span class="menu-dot"></span>
 
 <div id="menu2" class="menu-content" style="text-align:center;">
 
+<!-- FIX LOGO -->
+<div style="display:flex;justify-content:center;">
 <img src="esign.png" class="esign-logo">
+</div>
 
-<div class="esign-btn"
+<div class="main-btn"
 onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
 CÀI ĐẶT APP ESIGN <span class="dot"></span>
 </div>
 
-<div class="cert-btn"
+<div class="main-btn"
 onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/main/CertificateAxitat.zip'">
-TẢI CHỨNG CHỈ AXITAT
-</div>
-
-</div>
-</div>
-
-<!-- VIDEO -->
-<div class="box">
-<div class="menu-title" onclick="toggleMenu('menu3')">
-XEM VIDEO HƯỚNG DẪN ▼
-</div>
-
-<div id="menu3" class="menu-content">
-
-<div class="video-btn" data-id="v1">
-<div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
-<span class="play">▶</span>
-<span>HƯỚNG DẪN TẢI ESIGN</span>
-</div>
-<div class="video-controls">
-<span onclick="toggleSound('v1',this)">🔇</span>
-</div>
-</div>
-
-<div id="v1" class="video">
-<iframe id="v1-frame" src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1"></iframe>
-</div>
-
-<div class="video-btn" data-id="v2">
-<div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
-<span class="play">▶</span>
-<span>HƯỚNG DẪN CẬP NHẬT</span>
-</div>
-<div class="video-controls">
-<span onclick="toggleSound('v2',this)">🔇</span>
-</div>
-</div>
-
-<div id="v2" class="video">
-<iframe id="v2-frame" src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1"></iframe>
+📥 TẢI CHỨNG CHỈ AXITAT
 </div>
 
 </div>
