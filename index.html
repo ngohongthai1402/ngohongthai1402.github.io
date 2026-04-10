@@ -18,23 +18,22 @@ header{
 display:flex;
 justify-content:center;
 align-items:center;
-gap:3px; /* giảm khoảng cách */
+gap:3px;
 padding:15px;
 font-size:20px;
 font-weight:700;
 }
 
-/* TÍCH XANH XOAY */
+/* TICK TELE */
 .tick{
 width:18px;
 height:18px;
-margin-left:1px; /* ép sát chữ */
+margin-left:1px;
 position:relative;
 display:flex;
 align-items:center;
 justify-content:center;
 }
-
 .tick::before{
 content:"";
 position:absolute;
@@ -50,7 +49,6 @@ clip-path:polygon(
 box-shadow:0 0 10px #0a84ff;
 animation:spinFlower 4s linear infinite;
 }
-
 .tick::after{
 content:"✔";
 color:white;
@@ -58,7 +56,6 @@ font-size:10px;
 font-weight:bold;
 z-index:1;
 }
-
 @keyframes spinFlower{
 0%{transform:rotate(0deg);}
 100%{transform:rotate(360deg);}
@@ -115,7 +112,7 @@ font-weight:700;
 margin-bottom:10px;
 }
 
-/* BUTTON */
+/* COPY BUTTON */
 .copy-btn{
 background:#0a84ff;
 padding:12px;
@@ -193,16 +190,42 @@ height:550px;
 border-radius:15px;
 }
 
-/* TOAST */
+/* TOAST XỊN */
 #toast{
 position:fixed;
-bottom:20px;
+bottom:30px;
 left:50%;
-transform:translateX(-50%);
-background:#0a84ff;
-padding:10px 20px;
-border-radius:10px;
-display:none;
+transform:translateX(-50%) translateY(20px);
+background:rgba(20,20,20,0.95);
+backdrop-filter:blur(10px);
+padding:12px 20px;
+border-radius:14px;
+font-weight:600;
+font-size:14px;
+display:flex;
+align-items:center;
+gap:8px;
+color:#fff;
+box-shadow:0 0 15px rgba(0,0,0,0.5);
+opacity:0;
+pointer-events:none;
+transition:all 0.35s ease;
+}
+
+#toast.show{
+opacity:1;
+transform:translateX(-50%) translateY(0);
+}
+
+.toast-icon{
+color:#34c759;
+font-size:16px;
+animation:pop 0.3s ease;
+}
+
+@keyframes pop{
+0%{transform:scale(0.5);opacity:0;}
+100%{transform:scale(1);opacity:1;}
 }
 
 a{color:inherit;text-decoration:none;}
@@ -214,18 +237,23 @@ let el=document.getElementById(id);
 el.style.display = el.style.display==="block"?"none":"block";
 }
 
+/* COPY + TOAST */
 function copyLink(link){
 navigator.clipboard.writeText(link);
-showToast("✅ Đã sao chép!");
+showToast();
 }
 
-function showToast(text){
+function showToast(){
 let t=document.getElementById("toast");
-t.innerText=text;
-t.style.display="block";
-setTimeout(()=>t.style.display="none",2000);
+t.innerHTML='<span class="toast-icon">✔</span> Đã sao chép link';
+t.classList.add("show");
+
+setTimeout(()=>{
+t.classList.remove("show");
+},2000);
 }
 
+/* VIDEO */
 function showVideo(id,btn){
 let videos=document.querySelectorAll(".video");
 let buttons=document.querySelectorAll(".video-btn");
