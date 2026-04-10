@@ -47,6 +47,11 @@ cursor:pointer;
 }
 .menu-content{display:none;margin-top:10px}
 
+/* ===== GLOW RIÊNG ===== */
+.glow-blue{box-shadow:0 0 15px #0a84ff;}
+.glow-green{box-shadow:0 0 15px #34c759;}
+.glow-orange{box-shadow:0 0 15px #ff9f0a;}
+
 /* APP */
 .app-item{
 display:flex;
@@ -61,16 +66,11 @@ margin:12px 0;
 width:60px;
 border-radius:15px;
 margin-bottom:10px;
-box-shadow:0 0 20px #0a84ff;
 }
-.app-title{
-font-weight:700;
-margin-bottom:10px;
-}
+.app-title{font-weight:700;margin-bottom:10px}
 
 /* COPY */
 .copy-btn{
-background:#0a84ff;
 padding:12px;
 border-radius:12px;
 width:80%;
@@ -80,7 +80,7 @@ position:relative;
 overflow:hidden;
 }
 
-/* RIPPLE */
+/* ripple */
 .copy-btn::after{
 content:"";
 position:absolute;
@@ -88,38 +88,20 @@ width:10px;height:10px;
 background:rgba(255,255,255,0.5);
 border-radius:50%;
 transform:scale(0);
-opacity:0;
 }
 .copy-btn.ripple::after{
-animation:ripple 0.6s ease;
+animation:ripple 0.6s;
 }
 @keyframes ripple{
-0%{transform:scale(0);opacity:0.8;}
+0%{transform:scale(0);opacity:1;}
 100%{transform:scale(20);opacity:0;}
 }
 
-/* ESIGN */
-.esign-logo{
-width:80px;
-border-radius:15px;
-margin-bottom:10px;
-box-shadow:0 0 20px #0a84ff;
-}
-.esign-btn,.cert-btn{
-background:#0a84ff;
-padding:14px;
-border-radius:14px;
-margin-top:10px;
-font-weight:700;
-cursor:pointer;
-text-align:center;
-}
-
-/* VIDEO BUTTON */
+/* VIDEO BTN */
 .video-btn{
 display:flex;
 align-items:center;
-gap:10px;
+justify-content:space-between;
 padding:14px;
 border-radius:14px;
 margin-top:10px;
@@ -128,15 +110,24 @@ cursor:pointer;
 background:#2c2c2e;
 }
 
+.video-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.video-controls{
+display:flex;
+gap:10px;
+}
+
 .video-btn.active{
 background:#0a84ff;
-box-shadow:0 0 15px #0a84ff;
 }
 
 /* ICON */
-.video-icon{
-width:20px;
-text-align:center;
+.icon{
+font-size:16px;
 }
 
 /* VIDEO */
@@ -164,26 +155,34 @@ position:fixed;
 bottom:30px;
 left:50%;
 transform:translateX(-50%) translateY(20px);
-background:rgba(20,20,20,0.95);
+background:#111;
 padding:12px 20px;
 border-radius:14px;
-font-weight:600;
 opacity:0;
-transition:0.35s;
+transition:0.3s;
 }
 #toast.show{
 opacity:1;
-transform:translateX(-50%) translateY(0);
+transform:translateX(-50%);
 }
 </style>
 
 <script>
 let currentVideo=null;
+let players={};
+let muteState={};
 
-const videoData={
-v1:"https://www.youtube.com/embed/8ynQoiww9d4?autoplay=1&mute=1",
-v2:"https://www.youtube.com/embed/e74h1eb3b0c?autoplay=1&mute=1"
-};
+/* LOAD YOUTUBE API */
+let tag=document.createElement('script');
+tag.src="https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+
+function onYouTubeIframeAPIReady(){
+["v1","v2"].forEach(id=>{
+players[id]=new YT.Player(id+"-frame");
+muteState[id]=true;
+});
+}
 
 function toggleMenu(id){
 let el=document.getElementById(id);
@@ -203,48 +202,46 @@ t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-/* VIDEO AUTO PLAY */
+/* PLAY / PAUSE */
 function toggleVideo(id,btn){
 
-let videos=document.querySelectorAll(".video");
-let buttons=document.querySelectorAll(".video-btn");
-
-/* CLICK LẠI = TẮT */
 if(currentVideo===id){
-let iframe=document.querySelector(`#${id} iframe`);
-iframe.src="";
-
+players[id].pauseVideo();
 document.getElementById(id).style.display="none";
 btn.classList.remove("active");
-btn.querySelector(".video-icon").innerHTML="▶";
-
+btn.querySelector(".play").innerHTML="▶";
 currentVideo=null;
 return;
 }
 
-/* TẮT HẾT */
-videos.forEach(v=>{
-let iframe=v.querySelector("iframe");
-if(iframe) iframe.src="";
-v.style.display="none";
-});
+/* pause others */
+for(let v in players){
+players[v].pauseVideo();
+document.getElementById(v).style.display="none";
+document.querySelector(`[data-id="${v}"] .play`).innerHTML="▶";
+document.querySelector(`[data-id="${v}"]`).classList.remove("active");
+}
 
-buttons.forEach(b=>{
-b.classList.remove("active");
-b.querySelector(".video-icon").innerHTML="▶";
-});
-
-/* MỞ VIDEO */
-let box=document.getElementById(id);
-let iframe=box.querySelector("iframe");
-
-iframe.src=videoData[id];
-box.style.display="block";
+/* play */
+document.getElementById(id).style.display="block";
+players[id].playVideo();
 
 btn.classList.add("active");
-btn.querySelector(".video-icon").innerHTML="⏸";
+btn.querySelector(".play").innerHTML="⏸";
 
 currentVideo=id;
+}
+
+/* MUTE */
+function toggleSound(id,icon){
+if(muteState[id]){
+players[id].unMute();
+icon.innerHTML="🔊";
+}else{
+players[id].mute();
+icon.innerHTML="🔇";
+}
+muteState[id]=!muteState[id];
 }
 </script>
 
@@ -260,51 +257,26 @@ currentVideo=id;
 
 <!-- SPEED -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('menu1')">
-DANH SÁCH SPEED ▼
-</div>
+<div class="menu-title" onclick="toggleMenu('menu1')">DANH SÁCH SPEED ▼</div>
 
 <div id="menu1" class="menu-content">
 
 <div class="app-item">
 <img src="logogame.png">
 <div class="app-title">ĐẾM VÒNG V1</div>
-<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa',this)">📋 SAO CHÉP</div>
+<div class="copy-btn glow-blue" onclick="copyLink('link1',this)">📋 SAO CHÉP</div>
 </div>
 
 <div class="app-item">
 <img src="logogame.png">
 <div class="app-title">ĐẾM VÒNG V2</div>
-<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa',this)">📋 SAO CHÉP</div>
+<div class="copy-btn glow-green" onclick="copyLink('link2',this)">📋 SAO CHÉP</div>
 </div>
 
 <div class="app-item">
 <img src="logogame.png">
 <div class="app-title">SPEED IGG</div>
-<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa',this)">📋 SAO CHÉP</div>
-</div>
-
-</div>
-</div>
-
-<!-- ESIGN -->
-<div class="box">
-<div class="menu-title" onclick="toggleMenu('menu2')">
-ESIGN AXITAT ▼
-</div>
-
-<div id="menu2" class="menu-content" style="text-align:center;">
-
-<img src="esign.png" class="esign-logo">
-
-<div class="esign-btn"
-onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
-CÀI ĐẶT APP ESIGN
-</div>
-
-<div class="cert-btn"
-onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/main/CertificateAxitat.zip'">
-TẢI CHỨNG CHỈ AXITAT
+<div class="copy-btn glow-orange" onclick="copyLink('link3',this)">📋 SAO CHÉP</div>
 </div>
 
 </div>
@@ -318,22 +290,36 @@ XEM VIDEO HƯỚNG DẪN ▼
 
 <div id="menu3" class="menu-content">
 
-<div class="video-btn" onclick="toggleVideo('v1',this)">
-<div class="video-icon">▶</div>
-<span>HƯỚNG DẪN TẢI ESIGN + SPEED</span>
+<!-- VIDEO 1 -->
+<div class="video-btn" data-id="v1">
+<div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
+<span class="icon play">▶</span>
+<span>HƯỚNG DẪN TẢI ESIGN</span>
+</div>
+
+<div class="video-controls">
+<span class="icon" onclick="toggleSound('v1',this)">🔇</span>
+</div>
 </div>
 
 <div id="v1" class="video">
-<iframe></iframe>
+<iframe id="v1-frame" src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1"></iframe>
 </div>
 
-<div class="video-btn" onclick="toggleVideo('v2',this)">
-<div class="video-icon">▶</div>
-<span>HƯỚNG DẪN CẬP NHẬT COIN MASTER</span>
+<!-- VIDEO 2 -->
+<div class="video-btn" data-id="v2">
+<div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
+<span class="icon play">▶</span>
+<span>HƯỚNG DẪN CẬP NHẬT</span>
+</div>
+
+<div class="video-controls">
+<span class="icon" onclick="toggleSound('v2',this)">🔇</span>
+</div>
 </div>
 
 <div id="v2" class="video">
-<iframe></iframe>
+<iframe id="v2-frame" src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1"></iframe>
 </div>
 
 </div>
