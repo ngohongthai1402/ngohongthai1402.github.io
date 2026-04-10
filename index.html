@@ -6,15 +6,19 @@
 <title>SPEED I AM NHT</title>
 
 <style>
-body{margin:0;font-family:-apple-system;background:#0f0f0f;color:white}
+body{
+margin:0;
+font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+background:#0f0f0f;
+color:white
+}
 
 /* HEADER */
 header{
 text-align:center;
 padding:15px;
 font-size:20px;
-font-weight:600;
-letter-spacing:1px;
+font-weight:700;
 }
 
 /* LOGO */
@@ -36,113 +40,105 @@ padding:15px;
 /* MENU */
 .menu-title{
 font-size:18px;
-font-weight:bold;
+font-weight:700;
 cursor:pointer;
 display:flex;
 justify-content:space-between;
-align-items:center;
 }
-
-.arrow{transition:0.3s;}
-.rotate{transform:rotate(180deg);}
 
 .menu-content{
 display:none;
 margin-top:10px;
 }
 
-/* APP ITEM */
+/* ITEM */
 .app-item{
 display:flex;
-align-items:center;
-gap:12px;
-background:#2c2c2e;
-padding:12px;
-border-radius:15px;
-margin:10px 0;
-}
-
-.app-item img{
-width:55px;
-height:55px;
-border-radius:15px;
-animation:glowGame 2s infinite alternate;
-}
-
-@keyframes glowGame{
-0%{box-shadow:0 0 8px #0a84ff;}
-100%{box-shadow:0 0 25px #0a84ff;}
-}
-
-.app-info{
-flex:1;
-display:flex;
 flex-direction:column;
-gap:8px;
-}
-
-/* BUTTON */
-.btn{
-display:flex;
 align-items:center;
-justify-content:center;
-gap:6px;
-padding:12px;
-border-radius:12px;
-color:white;
-cursor:pointer;
-width:100%;
-font-size:14px;
+text-align:center;
+background:#2c2c2e;
+padding:15px;
+border-radius:18px;
+margin:12px 0;
 }
 
-.btn.active{
-background:#0a84ff;
-box-shadow:0 0 15px #0a84ff;
-}
-
-/* ESIGN BUTTON (BLUE) */
-.esign-btn{
-background:#0a84ff;
-box-shadow:0 0 15px #0a84ff,0 0 30px #0a84ff;
-border:1px solid rgba(255,255,255,0.1);
-}
-
-/* CERT */
-.blue{
-background:#0a84ff;
-box-shadow:0 0 15px #0a84ff;
-}
-
-.btn:active{transform:scale(0.95)}
-
-/* ESIGN LOGO */
-.esign-logo{
-width:70px;
+/* LOGO GAME */
+.app-item img{
+width:60px;
+height:60px;
 border-radius:15px;
 margin-bottom:10px;
 box-shadow:0 0 20px #0a84ff;
 }
 
-/* ICON NHẤP NHÁY BLUE */
+/* TITLE */
+.app-title{
+font-size:17px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+/* BUTTON COPY */
+.copy-btn{
+background:#0a84ff;
+padding:12px;
+border-radius:12px;
+font-weight:600;
+font-size:15px;
+width:80%;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:8px;
+box-shadow:0 0 15px #0a84ff;
+cursor:pointer;
+}
+
+.copy-btn:active{
+transform:scale(0.95);
+}
+
+/* ESIGN */
+.esign-logo{
+width:80px;
+border-radius:15px;
+margin-bottom:10px;
+box-shadow:0 0 20px #0a84ff;
+}
+
+.esign-btn, .cert-btn{
+display:flex;
+justify-content:center;
+align-items:center;
+padding:14px;
+border-radius:14px;
+font-weight:700;
+margin-top:10px;
+background:#0a84ff;
+box-shadow:0 0 15px #0a84ff;
+cursor:pointer;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+/* DOT */
 .dot{
 width:10px;
 height:10px;
-background:#0a84ff;
+background:#00ffcc;
 border-radius:50%;
-box-shadow:0 0 10px #0a84ff,0 0 20px #0a84ff;
-animation:blink 1s infinite, pulse 1.5s infinite;
-display:inline-block;
+margin-left:8px;
+animation:blink 1s infinite;
 }
 
 @keyframes blink{
-0%{opacity:1; transform:scale(1);}
-50%{opacity:0.3; transform:scale(1.3);}
-100%{opacity:1; transform:scale(1);}
-}
-
-@keyframes pulse{
-0%{box-shadow:0 0 5px #0a84ff;}
-100%{box-shadow:0 0 25px #0a84ff;}
+0%{opacity:1;}
+50%{opacity:0.3;}
+100%{opacity:1;}
 }
 
 /* VIDEO */
@@ -150,7 +146,6 @@ display:inline-block;
 display:none;
 margin-top:10px;
 text-align:center;
-animation:fadeIn 0.25s ease;
 }
 
 .video iframe{
@@ -158,16 +153,6 @@ width:100%;
 max-width:320px;
 height:550px;
 border-radius:15px;
-}
-
-/* GLOW VIDEO */
-.v1 iframe{box-shadow:0 0 20px #0a84ff;}
-.v2 iframe{box-shadow:0 0 20px #0a84ff;}
-.v3 iframe{box-shadow:0 0 20px #0a84ff;}
-
-@keyframes fadeIn{
-from{opacity:0; transform:scale(0.95);}
-to{opacity:1; transform:scale(1);}
 }
 
 /* TOAST */
@@ -184,17 +169,9 @@ display:none;
 </style>
 
 <script>
-function toggleMenu(id, el){
-let content=document.getElementById(id);
-let arrow=el.querySelector(".arrow");
-
-if(content.style.display==="block"){
-content.style.display="none";
-arrow.classList.remove("rotate");
-}else{
-content.style.display="block";
-arrow.classList.add("rotate");
-}
+function toggleMenu(id){
+let el=document.getElementById(id);
+el.style.display = el.style.display==="block"?"none":"block";
 }
 
 function copyLink(link){
@@ -209,41 +186,10 @@ t.style.display="block";
 setTimeout(()=>t.style.display="none",2000);
 }
 
-/* VIDEO AUTO PLAY + STOP */
-function showVideo(id,btn){
+function showVideo(id){
 let videos=document.getElementsByClassName("video");
-let buttons=document.querySelectorAll("#menu3 .btn");
-
-for(let i=0;i<videos.length;i++){
-let iframe = videos[i].querySelector("iframe");
-if(iframe){
-iframe.src = iframe.src.replace("?autoplay=1","");
-iframe.src = iframe.src;
-}
-videos[i].style.display="none";
-}
-
-buttons.forEach(b=>b.classList.remove("active"));
-
-let v = document.getElementById(id);
-let iframe = v.querySelector("iframe");
-
-iframe.src = iframe.src.split("?")[0] + "?autoplay=1";
-
-v.style.display="block";
-btn.classList.add("active");
-
-v.scrollIntoView({behavior:"smooth"});
-}
-
-/* PASS */
-function checkPass(btn){
-let pass=prompt("🔒 Nhập mật khẩu:");
-if(pass==="1402"){
-showVideo("v3",btn);
-}else{
-alert("❌ Sai mật khẩu!");
-}
+for(let v of videos){v.style.display="none";}
+document.getElementById(id).style.display="block";
 }
 </script>
 
@@ -251,7 +197,7 @@ alert("❌ Sai mật khẩu!");
 
 <body>
 
-<header>SPEED I AM NHT - Ngô Hồng Thái</header>
+<header>SPEED I AM NHT</header>
 
 <div class="logo">
 <img src="logo.png">
@@ -259,33 +205,33 @@ alert("❌ Sai mật khẩu!");
 
 <!-- SPEED -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('menu1',this)">
-TỔNG HỢP CẬP NHẬT SPEED <span class="arrow">▼</span>
+<div class="menu-title" onclick="toggleMenu('menu1')">
+🎮 Speed Coin Master ▼
 </div>
 
 <div id="menu1" class="menu-content">
 
 <div class="app-item">
 <img src="logogame.png">
-<div class="app-info">
-<div>ĐẾM VÒNG V1</div>
-<div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa')">📋 Sao chép</div>
+<div class="app-title">ĐẾM VÒNG V1</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa')">
+📋 Sao chép
 </div>
 </div>
 
 <div class="app-item">
 <img src="logogame.png">
-<div class="app-info">
-<div>ĐẾM VÒNG V2</div>
-<div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa')">📋 Sao chép</div>
+<div class="app-title">ĐẾM VÒNG V2</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa')">
+📋 Sao chép
 </div>
 </div>
 
 <div class="app-item">
 <img src="logogame.png">
-<div class="app-info">
-<div>SPEED IGG</div>
-<div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa')">📋 Sao chép</div>
+<div class="app-title">SPEED IGG</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa')">
+📋 Sao chép
 </div>
 </div>
 
@@ -294,49 +240,22 @@ TỔNG HỢP CẬP NHẬT SPEED <span class="arrow">▼</span>
 
 <!-- ESIGN -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('menu2',this)">
-XEM TẢI ESIGN SPEED MIỄN PHÍ <span class="arrow">▼</span>
+<div class="menu-title" onclick="toggleMenu('menu2')">
+⚡ Xem Tải ESign ▼
 </div>
 
-<div id="menu2" class="menu-content" style="text-align:center;">
+<div id="menu2" class="menu-content" style="text-align:center">
 
 <img src="esign.png" class="esign-logo">
 
-<a href="itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist">
-<div class="btn esign-btn">
+<a href="#">
+<div class="esign-btn">
 CÀI ĐẶT APP ESIGN <span class="dot"></span>
 </div>
 </a>
 
-<div class="btn blue"
-onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/main/CertificateAxitat.zip'">
+<div class="cert-btn">
 📥 TẢI CHỨNG CHỈ
-</div>
-
-</div>
-</div>
-
-<!-- VIDEO -->
-<div class="box">
-<div class="menu-title" onclick="toggleMenu('menu3',this)">
-XEM VIDEO HƯỚNG DẪN <span class="arrow">▼</span>
-</div>
-
-<div id="menu3" class="menu-content">
-
-<div class="btn" onclick="showVideo('v1',this)">HƯỚNG DẪN TẢI ESIGN+SPEED FREE</div>
-<div id="v1" class="video v1">
-<iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
-</div>
-
-<div class="btn" onclick="showVideo('v2',this)">HƯỚNG DẪN CẬP NHẬT COIN MASTER</div>
-<div id="v2" class="video v2">
-<iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
-</div>
-
-<div class="btn" onclick="checkPass(this)">VIDEO DÀNH CHO KHÁCH MUA CHỨNG CHỈ</div>
-<div id="v3" class="video v3">
-<iframe src="https://www.youtube.com/embed/-IoGLILtqNQ"></iframe>
 </div>
 
 </div>
