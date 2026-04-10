@@ -8,141 +8,143 @@
 <style>
 body{margin:0;font-family:-apple-system;background:#0f0f0f;color:white}
 
-/* LOADING */
-#loader{position:fixed;width:100%;height:100%;background:#0f0f0f;display:flex;justify-content:center;align-items:center;z-index:9999}
-.loader{width:60px;height:60px;border:6px solid #1c1c1e;border-top:6px solid #0a84ff;border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{100%{transform:rotate(360deg)}}
-
 /* HEADER */
 header{text-align:center;padding:15px;font-size:22px;font-weight:bold}
 
 /* LOGO */
 .logo{text-align:center}
-.logo img{width:120px;border-radius:50%;box-shadow:0 0 25px #0a84ff}
+.logo img{
+width:120px;
+border-radius:50%;
+box-shadow:0 0 25px #0a84ff
+}
 
 /* BOX */
-.box{margin:15px;background:#1c1c1e;border-radius:20px;padding:15px}
+.box{
+margin:15px;
+background:#1c1c1e;
+border-radius:20px;
+padding:15px;
+}
 
 /* MENU */
 .menu-title{
 font-size:18px;
 font-weight:bold;
 cursor:pointer;
-text-align:center;
 }
 
+/* ẨN/HIỆN */
 .menu-content{
 display:none;
 margin-top:10px;
-animation:fade 0.3s ease;
 }
 
-@keyframes fade{
-from{opacity:0;transform:translateY(-5px)}
-to{opacity:1;transform:translateY(0)}
+/* APP ITEM (FIX LỆCH) */
+.app-item{
+display:flex;
+align-items:center;
+gap:12px;
+background:#2c2c2e;
+padding:12px;
+border-radius:15px;
+margin:10px 0;
+}
+
+.app-item img{
+width:55px;
+height:55px;
+border-radius:15px;
+box-shadow:0 0 10px #0a84ff;
+}
+
+.app-info{
+flex:1;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.app-title{
+font-size:16px;
+font-weight:500;
 }
 
 /* BUTTON */
-.btn, .btn-lock{
+.btn{
 display:inline-flex;
 align-items:center;
 justify-content:center;
-gap:8px;
-margin:8px;
-padding:12px 20px;
-border-radius:15px;
+gap:6px;
+padding:8px 12px;
+border-radius:10px;
+background:#0a84ff;
 color:white;
 cursor:pointer;
-border:none;
+width:140px;
 }
 
-.blue{background:#0a84ff;box-shadow:0 0 15px #0a84ff;}
+.btn:active{
+transform:scale(0.95);
+}
+
+/* ESIGN BUTTON */
 .green{background:#34c759;box-shadow:0 0 15px #34c759;}
-
-/* DOT */
-.dot{
-width:10px;height:10px;background:#00ff88;border-radius:50%;
-box-shadow:0 0 10px #00ff88;
-animation:blink 1.2s infinite;
-}
-@keyframes blink{
-0%{opacity:1;}
-50%{opacity:0.3;}
-100%{opacity:1;}
-}
+.blue{background:#0a84ff;box-shadow:0 0 15px #0a84ff;}
 
 /* VIDEO */
-.video{
-display:none;
-opacity:0;
-transition:0.3s;
-text-align:center;
-margin:10px;
-}
-.video.show{
-display:block;
-opacity:1;
-}
-
-iframe{
+.video{display:none;margin-top:10px;text-align:center}
+.video iframe{
 width:100%;
 max-width:320px;
 height:550px;
-border-radius:20px;
+border-radius:15px;
 }
 
-/* FOOTER */
-footer{text-align:center;padding:20px}
-.zalo-btn{
-display:inline-block;
+/* TOAST */
+#toast{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
 background:#0a84ff;
-padding:12px 20px;
-border-radius:12px;
-color:white;
-text-decoration:none;
+padding:10px 20px;
+border-radius:10px;
+display:none;
 }
 </style>
 
 <script>
-function toggleMenu(id, el){
-let m=document.getElementById(id);
-if(m.style.display==="block"){
-m.style.display="none";
-el.innerHTML=el.innerHTML.replace("▲","▼");
-}else{
-m.style.display="block";
-el.innerHTML=el.innerHTML.replace("▼","▲");
-}
+function toggleMenu(id){
+let el=document.getElementById(id);
+el.style.display = el.style.display==="block"?"none":"block";
 }
 
-/* VIDEO VIP */
-let currentVideo=null;
-
-function playVideo(id, videoId){
-if(currentVideo){
-currentVideo.innerHTML="";
-currentVideo.classList.remove("show");
+function copyLink(link){
+navigator.clipboard.writeText(link);
+showToast("✅ Đã sao chép!");
 }
-let container=document.getElementById(id);
-container.innerHTML=`<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1"></iframe>`;
-container.classList.add("show");
-container.scrollIntoView({behavior:"smooth"});
-currentVideo=container;
+
+function showToast(text){
+let t=document.getElementById("toast");
+t.innerText=text;
+t.style.display="block";
+setTimeout(()=>t.style.display="none",2000);
+}
+
+/* VIDEO */
+function showVideo(id){
+document.getElementById(id).style.display="block";
 }
 
 /* PASS VIDEO 3 */
 function checkPass(){
-let pass=prompt("🔐 Nhập mã để xem video:");
-
+let pass=prompt("🔒 Nhập mật khẩu:");
 if(pass==="1402"){
-playVideo('v3','-IoGLILtqNQ');
-}else if(pass!==null){
+showVideo("v3");
+}else{
 alert("❌ Sai mật khẩu!");
 }
-}
-
-window.onload=function(){
-document.getElementById("loader").style.display="none";
 }
 </script>
 
@@ -150,119 +152,88 @@ document.getElementById("loader").style.display="none";
 
 <body>
 
-<div id="loader"><div class="loader"></div></div>
-
 <header>🚀 SPEED I AM NHT</header>
 
 <div class="logo">
 <img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
 </div>
 
-<!-- SPEED -->
+<!-- MENU SPEED -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('m1',this)">
-🎮 Speed Coin Master ▼
-</div>
+<div class="menu-title" onclick="toggleMenu('menu1')">🎮 Speed Coin Master ▼</div>
 
-<div id="m1" class="menu-content">
+<div id="menu1" class="menu-content">
 
-<!-- APP 1 -->
-<div class="app">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png"
-style="width:50px;border-radius:12px;margin-bottom:5px;">
-<h3>Đếm vòng 1</h3>
-
-<div class="btn blue"
-onclick="navigator.clipboard.writeText('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa');showToast('✅ Đã sao chép link!')">
-📋 Sao chép link
+<div class="app-item">
+<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
+<div class="app-info">
+<div class="app-title">🎮 Đếm vòng 1</div>
+<div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa')">📋 Sao chép</div>
 </div>
 </div>
 
-<!-- APP 2 -->
-<div class="app">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png"
-style="width:50px;border-radius:12px;margin-bottom:5px;">
-<h3>Đếm vòng 2</h3>
-
-<div class="btn blue"
-onclick="navigator.clipboard.writeText('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa');showToast('✅ Đã sao chép link!')">
-📋 Sao chép link
+<div class="app-item">
+<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
+<div class="app-info">
+<div class="app-title">🔥 Đếm vòng 2</div>
+<div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa')">📋 Sao chép</div>
 </div>
 </div>
 
-<!-- APP 3 -->
-<div class="app">
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png"
-style="width:50px;border-radius:12px;margin-bottom:5px;">
-<h3>Speed IGG</h3>
-
-<div class="btn blue"
-onclick="navigator.clipboard.writeText('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa');showToast('✅ Đã sao chép link!')">
-📋 Sao chép link
+<div class="app-item">
+<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/logo.png">
+<div class="app-info">
+<div class="app-title">💎 Speed IGG</div>
+<div class="btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa')">📋 Sao chép</div>
 </div>
-</div>
-
 </div>
 
 </div>
 </div>
 
-<!-- ESIGN -->
+<!-- MENU ESIGN -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('m2',this)">
-⚡ Xem Tải ESign Miễn Phí ▼
-</div>
+<div class="menu-title" onclick="toggleMenu('menu2')">⚡ Xem Tải ESign Miễn Phí ▼</div>
 
-<div id="m2" class="menu-content" style="text-align:center;">
-
-<img src="https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/esign.png"
-style="width:90px;border-radius:20px;box-shadow:0 0 15px #34c759;">
-
-<h3>ESIGN AXITAT <span class="dot"></span></h3>
+<div id="menu2" class="menu-content">
 
 <a href="itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist">
-<button class="btn-lock green">⚡ Cài ESIGN</button>
+<div class="btn green">⚡ Cài ESIGN</div>
 </a>
 
-<button class="btn-lock blue"
-onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/main/CertificateAxitat.zip';">
-🔒 Tải chứng chỉ
-</button>
+<div class="btn blue"
+onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/main/CertificateAxitat.zip'">
+🔒 Tải chứng chỉ AXITAT
+</div>
 
 </div>
 </div>
 
-<!-- VIDEO VIP -->
+<!-- MENU VIDEO -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('m3',this)">
-📺 XEM VIDEO HƯỚNG DẪN ▼
+<div class="menu-title" onclick="toggleMenu('menu3')">📺 XEM VIDEO HƯỚNG DẪN ▼</div>
+
+<div id="menu3" class="menu-content">
+
+<div class="btn" onclick="showVideo('v1')">📥 Hướng dẫn tải</div>
+<div id="v1" class="video">
+<iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
 </div>
 
-<div id="m3" class="menu-content" style="text-align:center;">
-
-<div class="btn blue" onclick="playVideo('v1','8ynQoiww9d4')">
-📥 HƯỚNG DẪN TẢI ESIGN SPEED
+<div class="btn" onclick="showVideo('v2')">🔄 Hướng dẫn cập nhật</div>
+<div id="v2" class="video">
+<iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
 </div>
-<div id="v1" class="video"></div>
 
-<div class="btn blue" onclick="playVideo('v2','e74h1eb3b0c')">
-🔄 CẬP NHẬT SPEED COIN MASTER
+<div class="btn" onclick="checkPass()">💎 Video hướng dẫn cài đặt dành cho khách mua</div>
+<div id="v3" class="video">
+<iframe src="https://www.youtube.com/embed/-IoGLILtqNQ"></iframe>
 </div>
-<div id="v2" class="video"></div>
-
-<div class="btn blue" onclick="checkPass()">
-💎DÀNH CHO KHÁCH HÀNG MUA CHỨNG CHỈ🔒
-</div>
-<div id="v3" class="video"></div>
 
 </div>
 </div>
 
-<footer>
-<a href="https://zalo.me/0349333397" target="_blank" class="zalo-btn">
-💎 Liên hệ Zalo 0349 3333 97
-</a>
-</footer>
+<div id="toast"></div>
 
 </body>
 </html>
