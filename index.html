@@ -24,7 +24,7 @@ font-size:20px;
 font-weight:700;
 }
 
-/* TICK TELE */
+/* TICK */
 .tick{
 width:18px;height:18px;position:relative;
 display:flex;align-items:center;justify-content:center;
@@ -64,7 +64,6 @@ align-items:center;
 cursor:pointer;
 font-weight:700;
 }
-
 .arrow{transition:0.3s;}
 .arrow.rotate{transform:rotate(180deg);}
 
@@ -80,7 +79,7 @@ opacity:1;
 margin-top:10px;
 }
 
-/* DOT MENU */
+/* DOT */
 .menu-dot{
 width:10px;height:10px;
 background:#0a84ff;
@@ -120,8 +119,6 @@ cursor:pointer;
 position:relative;
 overflow:hidden;
 }
-
-/* ripple */
 .copy-btn::after{
 content:"";
 position:absolute;
@@ -145,7 +142,6 @@ margin:15px auto;
 display:block;
 box-shadow:0 0 25px #0a84ff;
 }
-
 .esign-btn,.cert-btn{
 display:flex;
 align-items:center;
@@ -159,8 +155,6 @@ font-weight:700;
 box-shadow:0 0 15px #0a84ff;
 cursor:pointer;
 }
-
-/* ICON NHẤP NHÁY */
 .active-dot{
 width:10px;height:10px;
 background:#00ffcc;
@@ -234,12 +228,17 @@ let currentVideo=null;
 let players={};
 let muteState={};
 
-/* FIX: đảm bảo menu hoạt động */
-document.addEventListener("DOMContentLoaded",()=>{
-document.querySelectorAll(".menu-content").forEach(el=>{
-el.classList.remove("open");
+/* YOUTUBE API */
+let tag=document.createElement('script');
+tag.src="https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+
+function onYouTubeIframeAPIReady(){
+["v1","v2"].forEach(id=>{
+players[id]=new YT.Player(id+"-frame");
+muteState[id]=true;
 });
-});
+}
 
 /* MENU */
 function toggleMenu(id,arrow){
@@ -264,6 +263,7 @@ setTimeout(()=>t.classList.remove("show"),2000);
 function toggleVideo(id,btn){
 
 if(currentVideo===id){
+players[id].pauseVideo();
 document.getElementById(id).classList.remove("open");
 btn.classList.remove("active");
 btn.querySelector(".play").innerHTML="▶";
@@ -271,14 +271,36 @@ currentVideo=null;
 return;
 }
 
-document.querySelectorAll(".video").forEach(v=>v.classList.remove("open"));
-document.querySelectorAll(".video-btn").forEach(b=>b.classList.remove("active"));
+for(let v in players){
+players[v].pauseVideo();
+document.getElementById(v).classList.remove("open");
+
+let b=document.querySelector(`[data-id="${v}"]`);
+if(b){
+b.classList.remove("active");
+b.querySelector(".play").innerHTML="▶";
+}
+}
 
 document.getElementById(id).classList.add("open");
+players[id].playVideo();
+
 btn.classList.add("active");
 btn.querySelector(".play").innerHTML="⏸";
 
 currentVideo=id;
+}
+
+/* SOUND */
+function toggleSound(id,icon){
+if(muteState[id]){
+players[id].unMute();
+icon.innerHTML="🔊";
+}else{
+players[id].mute();
+icon.innerHTML="🔇";
+}
+muteState[id]=!muteState[id];
 }
 </script>
 
@@ -339,7 +361,7 @@ ESIGN AXITAT <span class="menu-dot"></span>
 
 <div class="esign-btn"
 onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
-CÀI ĐẶT APP ESIGN<span class="active-dot"></span>
+CÀI ĐẶT APP ESIGN <span class="active-dot"></span>
 </div>
 
 <div class="cert-btn"
@@ -359,26 +381,32 @@ TẢI FILE CHỨNG CHỈ 📥
 
 <div id="menu3" class="menu-content">
 
-<div class="video-btn" data-id="v1" onclick="toggleVideo('v1',this)">
-<div class="video-left">
+<div class="video-btn" data-id="v1">
+<div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
 <span class="play">▶</span>
 <span>HƯỚNG DẪN ESIGN</span>
+</div>
+<div class="video-controls">
+<span onclick="toggleSound('v1',this)">🔇</span>
 </div>
 </div>
 
 <div id="v1" class="video">
-<iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
+<iframe id="v1-frame" src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1"></iframe>
 </div>
 
-<div class="video-btn" data-id="v2" onclick="toggleVideo('v2',this)">
-<div class="video-left">
+<div class="video-btn" data-id="v2">
+<div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
 <span class="play">▶</span>
 <span>HƯỚNG DẪN CẬP NHẬT</span>
+</div>
+<div class="video-controls">
+<span onclick="toggleSound('v2',this)">🔇</span>
 </div>
 </div>
 
 <div id="v2" class="video">
-<iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
+<iframe id="v2-frame" src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1"></iframe>
 </div>
 
 </div>
