@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPEED I AM NHT</title>
 
 <style>
 body{
 margin:0;
 font-family:-apple-system;
 background:#0f0f0f;
-color:white
+color:white;
 }
 
 /* HEADER */
@@ -25,7 +26,7 @@ font-weight:700;
 .logo img{
 width:120px;
 border-radius:50%;
-box-shadow:0 0 25px #0a84ff
+box-shadow:0 0 25px #0a84ff;
 }
 
 /* BOX */
@@ -43,7 +44,6 @@ font-weight:700;
 display:flex;
 justify-content:space-between;
 cursor:pointer;
-align-items:center;
 }
 .menu-content{display:none;margin-top:10px}
 
@@ -53,7 +53,6 @@ width:10px;height:10px;
 background:#0a84ff;
 border-radius:50%;
 margin-left:6px;
-box-shadow:0 0 10px #0a84ff;
 animation:blink 1s infinite;
 }
 @keyframes blink{
@@ -73,8 +72,8 @@ border-radius:18px;
 margin:12px 0;
 }
 .app-item img{
-width:70px;
-border-radius:18px;
+width:60px;
+border-radius:15px;
 margin-bottom:10px;
 box-shadow:0 0 20px #0a84ff;
 }
@@ -83,61 +82,114 @@ font-weight:700;
 margin-bottom:10px;
 }
 
-/* NÚT CHUNG */
-.main-btn{
+/* COPY BUTTON */
+.copy-btn{
 background:#0a84ff;
-padding:14px;
-border-radius:14px;
+padding:12px;
+border-radius:12px;
 width:80%;
 text-align:center;
-font-weight:700;
 cursor:pointer;
-box-shadow:0 0 20px #0a84ff;
 position:relative;
 overflow:hidden;
-transition:0.2s;
+box-shadow:0 0 12px #0a84ff;
 }
+.copy-btn:active{transform:scale(0.9);}
 
-.main-btn:active{
-transform:scale(0.95);
-}
-
-/* ripple */
-.main-btn::after{
+/* RIPPLE */
+.copy-btn::after{
 content:"";
 position:absolute;
 width:10px;height:10px;
 background:rgba(255,255,255,0.5);
 border-radius:50%;
 transform:scale(0);
+opacity:0;
 }
-.main-btn.ripple::after{
-animation:ripple 0.6s;
+.copy-btn.ripple::after{
+animation:ripple 0.6s ease;
 }
 @keyframes ripple{
-0%{transform:scale(0);opacity:1}
-100%{transform:scale(20);opacity:0}
+0%{transform:scale(0);opacity:0.8;}
+100%{transform:scale(20);opacity:0;}
 }
 
-/* ===== FIX LOGO ESIGN ===== */
+/* ESIGN (GIỐNG MÀU SPEED) */
 .esign-logo{
-width:90px;
-height:90px;
-object-fit:cover;
-border-radius:20px;
-margin:10px auto;
-display:block;
-box-shadow:0 0 25px #0a84ff;
-background:#2c2c2e;
+width:80px;
+border-radius:15px;
+margin-bottom:10px;
+box-shadow:0 0 20px #0a84ff;
 }
 
-/* DOT */
+.esign-btn,.cert-btn{
+background:#0a84ff;
+padding:14px;
+border-radius:14px;
+margin-top:10px;
+font-weight:700;
+cursor:pointer;
+text-align:center;
+box-shadow:0 0 15px #0a84ff;
+}
+
+/* DOT NHẤP NHÁY */
 .dot{
+display:inline-block;
 width:10px;height:10px;
-background:#00ffcc;
+background:#0a84ff;
 border-radius:50%;
-box-shadow:0 0 10px #00ffcc;
+margin-left:6px;
 animation:blink 1s infinite;
+}
+
+/* VIDEO BUTTON */
+.video-btn{
+display:flex;
+align-items:center;
+gap:10px;
+padding:14px;
+border-radius:14px;
+margin-top:10px;
+font-weight:700;
+cursor:pointer;
+background:#2c2c2e;
+transition:0.2s;
+}
+.video-btn.active{
+background:#0a84ff;
+box-shadow:0 0 15px #0a84ff;
+}
+
+/* ICON */
+.video-icon{width:20px}
+
+/* VIDEO */
+.video{
+display:none;
+margin-top:10px;
+text-align:center;
+animation:fade 0.3s;
+}
+.video iframe{
+width:100%;
+max-width:320px;
+height:550px;
+border-radius:15px;
+}
+@keyframes fade{
+from{opacity:0;transform:scale(0.95)}
+to{opacity:1;transform:scale(1)}
+}
+
+/* SOUND BTN */
+.sound-btn{
+margin-top:5px;
+padding:8px;
+background:#0a84ff;
+border-radius:10px;
+font-size:13px;
+cursor:pointer;
 }
 
 /* TOAST */
@@ -145,22 +197,30 @@ animation:blink 1s infinite;
 position:fixed;
 bottom:30px;
 left:50%;
-transform:translateX(-50%);
-background:#111;
+transform:translateX(-50%) translateY(20px);
+background:rgba(20,20,20,0.95);
 padding:12px 20px;
 border-radius:14px;
+font-weight:600;
 opacity:0;
-transition:0.3s;
+transition:0.35s;
 }
-#toast.show{opacity:1;}
+#toast.show{
+opacity:1;
+transform:translateX(-50%) translateY(0);
+}
 </style>
 
 <script>
+let currentPlayer=null;
+let currentBtn=null;
+
 function toggleMenu(id){
 let el=document.getElementById(id);
 el.style.display=el.style.display==="block"?"none":"block";
 }
 
+/* COPY */
 function copyLink(link,btn){
 navigator.clipboard.writeText(link);
 
@@ -171,6 +231,50 @@ let t=document.getElementById("toast");
 t.innerHTML="✔ Đã sao chép link";
 t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
+}
+
+/* VIDEO */
+function toggleVideo(id,btn){
+
+let iframe=document.querySelector("#"+id+" iframe");
+
+/* click lại = tắt */
+if(currentBtn===btn){
+iframe.src=iframe.src.replace("&autoplay=1","");
+document.getElementById(id).style.display="none";
+btn.classList.remove("active");
+btn.querySelector(".video-icon").innerHTML="▶";
+currentBtn=null;
+currentPlayer=null;
+return;
+}
+
+/* tắt video cũ (pause thật) */
+if(currentPlayer){
+currentPlayer.src=currentPlayer.src.replace("&autoplay=1","");
+}
+
+/* reset */
+document.querySelectorAll(".video").forEach(v=>v.style.display="none");
+document.querySelectorAll(".video-btn").forEach(b=>{
+b.classList.remove("active");
+b.querySelector(".video-icon").innerHTML="▶";
+});
+
+/* bật video */
+iframe.src=iframe.src + "&autoplay=1";
+document.getElementById(id).style.display="block";
+btn.classList.add("active");
+btn.querySelector(".video-icon").innerHTML="⏸";
+
+currentPlayer=iframe;
+currentBtn=btn;
+}
+
+/* bật tiếng */
+function enableSound(id){
+let iframe=document.querySelector("#"+id+" iframe");
+iframe.src=iframe.src.replace("mute=1","mute=0")+"&autoplay=1";
 }
 </script>
 
@@ -187,39 +291,27 @@ setTimeout(()=>t.classList.remove("show"),2000);
 <!-- SPEED -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu1')">
-<span style="display:flex;align-items:center;">
-DANH SÁCH SPEED <span class="menu-dot"></span>
-</span>
-<span>▼</span>
+DANH SÁCH SPEED ▼
 </div>
 
 <div id="menu1" class="menu-content">
 
 <div class="app-item">
-<img src="logo.png">
+<img src="logogame.png">
 <div class="app-title">ĐẾM VÒNG V1</div>
-<div class="main-btn"
-onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa',this)">
-📋 SAO CHÉP
-</div>
+<div class="copy-btn" onclick="copyLink('link1',this)">📋 SAO CHÉP</div>
 </div>
 
 <div class="app-item">
-<img src="logo.png">
+<img src="logogame.png">
 <div class="app-title">ĐẾM VÒNG V2</div>
-<div class="main-btn"
-onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa',this)">
-📋 SAO CHÉP
-</div>
+<div class="copy-btn" onclick="copyLink('link2',this)">📋 SAO CHÉP</div>
 </div>
 
 <div class="app-item">
-<img src="logo.png">
+<img src="logogame.png">
 <div class="app-title">SPEED IGG</div>
-<div class="main-btn"
-onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa',this)">
-📋 SAO CHÉP
-</div>
+<div class="copy-btn" onclick="copyLink('link3',this)">📋 SAO CHÉP</div>
 </div>
 
 </div>
@@ -236,19 +328,47 @@ ESIGN AXITAT <span class="menu-dot"></span>
 
 <div id="menu2" class="menu-content" style="text-align:center;">
 
-<!-- FIX LOGO -->
-<div style="display:flex;justify-content:center;">
 <img src="esign.png" class="esign-logo">
-</div>
 
-<div class="main-btn"
+<div class="esign-btn"
 onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
 CÀI ĐẶT APP ESIGN <span class="dot"></span>
 </div>
 
-<div class="main-btn"
+<div class="cert-btn"
 onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/main/CertificateAxitat.zip'">
-📥 TẢI CHỨNG CHỈ AXITAT
+TẢI CHỨNG CHỈ AXITAT
+</div>
+
+</div>
+</div>
+
+<!-- VIDEO -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('menu3')">
+XEM VIDEO HƯỚNG DẪN ▼
+</div>
+
+<div id="menu3" class="menu-content">
+
+<div class="video-btn" onclick="toggleVideo('v1',this)">
+<div class="video-icon">▶</div>
+<span>HƯỚNG DẪN TẢI ESIGN + SPEED</span>
+</div>
+
+<div id="v1" class="video">
+<iframe src="https://www.youtube.com/embed/8ynQoiww9d4?mute=1"></iframe>
+<div class="sound-btn" onclick="enableSound('v1')">🔊 Bật tiếng</div>
+</div>
+
+<div class="video-btn" onclick="toggleVideo('v2',this)">
+<div class="video-icon">▶</div>
+<span>HƯỚNG DẪN CẬP NHẬT COIN MASTER</span>
+</div>
+
+<div id="v2" class="video">
+<iframe src="https://www.youtube.com/embed/e74h1eb3b0c?mute=1"></iframe>
+<div class="sound-btn" onclick="enableSound('v2')">🔊 Bật tiếng</div>
 </div>
 
 </div>
