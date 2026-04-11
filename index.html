@@ -1,19 +1,18 @@
-<!DOCTYPE html><html lang="vi">
+<!DOCTYPE html>
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPEED I AM NHT</title><style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system}
+<title>SPEED I AM NHT</title>
 
-/* ===== THEME ===== */
+<style>
+*{box-sizing:border-box;}
+
 body{
+margin:0;
+font-family:-apple-system;
 background:#0f0f0f;
-color:#fff;
-transition:.3s;
-}
-.light{
-background:#f2f2f7;
-color:#000;
+color:white
 }
 
 /* HEADER */
@@ -23,24 +22,32 @@ justify-content:center;
 align-items:center;
 gap:6px;
 padding:15px;
-font-size:22px;
-font-weight:800;
+font-size:20px;
+font-weight:700;
 }
 
-/* BUTTON DARK MODE */
-.theme-btn{
-position:fixed;
-top:15px;
-right:15px;
+/* TICK */
+.tick{
+width:18px;height:18px;position:relative;
+display:flex;align-items:center;justify-content:center;
+}
+.tick::before{
+content:"";
+position:absolute;
+width:100%;height:100%;
 background:#0a84ff;
-width:45px;height:45px;
-border-radius:12px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:18px;
-box-shadow:0 0 15px #0a84ff;
-z-index:10001;
+clip-path:polygon(50% 0%,65% 15%,85% 15%,90% 35%,100% 50%,90% 65%,85% 85%,65% 85%,50% 100%,35% 85%,15% 85%,10% 65%,0% 50%,10% 35%,15% 15%,35% 15%);
+box-shadow:0 0 10px #0a84ff;
+animation:spin 3s linear infinite;
+}
+.tick::after{content:"✔";font-size:10px;z-index:1;}
+@keyframes spin{100%{transform:rotate(360deg);}}
+
+/* LOGO */
+.logo{text-align:center}
+.logo img{
+width:120px;border-radius:50%;
+box-shadow:0 0 25px #0a84ff
 }
 
 /* BOX */
@@ -49,10 +56,7 @@ margin:15px;
 background:#1c1c1e;
 border-radius:20px;
 padding:15px;
-transition:.3s;
-}
-.light .box{
-background:#fff;
+overflow:hidden; /* FIX TRÀN */
 }
 
 /* MENU */
@@ -63,14 +67,14 @@ align-items:center;
 cursor:pointer;
 font-weight:700;
 }
-.arrow{transition:.3s;}
+.arrow{transition:0.3s;}
 .arrow.rotate{transform:rotate(180deg);}
 
 .menu-content{
 max-height:0;
 overflow:hidden;
 opacity:0;
-transition:.4s;
+transition:0.4s ease;
 }
 .menu-content.open{
 max-height:1200px;
@@ -78,152 +82,374 @@ opacity:1;
 margin-top:10px;
 }
 
-/* BUTTON */
+/* DOT */
+.menu-dot{
+width:10px;height:10px;
+background:#0a84ff;
+border-radius:50%;
+box-shadow:0 0 10px #0a84ff;
+animation:blink 1s infinite;
+}
+@keyframes blink{
+0%{opacity:1}
+50%{opacity:0.3}
+100%{opacity:1}
+}
+
+/* SPEED */
+.app-item{
+display:flex;
+flex-direction:column;
+align-items:center;
+background:#2c2c2e;
+padding:15px;
+border-radius:18px;
+margin:12px 0;
+}
+.app-item img{
+width:60px;border-radius:15px;
+margin-bottom:10px;
+box-shadow:0 0 15px #0a84ff;
+}
+
+/* FIX NÚT CHUẨN */
 .copy-btn{
+background:#0a84ff;
+box-shadow:0 0 15px #0a84ff;
+padding:14px;
+border-radius:14px;
+width:100%;
+max-width:100%;
+text-align:center;
+cursor:pointer;
+position:relative;
+overflow:hidden;
+margin-top:10px;
+}
+
+/* ripple */
+.copy-btn::after{
+content:"";
+position:absolute;
+width:10px;height:10px;
+background:rgba(255,255,255,0.5);
+border-radius:50%;
+transform:scale(0);
+}
+.copy-btn.ripple::after{
+animation:ripple 0.6s;
+}
+@keyframes ripple{
+0%{transform:scale(0);opacity:1;}
+100%{transform:scale(20);opacity:0;}
+}
+
+/* ESIGN */
+.esign-logo{
+width:90px;border-radius:20px;
+margin:15px auto;
+display:block;
+box-shadow:0 0 25px #0a84ff;
+}
+.esign-btn,.cert-btn{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
 background:#0a84ff;
 padding:14px;
 border-radius:14px;
-text-align:center;
-margin-top:10px;
+margin-top:12px;
 font-weight:700;
 box-shadow:0 0 15px #0a84ff;
 cursor:pointer;
 }
-
-/* ===== IOS MENU ===== */
-#iosOverlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.4);
-backdrop-filter:blur(10px);
-opacity:0;
-pointer-events:none;
-transition:.3s;
-z-index:9999;
-}
-#iosOverlay.active{opacity:1;pointer-events:auto;}
-
-#iosMenu{
-position:fixed;
-bottom:-100%;
-left:0;
-width:100%;
-background:#111;
-border-radius:25px 25px 0 0;
-padding:15px;
-transition:.35s cubic-bezier(.25,.8,.25,1);
-z-index:10000;
-}
-#iosMenu.active{bottom:0;}
-
-.handle{
-width:50px;height:5px;
-background:#555;
-border-radius:10px;
-margin:auto;
+.active-dot{
+width:10px;height:10px;
+background:#00ffcc;
+border-radius:50%;
+box-shadow:0 0 10px #00ffcc;
+animation:blink 1s infinite;
 }
 
-.ios-item{
+/* VIDEO */
+.video-btn{
 display:flex;
+justify-content:space-between;
 align-items:center;
-gap:12px;
 padding:14px;
 border-radius:14px;
 margin-top:10px;
-background:#1c1c1e;
-font-weight:600;
+background:#2c2c2e;
+cursor:pointer;
 }
-.light .ios-item{background:#e5e5ea;}
-
-.ios-icon{
-width:35px;height:35px;
-border-radius:10px;
-display:flex;
-align-items:center;
-justify-content:center;
-background:linear-gradient(45deg,#ff00cc,#3333ff);
-box-shadow:0 0 10px #ff00cc,0 0 20px #3333ff;
-}
-
-.ios-btn{
-position:fixed;
-bottom:20px;
-right:20px;
-width:55px;height:55px;
-border-radius:50%;
+.video-btn.active{
 background:#0a84ff;
+box-shadow:0 0 15px #0a84ff;
+}
+.video-left{
 display:flex;
 align-items:center;
-justify-content:center;
-font-size:24px;
-box-shadow:0 0 20px #0a84ff;
-z-index:10001;
+gap:10px;
 }
-</style></head><body><header>
-Ngô Hồng Thái ✔
-</header><!-- DARK MODE --><div class="theme-btn" onclick="toggleTheme()">🌙</div><!-- CONTENT --><div class="box">
-<div class="menu-title" onclick="toggleMenu('m1',this.querySelector('.arrow'))">
-<span>DANH SÁCH SPEED</span>
-<span class="arrow">▼</span>
-</div>
-<div id="m1" class="menu-content">
-<div class="copy-btn" onclick="copy('https://example.com')">SAO CHÉP</div>
-</div>
-</div><div class="box">
-<div class="menu-title" onclick="toggleMenu('m2',this.querySelector('.arrow'))">
-<span>DNS CHẶN THU HỒI</span>
-<span class="arrow">▼</span>
-</div>
-<div id="m2" class="menu-content">
-<div class="copy-btn">TẢI DNS</div>
-</div>
-</div><!-- IOS MENU --><div id="iosOverlay" onclick="closeIOSMenu()"></div><div id="iosMenu">
-<div class="handle"></div><div class="ios-item"><div class="ios-icon">📦</div> ESign</div>
-<div class="ios-item"><div class="ios-icon">🛡</div> Anti Revoke</div>
-<div class="ios-item"><div class="ios-icon">🌐</div> DNS</div>
-<div class="ios-item"><div class="ios-icon">📲</div> Install</div></div><div class="ios-btn" onclick="openIOSMenu()">⚡</div><script>
+.video-controls{
+display:flex;
+gap:10px;
+}
+
+.video{
+max-height:0;
+overflow:hidden;
+opacity:0;
+transition:0.4s;
+text-align:center;
+}
+.video.open{
+max-height:600px;
+opacity:1;
+margin-top:10px;
+}
+.video iframe{
+width:100%;
+max-width:320px;
+height:550px;
+border-radius:15px;
+border:none;
+}
+
+/* TOAST */
+#toast{
+position:fixed;
+bottom:30px;
+left:50%;
+transform:translateX(-50%);
+background:#111;
+padding:12px 20px;
+border-radius:14px;
+opacity:0;
+transition:0.3s;
+}
+#toast.show{opacity:1;}
+</style>
+
+<script>
+let currentVideo=null;
+let players={};
+let muteState={};
+
+let tag=document.createElement('script');
+tag.src="https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+
+function onYouTubeIframeAPIReady(){
+["v1","v2"].forEach(id=>{
+players[id]=new YT.Player(id+"-frame");
+muteState[id]=true;
+});
+}
+
 function toggleMenu(id,arrow){
 let el=document.getElementById(id);
 el.classList.toggle("open");
 arrow.classList.toggle("rotate");
 }
 
-function copy(text){
-navigator.clipboard.writeText(text);
-alert("Đã copy");
+function copyLink(link,btn){
+navigator.clipboard.writeText(link);
+btn.classList.add("ripple");
+setTimeout(()=>btn.classList.remove("ripple"),600);
+
+let t=document.getElementById("toast");
+t.innerHTML="✔ Đã sao chép link";
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-/* THEME */
-function toggleTheme(){
-document.body.classList.toggle("light");
+function downloadDNS(btn){
+btn.classList.add("ripple");
+setTimeout(()=>btn.classList.remove("ripple"),600);
+
+window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
+
+let t=document.getElementById("toast");
+t.innerHTML="📥 Đang tải NHT DNS...";
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-/* IOS MENU */
-let m=document.getElementById("iosMenu");
-let o=document.getElementById("iosOverlay");
-
-function openIOSMenu(){
-m.classList.add("active");
-o.classList.add("active");
-if(navigator.vibrate) navigator.vibrate(30);
+function toggleVideo(id,btn){
+if(currentVideo===id){
+players[id].pauseVideo();
+document.getElementById(id).classList.remove("open");
+btn.classList.remove("active");
+btn.querySelector(".play").innerHTML="▶";
+currentVideo=null;
+return;
 }
 
-function closeIOSMenu(){
-m.classList.remove("active");
-o.classList.remove("active");
+for(let v in players){
+players[v].pauseVideo();
+document.getElementById(v).classList.remove("open");
+
+let b=document.querySelector(`[data-id="${v}"]`);
+if(b){
+b.classList.remove("active");
+b.querySelector(".play").innerHTML="▶";
+}
 }
 
-/* SWIPE */
-let s=0,c=0;
-m.addEventListener("touchstart",e=>s=e.touches[0].clientY);
-m.addEventListener("touchmove",e=>{
-c=e.touches[0].clientY;
-let d=c-s;
-if(d>0)m.style.transform=`translateY(${d}px)`
-});
-m.addEventListener("touchend",()=>{
-if(c-s>120)closeIOSMenu();
-m.style.transform="";
-});
-</script></body>
+document.getElementById(id).classList.add("open");
+players[id].playVideo();
+
+btn.classList.add("active");
+btn.querySelector(".play").innerHTML="⏸";
+
+currentVideo=id;
+}
+
+function toggleSound(id,icon){
+if(muteState[id]){
+players[id].unMute();
+icon.innerHTML="🔊";
+}else{
+players[id].mute();
+icon.innerHTML="🔇";
+}
+muteState[id]=!muteState[id];
+}
+</script>
+
+</head>
+
+<body>
+
+<header>
+Ngô Hồng Thái <span class="tick"></span>
+</header>
+
+<div class="logo">
+<img src="logo.png">
+</div>
+
+<!-- SPEED -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('menu1',this.querySelector('.arrow'))">
+<span>DANH SÁCH SPEED</span>
+<span class="arrow">▼</span>
+</div>
+
+<div id="menu1" class="menu-content">
+
+<div class="app-item">
+<img src="logogame.png">
+<div>ĐẾM VÒNG V1</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa',this)">SAO CHÉP</div>
+</div>
+
+<div class="app-item">
+<img src="logogame.png">
+<div>ĐẾM VÒNG V2</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa',this)">SAO CHÉP</div>
+</div>
+
+<div class="app-item">
+<img src="logogame.png">
+<div>SPEED IGG</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa',this)">SAO CHÉP</div>
+</div>
+
+</div>
+</div>
+
+<!-- DNS -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('menuDNS',this.querySelector('.arrow'))">
+<span>DNS CHẶN THU HỒI</span>
+<span class="arrow">▼</span>
+</div>
+
+<div id="menuDNS" class="menu-content" style="text-align:center;">
+
+<div class="copy-btn" onclick="downloadDNS(this)">
+TẢI NHT DNS🔫
+</div>
+
+<div style="font-size:13px;opacity:0.9;margin-top:10px;line-height:1.6;">
+<div>📥 <b>TẢI XONG NHT DNS</b></div>
+<div>⚙️ Vào <b>Cài đặt</b> → <b>Đã tải về hồ sơ</b></div>
+<div>🚀 Ấn <b>NHT DNS🔫</b> → <b>Cài đặt</b></div>
+</div>
+
+</div>
+</div>
+
+<!-- ESIGN -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('menu2',this.querySelector('.arrow'))">
+<span style="display:flex;align-items:center;gap:6px;">
+ESIGN AXITAT <span class="menu-dot"></span>
+</span>
+<span class="arrow">▼</span>
+</div>
+
+<div id="menu2" class="menu-content" style="text-align:center;">
+
+<img src="esign.png" class="esign-logo">
+
+<div class="esign-btn"
+onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
+CÀI ĐẶT APP ESIGN <span class="active-dot"></span>
+</div>
+
+<div class="cert-btn"
+onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/refs/heads/main/CertificateAxitat.zip'">
+TẢI FILE CHỨNG CHỈ 📥
+</div>
+
+</div>
+</div>
+
+<!-- VIDEO -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('menu3',this.querySelector('.arrow'))">
+<span>VIDEO HƯỚNG DẪN</span>
+<span class="arrow">▼</span>
+</div>
+
+<div id="menu3" class="menu-content">
+
+<div class="video-btn" data-id="v1">
+<div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
+<span class="play">▶</span>
+<span>TẢI ESIGN SPEED MIỄN PHÍ</span>
+</div>
+<div class="video-controls">
+<span onclick="toggleSound('v1',this)">🔇</span>
+</div>
+</div>
+
+<div id="v1" class="video">
+<iframe id="v1-frame" src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1"></iframe>
+</div>
+
+<div class="video-btn" data-id="v2">
+<div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
+<span class="play">▶</span>
+<span>CẬP NHẬT COIN MASTER</span>
+</div>
+<div class="video-controls">
+<span onclick="toggleSound('v2',this)">🔇</span>
+</div>
+</div>
+
+<div id="v2" class="video">
+<iframe id="v2-frame" src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1"></iframe>
+</div>
+
+</div>
+</div>
+
+<div id="toast"></div>
+
+</body>
 </html>
