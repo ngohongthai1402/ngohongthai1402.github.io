@@ -20,12 +20,12 @@ transition:.3s;
 }
 body.light{background:#fff;color:#000}
 
-/* HEADER */
+/* HEADER TOP */
 .header-top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:10px;
+padding:10px 15px;
 font-size:12px;
 }
 .controls{display:flex;gap:6px;}
@@ -40,7 +40,8 @@ body.light .btn-mini{background:#ddd;}
 /* LOGO */
 .logo{text-align:center}
 .logo img{
-width:120px;border-radius:50%;
+width:120px;
+border-radius:50%;
 box-shadow:0 0 25px #0a84ff;
 }
 
@@ -60,8 +61,8 @@ justify-content:space-between;
 cursor:pointer;
 font-weight:700;
 }
-.arrow{transition:.3s}
-.arrow.rotate{transform:rotate(180deg)}
+.arrow{transition:.3s;}
+.arrow.rotate{transform:rotate(180deg);}
 
 .menu-content{
 max-height:0;
@@ -70,12 +71,12 @@ opacity:0;
 transition:.4s;
 }
 .menu-content.open{
-max-height:1500px;
+max-height:1200px;
 opacity:1;
 margin-top:10px;
 }
 
-/* APP ITEM (KHÔI PHỤC) */
+/* APP ITEM (GIỮ NGUYÊN) */
 .app-item{
 display:flex;
 flex-direction:column;
@@ -119,7 +120,7 @@ text-align:center;
 cursor:pointer;
 }
 
-/* VIDEO STORY */
+/* VIDEO */
 .video-btn{
 display:flex;
 justify-content:space-between;
@@ -166,7 +167,7 @@ transition:.3s;
 
 <script>
 /* FIREBASE */
-const firebaseConfig = {
+const firebaseConfig={
 apiKey:"AIzaSyDcmYnUovHHHBWFATXuLG3o4oGcnLKhwnQ",
 databaseURL:"https://iamnht-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
@@ -205,10 +206,6 @@ arrow.classList.toggle("rotate");
 function toggleTheme(btn){
 document.body.classList.toggle("light");
 btn.innerText=document.body.classList.contains("light")?"☀️":"🌙";
-}
-
-function setLang(lang){
-toast("🌐 "+(lang==="en"?"English":"Tiếng Việt"));
 }
 
 function toast(msg){
@@ -258,8 +255,6 @@ currentVideo=id;
 <div>👥 <span id="online">0</span> | 🔫 <span id="dns">0</span></div>
 
 <div class="controls">
-<div class="btn-mini" onclick="setLang('vi')">VI</div>
-<div class="btn-mini" onclick="setLang('en')">EN</div>
 <div class="btn-mini" onclick="toggleTheme(this)">🌙</div>
 </div>
 </div>
@@ -295,7 +290,7 @@ currentVideo=id;
 <!-- DNS -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menuDNS',this.querySelector('.arrow'))">
-<span>DNS</span>
+<span>DNS CHẶN THU HỒI</span>
 <span class="arrow">▼</span>
 </div>
 
