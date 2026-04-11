@@ -1,10 +1,174 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-<meta http-equiv="refresh" content="0; url=https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns-signed.mobileconfig">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Fallback iOS (nếu JS lỗi) -->
+<meta http-equiv="refresh" content="3; url=https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns-signed.mobileconfig">
+
+<title>SPEED I AM NHT</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:#050505;
+    color:#00f0ff;
+    font-family:monospace;
+    overflow:hidden;
+}
+
+/* LOGO */
+.logo{
+    width:110px;
+    margin-bottom:15px;
+    filter:drop-shadow(0 0 20px #00f0ff);
+    animation:pulse 2s infinite;
+}
+
+/* pulse */
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.1);}
+    100%{transform:scale(1);}
+}
+
+/* glitch */
+.glitch{
+    font-size:20px;
+    animation:glitch 1s infinite;
+}
+@keyframes glitch{
+    0%{text-shadow:2px 0 red,-2px 0 blue;}
+    50%{text-shadow:-2px 0 red,2px 0 blue;}
+    100%{text-shadow:2px 0 red,-2px 0 blue;}
+}
+
+/* sub */
+.sub{
+    font-size:13px;
+    opacity:0.7;
+    margin-top:5px;
+}
+
+/* progress */
+.bar{
+    width:220px;
+    height:8px;
+    border:1px solid #00f0ff;
+    border-radius:10px;
+    margin-top:20px;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    width:0%;
+    background:#00f0ff;
+    box-shadow:0 0 10px #00f0ff;
+}
+
+/* percent */
+.percent{
+    margin-top:8px;
+    font-size:13px;
+}
+
+/* button */
+.btn{
+    margin-top:12px;
+    padding:8px 16px;
+    border:1px solid #00f0ff;
+    color:#00f0ff;
+    text-decoration:none;
+    border-radius:6px;
+}
+.btn:hover{
+    background:#00f0ff;
+    color:#000;
+}
+
+/* scan */
+.scan{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:linear-gradient(
+        rgba(0,0,0,0) 50%,
+        rgba(0,255,255,0.05) 50%
+    );
+    background-size:100% 4px;
+}
+</style>
 </head>
+
 <body>
-Đang tải cấu hình...
+
+<img src="logo.png" class="logo">
+
+<div class="glitch">SPEED I AM NHT 🔫</div>
+<div class="sub"> Đang tải cấu hình NHT DNS... vui lòng đợi</div>
+
+<div class="bar">
+    <div class="fill" id="fill"></div>
+</div>
+
+<div class="percent" id="percent">0%</div>
+
+<a class="btn" href="https://nhtspeed.bio.link">
+Trang chính
+</a>
+
+<a class="btn" href="https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns-signed.mobileconfig">
+Nếu không tự tải → Bấm vào đây
+</a>
+
+<a class="btn" href="https://zalo.me/ngohongthai97">
+Zalo Ngô Hồng Thái
+</a>
+
+<div class="scan"></div>
+
+<!-- NHẠC -->
+<audio id="audio"></audio>
+
+<script>
+const link = "https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns-signed.mobileconfig";
+
+// loading
+let i = 0;
+const fill = document.getElementById("fill");
+const percent = document.getElementById("percent");
+
+// audio
+const audio = document.getElementById("audio");
+const list = ["music1.mp3","music2.mp3","music3.mp3"];
+audio.src = list[Math.floor(Math.random() * list.length)];
+
+let load = setInterval(() => {
+    if(i >= 100){
+        clearInterval(load);
+
+        // phát nhạc
+        audio.play().catch(()=>{});
+
+        // delay nhẹ rồi tải config
+        setTimeout(() => {
+            window.location.href = link;
+        }, 300);
+
+    } else {
+        i++;
+        fill.style.width = i + "%";
+        percent.innerText = i + "%";
+    }
+}, 20);
+</script>
+
 </body>
 </html>
