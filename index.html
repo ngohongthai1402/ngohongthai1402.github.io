@@ -61,34 +61,22 @@ width:120px;border-radius:50%;
 box-shadow:0 0 25px #0a84ff
 }
 
-/* CONTROL BAR */
+/* CONTROL */
 .control{
 display:flex;
 justify-content:center;
 gap:10px;
 margin-top:10px;
 }
-
 .btn-mini{
 padding:10px 15px;
 border-radius:12px;
 cursor:pointer;
 font-weight:600;
-}
-
-/* ONLINE */
-#onlineBox{
 background:#1c1c1e;
-box-shadow:0 0 10px #00ffcc;
-animation:blink 1.5s infinite;
 }
-body.light #onlineBox{background:#fff;}
-
-@keyframes blink{
-0%{opacity:1}
-50%{opacity:0.6}
-100%{opacity:1}
-}
+#onlineBox{box-shadow:0 0 10px #00ffcc;}
+#dnsCount{box-shadow:0 0 10px #0a84ff;}
 
 /* BOX */
 .box{
@@ -97,7 +85,6 @@ background:#1c1c1e;
 border-radius:20px;
 padding:15px;
 overflow:hidden;
-transition:0.3s;
 }
 
 /* MENU */
@@ -123,7 +110,7 @@ opacity:1;
 margin-top:10px;
 }
 
-/* SPEED */
+/* APP */
 .app-item{
 display:flex;
 flex-direction:column;
@@ -151,21 +138,6 @@ cursor:pointer;
 margin-top:10px;
 }
 
-/* VIDEO */
-.video-btn{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:14px;
-border-radius:14px;
-margin-top:10px;
-background:#2c2c2e;
-cursor:pointer;
-}
-.video-btn.active{
-background:#0a84ff;
-}
-
 /* TOAST */
 #toast{
 position:fixed;
@@ -186,14 +158,12 @@ transition:0.3s;
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
-/* MENU */
 function toggleMenu(id,arrow){
 let el=document.getElementById(id);
 el.classList.toggle("open");
 arrow.classList.toggle("rotate");
 }
 
-/* COPY */
 function copyLink(link,btn){
 navigator.clipboard.writeText(link);
 let t=document.getElementById("toast");
@@ -202,12 +172,11 @@ t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-/* THEME */
+/* DARK MODE */
 function toggleTheme(){
 document.body.classList.toggle("light");
 localStorage.setItem("theme",document.body.classList.contains("light"));
 }
-
 window.onload=()=>{
 if(localStorage.getItem("theme")==="true"){
 document.body.classList.add("light");
@@ -237,6 +206,25 @@ db.ref("online").on("value", snap=>{
 document.getElementById("onlineBox").innerHTML =
 "👥 Online: " + (snap.numChildren() || 0);
 });
+
+/* DNS DOWNLOAD COUNT */
+function downloadDNS(btn){
+
+let ref = db.ref("dns_download");
+ref.transaction(n => (n||0)+1);
+
+window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
+
+let t=document.getElementById("toast");
+t.innerHTML="📥 Đang tải DNS...";
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),2000);
+}
+
+db.ref("dns_download").on("value", snap=>{
+document.getElementById("dnsCount").innerHTML =
+"📥 Đã tải DNS: " + (snap.val() || 0);
+});
 </script>
 
 </head>
@@ -253,29 +241,22 @@ Ngô Hồng Thái <span class="tick"></span>
 
 <!-- CONTROL -->
 <div class="control">
-<div class="btn-mini" style="background:#0a84ff;" onclick="toggleTheme()">🌙 / ☀️</div>
+<div class="btn-mini" onclick="toggleTheme()">🌙 / ☀️</div>
 <div class="btn-mini" id="onlineBox">👥 Online: 0</div>
+<div class="btn-mini" id="dnsCount">📥 Đã tải DNS: 0</div>
 </div>
 
-<!-- SPEED -->
+<!-- DNS -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('menu1',this.querySelector('.arrow'))">
-<span>DANH SÁCH SPEED</span>
+<div class="menu-title" onclick="toggleMenu('menuDNS',this.querySelector('.arrow'))">
+<span>DNS CHẶN THU HỒI</span>
 <span class="arrow">▼</span>
 </div>
 
-<div id="menu1" class="menu-content">
+<div id="menuDNS" class="menu-content" style="text-align:center;">
 
-<div class="app-item">
-<img src="logogame.png">
-<div>ĐẾM VÒNG V1</div>
-<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa',this)">SAO CHÉP</div>
-</div>
-
-<div class="app-item">
-<img src="logogame.png">
-<div>ĐẾM VÒNG V2</div>
-<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa',this)">SAO CHÉP</div>
+<div class="copy-btn" onclick="downloadDNS(this)">
+TẢI NHT DNS🔫
 </div>
 
 </div>
