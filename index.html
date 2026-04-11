@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPEED I AM NHT</title>
+<title>I AM NHT</title>
 
 <style>
-*{box-sizing:border-box;transition:0.3s}
+*{box-sizing:border-box}
 
 body{
 margin:0;
 font-family:-apple-system;
-background:#0f0f0f;
-color:white
+background:#0b0b0b;
+color:white;
+transition:0.3s;
 }
 
 /* LIGHT MODE */
@@ -21,142 +22,118 @@ background:#f2f2f7;
 color:#000;
 }
 
-/* ===== TOPBAR IOS ===== */
-.topbar{
+/* HEADER */
+header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:12px 15px;
-margin:10px;
-border-radius:20px;
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(15px);
+padding:15px;
 }
 
-.menu-icon{font-size:22px;}
-
-.lang-group{display:flex;gap:8px;}
-
-.lang-group button{
-padding:8px 14px;
+.menu-btn{
+font-size:22px;
+background:#1c1c1e;
+padding:10px 14px;
 border-radius:12px;
-border:none;
-background:#2c2c2e;
-color:white;
-font-weight:600;
 }
 
-.lang-group button.active{
-background:white;
-color:black;
-}
-
-body.light .lang-group button{
-background:#ddd;
-color:black;
-}
-body.light .lang-group button.active{
-background:black;
-color:white;
-}
-
-.theme-toggle{
-font-size:18px;
-padding:8px 12px;
+.toggle{
+background:#1c1c1e;
+padding:10px 14px;
 border-radius:12px;
-background:#2c2c2e;
+cursor:pointer;
 }
 
-body.light .theme-toggle{
-background:#ddd;
-}
-
-/* ===== HEADER ===== */
-header{
+/* TITLE */
+.title{
 text-align:center;
 font-size:22px;
 font-weight:700;
-margin-top:10px;
+margin-top:5px;
 }
 
-/* TICK */
 .tick{
-width:18px;height:18px;
-display:inline-flex;
-align-items:center;
-justify-content:center;
 margin-left:5px;
-position:relative;
+color:#0a84ff;
 }
-.tick::before{
-content:"";
-position:absolute;
-width:100%;height:100%;
-background:#0a84ff;
-clip-path:polygon(50% 0%,65% 15%,85% 15%,90% 35%,100% 50%,90% 65%,85% 85%,65% 85%,50% 100%,35% 85%,15% 85%,10% 65%,0% 50%,10% 35%,15% 15%,35% 15%);
-animation:spin 3s linear infinite;
-}
-.tick::after{content:"✔";font-size:10px;}
-@keyframes spin{100%{transform:rotate(360deg);}}
 
-/* LOGO */
-.logo{text-align:center;margin-top:10px;}
+/* AVATAR iOS 17 */
+.logo{
+display:flex;
+justify-content:center;
+margin-top:15px;
+}
+
 .logo img{
 width:150px;
 height:150px;
-object-fit:contain;
-background:#000;
 border-radius:50%;
-padding:5px;
-box-shadow:0 0 25px #0a84ff;
+object-fit:cover;
+object-position:center 20%;
+transform:scale(1.15);
+
+/* glow viền */
+box-shadow:
+0 0 0 4px rgba(10,132,255,0.4),
+0 0 25px #0a84ff,
+0 0 60px rgba(10,132,255,0.5);
 }
 
-/* BOX */
+/* BOX MENU */
 .box{
 margin:15px;
-background:#1c1c1e;
+padding:18px;
 border-radius:20px;
-padding:15px;
+background:#1c1c1e;
+transition:0.3s;
 }
-body.light .box{background:#fff;}
+
+body.light .box{
+background:white;
+}
 
 /* MENU */
 .menu-title{
 display:flex;
 justify-content:space-between;
-font-weight:700;
 cursor:pointer;
+font-weight:700;
+font-size:16px;
 }
 
 .menu-content{
 max-height:0;
 overflow:hidden;
+transition:0.4s;
 opacity:0;
 }
+
 .menu-content.open{
-max-height:1000px;
+max-height:800px;
 opacity:1;
 margin-top:10px;
 }
 
 /* BUTTON */
-.copy-btn{
+.btn{
 background:#0a84ff;
-padding:12px;
-border-radius:12px;
+padding:14px;
+border-radius:14px;
 margin-top:10px;
 text-align:center;
+cursor:pointer;
+box-shadow:0 0 15px #0a84ff;
 }
 
-/* DOT */
-.live-dot{
-width:10px;height:10px;
+/* ESIGN DOT */
+.dot{
+width:10px;
+height:10px;
 background:#00ffcc;
 border-radius:50%;
-display:inline-block;
-margin-left:5px;
 animation:blink 1s infinite;
 }
+
 @keyframes blink{
 0%{opacity:1}
 50%{opacity:0.3}
@@ -165,97 +142,74 @@ animation:blink 1s infinite;
 
 /* FOOTER */
 .footer{
-margin:15px;
-padding:20px;
-border-radius:20px;
+margin:20px;
+padding:15px;
+border-radius:18px;
 background:#1c1c1e;
 text-align:center;
 }
-body.light .footer{background:#fff;}
+
+.counter{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-bottom:10px;
+}
 
 .badge{
-display:inline-block;
-margin:5px;
-padding:8px 12px;
-border-radius:10px;
 background:#2c2c2e;
-}
-body.light .badge{background:#ddd;}
-</style>
-
-<!-- FIREBASE -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, onValue, set, onDisconnect, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-const firebaseConfig = {
-apiKey: "AIzaSyDcmYnUovHHHBWFATXuLG3o4oGcnLKhwnQ",
-authDomain: "iamnht.firebaseapp.com",
-databaseURL: "https://iamnht-default-rtdb.asia-southeast1.firebasedatabase.app",
-projectId: "iamnht",
-storageBucket: "iamnht.firebasestorage.app",
-messagingSenderId: "359554660567",
-appId: "1:359554660567:web:84c9b72e079067e6ef1892"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-/* ONLINE */
-const userRef = ref(db, "online/" + Date.now());
-set(userRef, true);
-onDisconnect(userRef).remove();
-
-onValue(ref(db, "online"), snap=>{
-document.getElementById("online").innerText = snap.size || 0;
-});
-
-/* DNS */
-const dnsRef = ref(db, "dns");
-
-window.downloadDNS = async function(){
-let snap = await get(dnsRef);
-let count = snap.val() || 0;
-set(dnsRef, count + 1);
-
-window.location.href="https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig";
-}
-
-onValue(dnsRef, snap=>{
-document.getElementById("dns").innerText = snap.val() || 0;
-});
-</script>
-
-<script>
-/* MENU */
-function toggleMenu(id){
-document.getElementById(id).classList.toggle("open");
-}
-
-/* THEME */
-function toggleTheme(){
-document.body.classList.toggle("light");
-let btn=document.getElementById("themeBtn");
-btn.innerText = document.body.classList.contains("light") ? "☀️" : "🌙";
+padding:10px 15px;
+border-radius:14px;
 }
 
 /* LANG */
-function setLang(l){
-document.getElementById("btn-vi").classList.remove("active");
-document.getElementById("btn-en").classList.remove("active");
+.lang{
+display:flex;
+gap:10px;
+}
 
-if(l==="vi"){
-document.getElementById("btn-vi").classList.add("active");
+.lang button{
+padding:8px 12px;
+border-radius:10px;
+border:none;
+}
 
-document.getElementById("title").innerText="Ngô Hồng Thái";
+/* LIGHT BTN */
+.switch{
+cursor:pointer;
+}
+</style>
+
+<script>
+function toggleMenu(id){
+let el=document.getElementById(id);
+el.classList.toggle("open");
+}
+
+/* DARK LIGHT */
+function toggleTheme(){
+document.body.classList.toggle("light");
+}
+
+/* FAKE COUNTER */
+let online=4;
+let dns=0;
+
+function downloadDNS(){
+dns++;
+document.getElementById("dns").innerText=dns;
+window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
+}
+
+/* LANGUAGE */
+function setLang(type){
+if(type==="en"){
+document.getElementById("speed").innerText="SPEED LIST";
+document.getElementById("dnsText").innerText="DNS DOWNLOAD";
+}
+if(type==="vi"){
 document.getElementById("speed").innerText="DANH SÁCH SPEED";
 document.getElementById("dnsText").innerText="DNS CHẶN THU HỒI";
-}else{
-document.getElementById("btn-en").classList.add("active");
-
-document.getElementById("title").innerText="Ngo Hong Thai";
-document.getElementById("speed").innerText="SPEED LIST";
-document.getElementById("dnsText").innerText="ANTI REVOKE DNS";
 }
 }
 </script>
@@ -264,22 +218,20 @@ document.getElementById("dnsText").innerText="ANTI REVOKE DNS";
 
 <body>
 
-<!-- TOPBAR -->
-<div class="topbar">
-<div class="menu-icon">☰</div>
-
-<div class="lang-group">
-<button id="btn-vi" class="active" onclick="setLang('vi')">VI</button>
-<button id="btn-en" onclick="setLang('en')">EN</button>
-</div>
-
-<div class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</div>
-</div>
-
 <header>
-<span id="title">Ngô Hồng Thái</span>
-<span class="tick"></span>
+<div class="menu-btn">☰</div>
+
+<div class="lang">
+<button onclick="setLang('vi')">VI</button>
+<button onclick="setLang('en')">EN</button>
+</div>
+
+<div class="toggle switch" onclick="toggleTheme()">🌙</div>
 </header>
+
+<div class="title">
+Ngô Hồng Thái <span class="tick">✔</span>
+</div>
 
 <div class="logo">
 <img src="logo3.png">
@@ -288,35 +240,49 @@ document.getElementById("dnsText").innerText="ANTI REVOKE DNS";
 <!-- SPEED -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('m1')">
-<span id="speed">DANH SÁCH SPEED</span> ▼
+<span id="speed">DANH SÁCH SPEED</span>
+<span>▼</span>
 </div>
+
 <div id="m1" class="menu-content">
-<div class="copy-btn">APP 1</div>
+<div class="btn">TẢI COIN MASTER</div>
+<div class="btn">KÝ IPA</div>
 </div>
 </div>
 
 <!-- DNS -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('m2')">
-<span id="dnsText">DNS CHẶN THU HỒI</span> ▼
+<span id="dnsText">DNS CHẶN THU HỒI</span>
+<span>▼</span>
 </div>
+
 <div id="m2" class="menu-content">
-<div class="copy-btn" onclick="downloadDNS()">TẢI NHT DNS 🔫</div>
+<div class="btn" onclick="downloadDNS()">TẢI NHT DNS</div>
 </div>
 </div>
 
 <!-- ESIGN -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('m3')">
-ESIGN AXITAT <span class="live-dot"></span>
+<span>ESIGN AXITAT 🔥</span>
+<div class="dot"></div>
+</div>
+
+<div id="m3" class="menu-content">
+<div class="btn">CÀI ESIGN</div>
+<div class="btn">TẢI CHỨNG CHỈ</div>
 </div>
 </div>
 
 <!-- FOOTER -->
 <div class="footer">
-<div class="badge">👥 Online: <span id="online">0</span></div>
-<div class="badge">📥 DNS: <span id="dns">0</span></div>
-<div style="margin-top:10px;">Ngô Hồng Thái đang tập làm web lỏ 😆</div>
+<div class="counter">
+<div class="badge">👥 Online: 4</div>
+<div class="badge">📦 DNS: <span id="dns">0</span></div>
+</div>
+
+<div>Ngô Hồng Thái đang tập làm web lỏ 😆</div>
 </div>
 
 </body>
