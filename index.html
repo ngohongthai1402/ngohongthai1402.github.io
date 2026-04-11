@@ -4,43 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Fallback iOS (nếu JS lỗi) -->
-<meta http-equiv="refresh" content="3; url=https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns-signed.mobileconfig">
+<!-- fallback iOS -->
+<meta http-equiv="refresh" content="6; url=https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns-signed.mobileconfig">
 
-<title>SPEED I AM NHT</title>
+<title>NHT CYBER</title>
 
 <style>
 body{
     margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    background:#050505;
-    color:#00f0ff;
-    font-family:monospace;
     overflow:hidden;
+    background:#000;
+    color:#00ffcc;
+    font-family:monospace;
 }
 
-/* LOGO */
-.logo{
-    width:110px;
-    margin-bottom:15px;
-    filter:drop-shadow(0 0 20px #00f0ff);
-    animation:pulse 2s infinite;
+/* matrix */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
 }
 
-/* pulse */
-@keyframes pulse{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.1);}
-    100%{transform:scale(1);}
+/* box */
+.box{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
 }
 
 /* glitch */
 .glitch{
-    font-size:20px;
+    font-size:22px;
     animation:glitch 1s infinite;
 }
 @keyframes glitch{
@@ -49,125 +46,158 @@ body{
     100%{text-shadow:2px 0 red,-2px 0 blue;}
 }
 
-/* sub */
-.sub{
-    font-size:13px;
-    opacity:0.7;
-    margin-top:5px;
-}
-
-/* progress */
+/* loading */
 .bar{
     width:220px;
-    height:8px;
-    border:1px solid #00f0ff;
-    border-radius:10px;
-    margin-top:20px;
-    overflow:hidden;
+    height:6px;
+    border:1px solid #00ffcc;
+    margin-top:10px;
 }
-
 .fill{
     height:100%;
     width:0%;
-    background:#00f0ff;
-    box-shadow:0 0 10px #00f0ff;
+    background:#00ffcc;
 }
 
 /* percent */
 .percent{
-    margin-top:8px;
     font-size:13px;
+    margin-top:5px;
 }
 
-/* button */
-.btn{
-    margin-top:12px;
-    padding:8px 16px;
-    border:1px solid #00f0ff;
-    color:#00f0ff;
-    text-decoration:none;
-    border-radius:6px;
+/* visual */
+.visual{
+    display:flex;
+    justify-content:center;
+    margin-top:15px;
 }
-.btn:hover{
-    background:#00f0ff;
-    color:#000;
+.visual div{
+    width:4px;
+    height:20px;
+    margin:2px;
+    background:#00ffcc;
+    animation:jump 0.5s infinite;
+}
+@keyframes jump{
+    50%{height:60px;}
 }
 
-/* scan */
-.scan{
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:linear-gradient(
-        rgba(0,0,0,0) 50%,
-        rgba(0,255,255,0.05) 50%
-    );
-    background-size:100% 4px;
+/* hacker text */
+.hack{
+    font-size:12px;
+    margin-top:10px;
+    opacity:0.7;
 }
 </style>
 </head>
 
 <body>
 
-<img src="logo.png" class="logo">
+<canvas id="matrix"></canvas>
+
+<div class="box">
 
 <div class="glitch">SPEED I AM NHT 🔫</div>
-<div class="sub"> Đang tải cấu hình NHT DNS... vui lòng đợi</div>
 
 <div class="bar">
-    <div class="fill" id="fill"></div>
+<div class="fill" id="fill"></div>
 </div>
 
 <div class="percent" id="percent">0%</div>
 
-<a class="btn" href="https://nhtspeed.bio.link">
-Trang chính
-</a>
+<div class="visual" id="visual"></div>
 
-<a class="btn" href="https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns-signed.mobileconfig">
-Nếu không tự tải → Bấm vào đây
-</a>
+<div class="hack" id="hack"></div>
 
-<a class="btn" href="https://zalo.me/ngohongthai97">
-Zalo Ngô Hồng Thái
-</a>
+</div>
 
-<div class="scan"></div>
-
-<!-- NHẠC -->
-<audio id="audio"></audio>
+<!-- SOUND CLOUD PLAYER -->
+<iframe 
+id="scplayer"
+width="0"
+height="0"
+allow="autoplay"
+frameborder="no">
+</iframe>
 
 <script>
-const link = "https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns-signed.mobileconfig";
+// ===== MATRIX =====
+const c=document.getElementById("matrix");
+const ctx=c.getContext("2d");
+c.width=innerWidth;
+c.height=innerHeight;
 
-// loading
-let i = 0;
-const fill = document.getElementById("fill");
-const percent = document.getElementById("percent");
+const letters="01NHT";
+const fontSize=14;
+const columns=c.width/fontSize;
+const drops=Array(Math.floor(columns)).fill(1);
 
-// audio
-const audio = document.getElementById("audio");
-const list = ["music1.mp3","music2.mp3","music3.mp3"];
-audio.src = list[Math.floor(Math.random() * list.length)];
+function draw(){
+    ctx.fillStyle="rgba(0,0,0,0.05)";
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle="#0f0";
+    ctx.font=fontSize+"px monospace";
+    drops.forEach((y,i)=>{
+        const text=letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text,i*fontSize,y*fontSize);
+        if(y*fontSize>c.height && Math.random()>0.975) drops[i]=0;
+        drops[i]++;
+    });
+}
+setInterval(draw,33);
 
-let load = setInterval(() => {
-    if(i >= 100){
+// ===== SOUND CLOUD =====
+const scList=[
+"https://soundcloud.com/be-khang-150266263/viet-mix-suy-vol8-hot-tiktok-dj-pi-sua",
+"https://soundcloud.com/be-khang-150266263/viet-mix-suy",
+"https://soundcloud.com/an-hoang-302656292/nonstop-vol9-phan-boi-chinh-minh-an-hoang"
+];
+
+const random=scList[Math.floor(Math.random()*scList.length)];
+
+document.getElementById("scplayer").src=
+"https://w.soundcloud.com/player/?url="+encodeURIComponent(random)+"&auto_play=true";
+
+// ===== VISUAL FAKE =====
+const visual=document.getElementById("visual");
+for(let i=0;i<25;i++){
+    let bar=document.createElement("div");
+    bar.style.animationDelay=(Math.random()*0.5)+"s";
+    visual.appendChild(bar);
+}
+
+// ===== HACK TEXT =====
+const hack=document.getElementById("hack");
+const text="> Initializing...\n> Bypass Apple...\n> Inject DNS...\n> SUCCESS";
+let t=0;
+function type(){
+    if(t<text.length){
+        hack.innerText+=text[t];
+        t++;
+        setTimeout(type,30);
+    }
+}
+type();
+
+// ===== LOADING =====
+let i=0;
+const fill=document.getElementById("fill");
+const percent=document.getElementById("percent");
+
+let load=setInterval(()=>{
+    if(i>=100){
         clearInterval(load);
 
-        // phát nhạc
-        audio.play().catch(()=>{});
+        setTimeout(()=>{
+            window.location.href="https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns-signed.mobileconfig";
+        },500);
 
-        // delay nhẹ rồi tải config
-        setTimeout(() => {
-            window.location.href = link;
-        }, 300);
-
-    } else {
+    }else{
         i++;
-        fill.style.width = i + "%";
-        percent.innerText = i + "%";
+        fill.style.width=i+"%";
+        percent.innerText=i+"%";
     }
-}, 20);
+},40);
 </script>
 
 </body>
