@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+    <key>name</key>
+    <string>NHT CERT 🔫</string>
+
+    <key>password</key>
+    <string>123456</string>
+
+    <key>p12</key>
+    <string>https://raw.githubusercontent.com/USERNAME/REPO/main/cert.p12</string>
+
+    <key>mobileprovision</key>
+    <string>https://raw.githubusercontent.com/USERNAME/REPO/main/profile.mobileprovision</string>
+
+    <!-- bundle id dùng khi ký app -->
+    <key>bundle-identifier</key>
+    <string>com.nht.app</string>
+
+</dict>
+</plist>
