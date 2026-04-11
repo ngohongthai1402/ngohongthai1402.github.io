@@ -20,15 +20,9 @@ body.light{
 background:#f2f2f7;
 color:#000;
 }
-body.light .box{
-background:white;
-}
-body.light .app-item{
-background:#eee;
-}
-body.light .video-btn{
-background:#ddd;
-}
+body.light .box{background:#fff;}
+body.light .app-item{background:#eee;}
+body.light .video-btn{background:#ddd;}
 
 /* HEADER */
 header{
@@ -39,9 +33,10 @@ padding:15px;
 font-size:20px;
 font-weight:700;
 position:relative;
+background:transparent;
 }
 
-/* BUTTON DARK MODE */
+/* DARK BUTTON */
 .toggle-theme{
 position:absolute;
 right:15px;
@@ -53,14 +48,41 @@ cursor:pointer;
 box-shadow:0 0 10px #0a84ff;
 }
 
+/* TICK XANH */
+.tick{
+width:18px;height:18px;
+position:relative;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+margin-left:6px;
+}
+.tick::before{
+content:"";
+position:absolute;
+width:100%;height:100%;
+background:#0a84ff;
+clip-path:polygon(50% 0%,65% 15%,85% 15%,90% 35%,100% 50%,90% 65%,85% 85%,65% 85%,50% 100%,35% 85%,15% 85%,10% 65%,0% 50%,10% 35%,15% 15%,35% 15%);
+animation:spin 3s linear infinite;
+box-shadow:0 0 10px #0a84ff;
+}
+.tick::after{
+content:"✔";
+font-size:10px;
+z-index:1;
+}
+@keyframes spin{100%{transform:rotate(360deg);}}
+
 /* LOGO */
-.logo{text-align:center}
+.logo{text-align:center;margin-top:10px;}
 .logo img{
-width:140px;
-height:140px;
-object-fit:cover;
+width:150px;
+height:150px;
+object-fit:contain;
+background:#000;
 border-radius:50%;
 box-shadow:0 0 25px #0a84ff;
+padding:5px;
 }
 
 /* BOX */
@@ -128,7 +150,7 @@ width:10px;height:10px;
 background:#00ffcc;
 border-radius:50%;
 display:inline-block;
-margin-left:5px;
+margin-left:6px;
 animation:blink 1s infinite;
 }
 @keyframes blink{
@@ -141,7 +163,7 @@ animation:blink 1s infinite;
 .footer{
 text-align:center;
 padding:20px;
-margin-top:20px;
+margin:20px;
 background:#1c1c1e;
 border-radius:20px;
 }
@@ -159,18 +181,14 @@ padding:10px 15px;
 border-radius:12px;
 }
 
-/* LIGHT FIX FOOTER */
-body.light .footer{
-background:#fff;
-}
-body.light .badge{
-background:#ddd;
-}
+body.light .footer{background:#fff;}
+body.light .badge{background:#ddd;}
 </style>
 
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, onValue, set, onDisconnect, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyDcmYnUovHHHBWFATXuLG3o4oGcnLKhwnQ",
@@ -197,14 +215,16 @@ document.getElementById("online").innerText = snap.size || 0;
 /* DNS COUNT */
 const dnsRef = ref(db, "dns");
 
-window.downloadDNS = function(){
-set(dnsRef, (Math.random()*1)); // trigger
+window.downloadDNS = async function(){
+let snap = await get(dnsRef);
+let count = snap.val() || 0;
+set(dnsRef, count + 1);
+
 window.location.href="https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig";
 }
 
 onValue(dnsRef, snap=>{
-let val = snap.val() || 0;
-document.getElementById("dns").innerText = Math.floor(val);
+document.getElementById("dns").innerText = snap.val() || 0;
 });
 </script>
 
@@ -213,7 +233,6 @@ function toggleMenu(id){
 document.getElementById(id).classList.toggle("open");
 }
 
-/* DARK MODE */
 function toggleTheme(){
 document.body.classList.toggle("light");
 }
@@ -224,7 +243,9 @@ document.body.classList.toggle("light");
 <body>
 
 <header>
-Ngô Hồng Thái
+<span>Ngô Hồng Thái</span>
+<span class="tick"></span>
+
 <div class="toggle-theme" onclick="toggleTheme()">🌙</div>
 </header>
 
@@ -240,7 +261,7 @@ DANH SÁCH SPEED ▼
 
 <div id="m1" class="menu-content">
 <div class="app-item">
-ĐẾM VÒNG
+ĐẾM VÒNG V1
 <div class="copy-btn">SAO CHÉP</div>
 </div>
 </div>
