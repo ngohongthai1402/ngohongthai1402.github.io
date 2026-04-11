@@ -5,42 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SPEED I AM NHT</title>
 
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
-
 <style>
 *{box-sizing:border-box;}
-body{margin:0;font-family:-apple-system;background:#0f0f0f;color:white}
+
+body{
+margin:0;
+font-family:-apple-system;
+background:#0f0f0f;
+color:white
+}
 
 /* HEADER */
 header{
-display:flex;justify-content:center;align-items:center;gap:6px;
-padding:15px;font-size:20px;font-weight:700;
-}
-
-/* ONLINE BOX */
-.status-bar{
 display:flex;
 justify-content:center;
-gap:15px;
-font-size:13px;
-margin-top:-10px;
-margin-bottom:10px;
-opacity:0.9;
-}
-.status-box{
-background:#1c1c1e;
-padding:8px 12px;
-border-radius:12px;
-box-shadow:0 0 10px #0a84ff33;
+align-items:center;
+gap:6px;
+padding:15px;
+font-size:20px;
+font-weight:700;
 }
 
-/* LOGO FIX */
-.logo{text-align:center;overflow:hidden;}
+/* LOGO FIX TRÀN */
+.logo{text-align:center;overflow:hidden}
 .logo img{
 width:120px;
-max-width:100%;
+max-width:90%;
 border-radius:50%;
 box-shadow:0 0 25px #0a84ff;
 }
@@ -51,7 +41,6 @@ margin:15px;
 background:#1c1c1e;
 border-radius:20px;
 padding:15px;
-overflow:hidden;
 }
 
 /* MENU */
@@ -69,162 +58,148 @@ font-weight:700;
 max-height:0;
 overflow:hidden;
 opacity:0;
-transition:0.4s ease;
+transition:0.4s;
 }
 .menu-content.open{
-max-height:1500px;
+max-height:1200px;
 opacity:1;
 margin-top:10px;
-}
-
-/* APP */
-.app-item{
-display:flex;
-flex-direction:column;
-align-items:center;
-background:#2c2c2e;
-padding:15px;
-border-radius:18px;
-margin:12px 0;
-}
-.app-item img{
-width:60px;
-border-radius:15px;
-margin-bottom:10px;
 }
 
 /* BUTTON */
 .copy-btn{
 background:#0a84ff;
+box-shadow:0 0 15px #0a84ff;
 padding:14px;
 border-radius:14px;
-width:100%;
 text-align:center;
 cursor:pointer;
 margin-top:10px;
 }
 
-/* ESIGN */
-.esign-btn,.cert-btn{
-display:flex;
-justify-content:center;
-align-items:center;
-background:#0a84ff;
-padding:14px;
-border-radius:14px;
-margin-top:12px;
-cursor:pointer;
-}
-
-/* IOS 17 MENU */
-.ios-menu{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
-margin-top:10px;
-}
-.ios-item{
-background:#2c2c2e;
-padding:12px;
-border-radius:18px;
+/* STATS */
+.stats{
 text-align:center;
-font-size:12px;
-cursor:pointer;
-}
-.ios-item:hover{
-background:#0a84ff;
+margin-top:15px;
+font-size:14px;
+opacity:0.9;
 }
 
-/* TOAST */
-#toast{
-position:fixed;
-bottom:30px;
-left:50%;
-transform:translateX(-50%);
-background:#111;
-padding:12px 20px;
-border-radius:14px;
-opacity:0;
-transition:0.3s;
+/* FOOTER */
+footer{
+text-align:center;
+padding:20px;
+font-size:13px;
+opacity:0.6;
 }
-#toast.show{opacity:1;}
 </style>
 
-<script>
-// FIREBASE CONFIG
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, set, onValue, onDisconnect, push, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDcmYnUovHHHBWFATXuLG3o4oGcnLKhwnQ",
+  authDomain: "iamnht.firebaseapp.com",
   databaseURL: "https://iamnht-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "iamnht",
+  storageBucket: "iamnht.firebasestorage.app",
+  messagingSenderId: "359554660567",
+  appId: "1:359554660567:web:84c9b72e079067e6ef1892"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-// ONLINE
-let userRef = db.ref("online").push();
-userRef.set(true);
-userRef.onDisconnect().remove();
+/* =========================
+   👤 ĐẾM ONLINE REALTIME
+========================= */
+const userRef = push(ref(db, "online"));
+set(userRef, true);
+onDisconnect(userRef).remove();
 
-db.ref("online").on("value", snap=>{
-document.getElementById("online").innerText = snap.numChildren();
+onValue(ref(db, "online"), (snap)=>{
+  document.getElementById("online").innerText = snap.size || 0;
 });
 
-// DOWNLOAD DNS
-function downloadDNS(btn){
-db.ref("dns_download").transaction(x => (x||0)+1);
+/* =========================
+   📥 ĐẾM DOWNLOAD DNS
+========================= */
+window.downloadDNS = function(){
+  runTransaction(ref(db, "dns_download"), (current)=>{
+    return (current || 0) + 1;
+  });
 
-window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
+  window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
+};
 
-let t=document.getElementById("toast");
-t.innerHTML="📥 Đang tải DNS...";
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),2000);
-}
-
-// COUNT DNS
-db.ref("dns_download").on("value", snap=>{
-document.getElementById("dns").innerText = snap.val() || 0;
+onValue(ref(db, "dns_download"), (snap)=>{
+  document.getElementById("dnsCount").innerText = snap.val() || 0;
 });
+</script>
 
-// MENU
+<script>
 function toggleMenu(id,arrow){
 let el=document.getElementById(id);
 el.classList.toggle("open");
 arrow.classList.toggle("rotate");
 }
-
-// COPY
-function copyLink(link){
-navigator.clipboard.writeText(link);
-let t=document.getElementById("toast");
-t.innerHTML="✔ Đã sao chép";
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),2000);
-}
 </script>
+
 </head>
 
 <body>
 
-<header>Ngô Hồng Thái</header>
-
-<div class="status-bar">
-<div class="status-box">👥 Online: <span id="online">0</span></div>
-<div class="status-box">📥 DNS: <span id="dns">0</span></div>
-</div>
+<header>
+Ngô Hồng Thái
+</header>
 
 <div class="logo">
 <img src="logo.png">
 </div>
 
-<!-- IOS MENU -->
+<!-- MENU SPEED -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('ios',this.querySelector('.arrow'))">
-<span>MENU IOS 17</span>
+<div class="menu-title" onclick="toggleMenu('m1',this.querySelector('.arrow'))">
+<span>DANH SÁCH SPEED</span>
 <span class="arrow">▼</span>
 </div>
 
-<div id="ios" class="menu-content">
-<div class="ios-menu">
+<div id="m1" class="menu-content">
 
-<div class="ios-item" onclick="
+<div class="copy-btn">ĐẾM VÒNG V1</div>
+<div class="copy-btn">ĐẾM VÒNG V2</div>
+<div class="copy-btn">SPEED IGG</div>
+
+</div>
+</div>
+
+<!-- DNS -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('dns',this.querySelector('.arrow'))">
+<span>DNS CHẶN THU HỒI</span>
+<span class="arrow">▼</span>
+</div>
+
+<div id="dns" class="menu-content">
+
+<div class="copy-btn" onclick="downloadDNS()">
+📥 TẢI NHT DNS
+</div>
+
+<div class="stats">
+👤 Online: <b id="online">0</b><br>
+📥 Đã tải DNS: <b id="dnsCount">0</b>
+</div>
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+Ngô Hồng Thái đang tập làm web lỏ 😅
+</footer>
+
+</body>
+</html>
