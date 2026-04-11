@@ -1,4 +1,4 @@
-<!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
@@ -77,6 +77,35 @@ background:#1c1c1e;border-radius:12px;
 cursor:pointer;
 }
 
+/* ESIGN */
+.esign-logo{
+width:90px;
+border-radius:20px;
+margin:15px auto;
+display:block;
+box-shadow:0 0 25px #0a84ff;
+animation:spinLogo 6s linear infinite;
+}
+@keyframes spinLogo{
+100%{transform:rotate(360deg);}
+}
+
+.esign-btn{
+background:linear-gradient(45deg,#0a84ff,#00c6ff);
+padding:14px;border-radius:14px;
+margin-top:12px;font-weight:700;
+cursor:pointer;text-align:center;
+box-shadow:0 0 20px #0a84ff;
+}
+
+.cert-btn{
+background:#2c2c2e;
+padding:14px;border-radius:14px;
+margin-top:12px;text-align:center;
+cursor:pointer;
+border:1px solid #00ffcc;
+}
+
 /* FOOTER */
 .footer{
 margin-top:30px;
@@ -112,19 +141,17 @@ set(userRef,true);
 onDisconnect(userRef).remove();
 
 onValue(ref(db,"online"),snap=>{
-let count = snap.size || 0;
-document.getElementById("onlineFooter").innerText = count;
+document.getElementById("onlineFooter").innerText = snap.size || 0;
 });
 
-/* DNS COUNT */
+/* DNS */
 window.downloadDNS = function(){
-runTransaction(ref(db,"dns_download"), (x)=>(x||0)+1);
+runTransaction(ref(db,"dns_download"),x=>(x||0)+1);
 window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
 }
 
 onValue(ref(db,"dns_download"),snap=>{
-let count = snap.val() || 0;
-document.getElementById("dnsFooter").innerText = count;
+document.getElementById("dnsFooter").innerText = snap.val() || 0;
 });
 </script>
 
@@ -134,7 +161,6 @@ let el=document.getElementById(id);
 el.classList.toggle("open");
 arrow.classList.toggle("rotate");
 }
-
 function toggleIOS(){
 document.getElementById("panel").classList.toggle("open");
 }
@@ -157,7 +183,7 @@ document.getElementById("panel").classList.toggle("open");
 <header>Ngô Hồng Thái</header>
 
 <div class="logo">
-<img src="logo.png">
+<img src="logo3.png">
 </div>
 
 <!-- SPEED -->
@@ -186,6 +212,30 @@ document.getElementById("panel").classList.toggle("open");
 </div>
 </div>
 
+<!-- ESIGN -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('menu2',this.querySelector('.arrow'))">
+<span>ESIGN AXITAT 🔥</span>
+<span class="arrow">▼</span>
+</div>
+
+<div id="menu2" class="menu-content" style="text-align:center;">
+
+<img src="esign.png" class="esign-logo">
+
+<div class="esign-btn"
+onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
+🚀 CÀI ĐẶT ESIGN
+</div>
+
+<div class="cert-btn"
+onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/refs/heads/main/CertificateAxitat.zip'">
+📥 TẢI CHỨNG CHỈ
+</div>
+
+</div>
+</div>
+
 <!-- FOOTER -->
 <div class="footer">
 
@@ -204,4 +254,4 @@ document.getElementById("panel").classList.toggle("open");
 </div>
 
 </body>
-</html> html>
+</html> 
