@@ -1,22 +1,30 @@
-<!DOCTYPE html><html lang="vi">
+<!DOCTYPE html>
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPEED I AM NHT</title><style>
+<title>SPEED I AM NHT</title>
+
+<style>
 *{box-sizing:border-box;}
 
-/* ===== THEME ===== */
 body{
 margin:0;
 font-family:-apple-system;
 background:#0f0f0f;
 color:white;
-transition:.3s;
+transition:0.3s;
 }
+
+/* LIGHT MODE */
 body.light{
 background:#f2f2f7;
 color:#000;
 }
+body.light .box{background:#fff;}
+body.light .app-item{background:#e5e5ea;}
+body.light .video-btn{background:#e5e5ea;}
+body.light #toast{background:#ddd;color:#000;}
 
 /* HEADER */
 header{
@@ -29,28 +37,57 @@ font-size:20px;
 font-weight:700;
 }
 
-/* DARK MODE BUTTON */
-.theme-toggle{
-position:fixed;
-top:15px;
-right:15px;
-width:45px;height:45px;
-border-radius:12px;
-background:#0a84ff;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:18px;
-box-shadow:0 0 15px #0a84ff;
-z-index:9999;
-cursor:pointer;
+/* TICK */
+.tick{
+width:18px;height:18px;position:relative;
+display:flex;align-items:center;justify-content:center;
 }
+.tick::before{
+content:"";
+position:absolute;
+width:100%;height:100%;
+background:#0a84ff;
+clip-path:polygon(50% 0%,65% 15%,85% 15%,90% 35%,100% 50%,90% 65%,85% 85%,65% 85%,50% 100%,35% 85%,15% 85%,10% 65%,0% 50%,10% 35%,15% 15%,35% 15%);
+box-shadow:0 0 10px #0a84ff;
+animation:spin 3s linear infinite;
+}
+.tick::after{content:"✔";font-size:10px;z-index:1;}
+@keyframes spin{100%{transform:rotate(360deg);}}
 
 /* LOGO */
 .logo{text-align:center}
 .logo img{
 width:120px;border-radius:50%;
 box-shadow:0 0 25px #0a84ff
+}
+
+/* CONTROL BAR */
+.control{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:10px;
+}
+
+.btn-mini{
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:600;
+}
+
+/* ONLINE */
+#onlineBox{
+background:#1c1c1e;
+box-shadow:0 0 10px #00ffcc;
+animation:blink 1.5s infinite;
+}
+body.light #onlineBox{background:#fff;}
+
+@keyframes blink{
+0%{opacity:1}
+50%{opacity:0.6}
+100%{opacity:1}
 }
 
 /* BOX */
@@ -60,10 +97,7 @@ background:#1c1c1e;
 border-radius:20px;
 padding:15px;
 overflow:hidden;
-transition:.3s;
-}
-body.light .box{
-background:#fff;
+transition:0.3s;
 }
 
 /* MENU */
@@ -89,15 +123,6 @@ opacity:1;
 margin-top:10px;
 }
 
-/* DOT */
-.menu-dot{
-width:10px;height:10px;
-background:#0a84ff;
-border-radius:50%;
-box-shadow:0 0 10px #0a84ff;
-animation:blink 1s infinite;
-}
-
 /* SPEED */
 .app-item{
 display:flex;
@@ -107,12 +132,7 @@ background:#2c2c2e;
 padding:15px;
 border-radius:18px;
 margin:12px 0;
-transition:.3s;
 }
-body.light .app-item{
-background:#e5e5ea;
-}
-
 .app-item img{
 width:60px;border-radius:15px;
 margin-bottom:10px;
@@ -128,47 +148,7 @@ border-radius:14px;
 width:100%;
 text-align:center;
 cursor:pointer;
-position:relative;
-overflow:hidden;
 margin-top:10px;
-}
-
-/* ripple */
-.copy-btn::after{
-content:"";
-position:absolute;
-width:10px;height:10px;
-background:rgba(255,255,255,0.5);
-border-radius:50%;
-transform:scale(0);
-}
-.copy-btn.ripple::after{
-animation:ripple 0.6s;
-}
-@keyframes ripple{
-0%{transform:scale(0);opacity:1;}
-100%{transform:scale(20);opacity:0;}
-}
-
-/* ESIGN */
-.esign-logo{
-width:90px;border-radius:20px;
-margin:15px auto;
-display:block;
-box-shadow:0 0 25px #0a84ff;
-}
-.esign-btn,.cert-btn{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-background:#0a84ff;
-padding:14px;
-border-radius:14px;
-margin-top:12px;
-font-weight:700;
-box-shadow:0 0 15px #0a84ff;
-cursor:pointer;
 }
 
 /* VIDEO */
@@ -181,28 +161,9 @@ border-radius:14px;
 margin-top:10px;
 background:#2c2c2e;
 cursor:pointer;
-transition:.3s;
 }
-body.light .video-btn{
-background:#e5e5ea;
-}
-
 .video-btn.active{
 background:#0a84ff;
-box-shadow:0 0 15px #0a84ff;
-}
-
-.video{
-max-height:0;
-overflow:hidden;
-opacity:0;
-transition:0.4s;
-text-align:center;
-}
-.video.open{
-max-height:600px;
-opacity:1;
-margin-top:10px;
 }
 
 /* TOAST */
@@ -218,111 +179,109 @@ opacity:0;
 transition:0.3s;
 }
 #toast.show{opacity:1;}
-body.light #toast{
-background:#ddd;
-color:#000;
-}
-</style><script>
-/* ===== THEME ===== */
-function toggleTheme(){
-document.body.classList.toggle("light");
-localStorage.setItem("theme", document.body.classList.contains("light") ? "light":"dark");
-}
+</style>
 
-window.onload=function(){
-if(localStorage.getItem("theme")==="light"){
-document.body.classList.add("light");
-}
-}
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
-/* ===== CODE CŨ GIỮ NGUYÊN ===== */
-let currentVideo=null;
-let players={};
-let muteState={};
-
-let tag=document.createElement('script');
-tag.src="https://www.youtube.com/iframe_api";
-document.head.appendChild(tag);
-
-function onYouTubeIframeAPIReady(){
-["v1","v2"].forEach(id=>{
-players[id]=new YT.Player(id+"-frame");
-muteState[id]=true;
-});
-}
-
+<script>
+/* MENU */
 function toggleMenu(id,arrow){
 let el=document.getElementById(id);
 el.classList.toggle("open");
 arrow.classList.toggle("rotate");
 }
 
+/* COPY */
 function copyLink(link,btn){
 navigator.clipboard.writeText(link);
-btn.classList.add("ripple");
-setTimeout(()=>btn.classList.remove("ripple"),600);
-
 let t=document.getElementById("toast");
-t.innerHTML="✔ Đã sao chép link";
+t.innerHTML="✔ Đã sao chép";
 t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-function downloadDNS(btn){
-btn.classList.add("ripple");
-setTimeout(()=>btn.classList.remove("ripple"),600);
-
-window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
-
-let t=document.getElementById("toast");
-t.innerHTML="📥 Đang tải NHT DNS...";
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),2000);
+/* THEME */
+function toggleTheme(){
+document.body.classList.toggle("light");
+localStorage.setItem("theme",document.body.classList.contains("light"));
 }
 
-function toggleVideo(id,btn){
-if(currentVideo===id){
-players[id].pauseVideo();
-document.getElementById(id).classList.remove("open");
-btn.classList.remove("active");
-btn.querySelector(".play").innerHTML="▶";
-currentVideo=null;
-return;
-}
-
-for(let v in players){
-players[v].pauseVideo();
-document.getElementById(v).classList.remove("open");
-
-let b=document.querySelector(`[data-id="${v}"]`);
-if(b){
-b.classList.remove("active");
-b.querySelector(".play").innerHTML="▶";
+window.onload=()=>{
+if(localStorage.getItem("theme")==="true"){
+document.body.classList.add("light");
 }
 }
 
-document.getElementById(id).classList.add("open");
-players[id].playVideo();
+/* FIREBASE */
+const firebaseConfig = {
+  apiKey: "AIzaSyDcmYnUovHHHBWFATXuLG3o4oGcnLKhwnQ",
+  authDomain: "iamnht.firebaseapp.com",
+  databaseURL: "https://iamnht-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "iamnht",
+  storageBucket: "iamnht.firebasestorage.app",
+  messagingSenderId: "359554660567",
+  appId: "1:359554660567:web:84c9b72e079067e6ef1892"
+};
 
-btn.classList.add("active");
-btn.querySelector(".play").innerHTML="⏸";
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-currentVideo=id;
-}
+/* ONLINE */
+const userRef = db.ref("online").push();
+userRef.set(true);
+userRef.onDisconnect().remove();
 
-function toggleSound(id,icon){
-if(muteState[id]){
-players[id].unMute();
-icon.innerHTML="🔊";
-}else{
-players[id].mute();
-icon.innerHTML="🔇";
-}
-muteState[id]=!muteState[id];
-}
-</script></head><body><!-- NÚT DARK MODE --><div class="theme-toggle" onclick="toggleTheme()">🌙</div><header>
+db.ref("online").on("value", snap=>{
+document.getElementById("onlineBox").innerHTML =
+"👥 Online: " + (snap.numChildren() || 0);
+});
+</script>
+
+</head>
+
+<body>
+
+<header>
 Ngô Hồng Thái <span class="tick"></span>
-</header><div class="logo">
+</header>
+
+<div class="logo">
 <img src="logo.png">
-</div><!-- (PHẦN CÒN LẠI GIỮ NGUYÊN 100% NHƯ MÀY) --><div id="toast"></div></body>
+</div>
+
+<!-- CONTROL -->
+<div class="control">
+<div class="btn-mini" style="background:#0a84ff;" onclick="toggleTheme()">🌙 / ☀️</div>
+<div class="btn-mini" id="onlineBox">👥 Online: 0</div>
+</div>
+
+<!-- SPEED -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('menu1',this.querySelector('.arrow'))">
+<span>DANH SÁCH SPEED</span>
+<span class="arrow">▼</span>
+</div>
+
+<div id="menu1" class="menu-content">
+
+<div class="app-item">
+<img src="logogame.png">
+<div>ĐẾM VÒNG V1</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa',this)">SAO CHÉP</div>
+</div>
+
+<div class="app-item">
+<img src="logogame.png">
+<div>ĐẾM VÒNG V2</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa',this)">SAO CHÉP</div>
+</div>
+
+</div>
+</div>
+
+<div id="toast"></div>
+
+</body>
 </html>
