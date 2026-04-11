@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+l<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
@@ -453,7 +453,7 @@ CÀI ĐẶT APP ESIGN <span class="active-dot"></span>
 </div>
 
 <div class="cert-btn"
-onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/refs/heads/main/CertificateAxitat.zip'">
+onclick="window.location.href='https://github.com/ngohongthai1402/dns/raw/refs/heads/ngohongthai/ChungChiAxitat.zip'">
 TẢI FILE CHỨNG CHỈ 📥
 </div>
 
@@ -502,13 +502,13 @@ TẢI FILE CHỨNG CHỈ 📥
 
 <div id="toast"></div>
 <div class="footer-stats">
-<footer class="footer">
-  <div id="marquee" class="marquee">
-        Xin chào mọi người mình mới tập làm web nên giao diện hơi lỏ mong mọi người thông cảm
+  <footer class="footer">
+  <div id="text1" class="marquee">
+    Xin chào mọi người mình mới tập làm web nên giao diện hơi lỏ mong mọi người thông cảm
   </div>
 
-  <div id="effect" class="effect">
-    Speed I AM NHT 
+  <div id="text2" class="effect">
+    Speed I AM NHT 🔫
   </div>
 </footer>
 
@@ -530,7 +530,7 @@ TẢI FILE CHỨNG CHỈ 📥
   white-space:nowrap;
   display:inline-block;
   padding-left:100%;
-  animation:chaychu 12s linear forwards;
+  animation:chaychu 15s linear forwards;
 }
 
 /* animation chạy */
@@ -539,54 +539,30 @@ TẢI FILE CHỨNG CHỈ 📥
   100%{ transform:translateX(-100%); }
 }
 
-/* hiệu ứng chữ */
+/* hiệu ứng chữ sau khi chạy xong */
 .effect{
   display:none;
   font-weight:bold;
   font-size:18px;
-  animation:glow 0.8s infinite alternate;
+  animation:glow 1s infinite alternate;
 }
 
-/* glow nhấp nháy */
+/* hiệu ứng glow */
 @keyframes glow{
   from{
-    text-shadow: 0 0 5px #fff, 0 0 10px #0ff;
+    text-shadow: 0 0 5px #fff, 0 0 10px #0ff, 0 0 15px #0ff;
   }
   to{
-    text-shadow: 0 0 10px #fff, 0 0 25px #00f;
+    text-shadow: 0 0 10px #fff, 0 0 20px #00f, 0 0 30px #00f;
   }
 }
 </style>
 
 <script>
-const marquee = document.getElementById("marquee");
-const effect = document.getElementById("effect");
-
-function startLoop(){
-  // reset trạng thái
-  marquee.style.display = "inline-block";
-  effect.style.display = "none";
-
-  // chạy chữ
-  marquee.style.animation = "none";
-  void marquee.offsetWidth; // reset animation
-  marquee.style.animation = "chaychu 12s linear forwards";
-
-  // sau khi chạy xong
-  setTimeout(()=>{
-    marquee.style.display = "none";
-    effect.style.display = "block";
-
-    // hiện hiệu ứng 4 giây rồi lặp lại
-    setTimeout(()=>{
-      startLoop();
-    },4000);
-
-  },12000);
-}
-
-// chạy lần đầu
-startLoop();
+setTimeout(()=>{
+  document.getElementById("text1").style.display = "none";
+  document.getElementById("text2").style.display = "block";
+},15000); // phải khớp với thời gian animation (15s)
 </script>
 </div>
 </body>
