@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html><html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPEED I AM NHT</title>
-
-<style>
+<title>SPEED I AM NHT</title><style>
 *{box-sizing:border-box;}
 body{margin:0;font-family:-apple-system;background:#0f0f0f;color:white}
 
@@ -15,10 +12,12 @@ display:flex;justify-content:center;align-items:center;
 padding:15px;font-size:20px;font-weight:700;
 }
 
-/* LOGO */
-.logo{text-align:center;overflow:hidden}
+/* LOGO TRÒN CHUẨN */
+.logo{text-align:center}
 .logo img{
-width:120px;max-width:90%;
+width:130px;
+height:130px;
+object-fit:cover;
 border-radius:50%;
 box-shadow:0 0 25px #0a84ff;
 }
@@ -35,6 +34,7 @@ padding:15px;
 .menu-title{
 display:flex;justify-content:space-between;
 cursor:pointer;font-weight:700;
+align-items:center;
 }
 .arrow{transition:0.3s;}
 .arrow.rotate{transform:rotate(180deg);}
@@ -84,10 +84,22 @@ border-radius:20px;
 margin:15px auto;
 display:block;
 box-shadow:0 0 25px #0a84ff;
-animation:spinLogo 6s linear infinite;
 }
-@keyframes spinLogo{
-100%{transform:rotate(360deg);}
+
+/* DOT ONLINE */
+.live-dot{
+width:10px;
+height:10px;
+background:#00ff88;
+border-radius:50%;
+box-shadow:0 0 10px #00ff88;
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:0.3;}
+100%{opacity:1;}
 }
 
 .esign-btn{
@@ -120,10 +132,7 @@ display:flex;justify-content:center;gap:15px;margin-bottom:10px;
 background:#2c2c2e;padding:10px 15px;border-radius:12px;
 }
 .footer span{color:#0a84ff;font-weight:bold;}
-</style>
-
-<!-- FIREBASE -->
-<script type="module">
+</style><!-- FIREBASE --><script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, set, onValue, onDisconnect, push, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -153,9 +162,7 @@ window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngoh
 onValue(ref(db,"dns_download"),snap=>{
 document.getElementById("dnsFooter").innerText = snap.val() || 0;
 });
-</script>
-
-<script>
+</script><script>
 function toggleMenu(id,arrow){
 let el=document.getElementById(id);
 el.classList.toggle("open");
@@ -164,94 +171,49 @@ arrow.classList.toggle("rotate");
 function toggleIOS(){
 document.getElementById("panel").classList.toggle("open");
 }
-</script>
-
-</head>
-
-<body>
-
-<div class="menu-btn" onclick="toggleIOS()">☰</div>
-
-<div class="menu-panel" id="panel">
+</script></head><body><div class="menu-btn" onclick="toggleIOS()">☰</div><div class="menu-panel" id="panel">
 <h3>📱 MENU</h3>
 <div class="menu-item">🎮 Coin Master</div>
 <div class="menu-item">📱 Lấy UDID</div>
 <div class="menu-item">📝 Ký IPA</div>
 <div class="menu-item">📦 Kho App</div>
-</div>
-
-<header>Ngô Hồng Thái</header>
-
-<div class="logo">
+</div><header>Ngô Hồng Thái</header><div class="logo">
 <img src="logo3.png">
-</div>
-
-<!-- SPEED -->
-<div class="box">
+</div><!-- SPEED --><div class="box">
 <div class="menu-title" onclick="toggleMenu('m1',this.querySelector('.arrow'))">
 <span>DANH SÁCH SPEED</span>
 <span class="arrow">▼</span>
-</div>
-
-<div id="m1" class="menu-content">
+</div><div id="m1" class="menu-content">
 <div class="copy-btn">ĐẾM VÒNG V1</div>
 <div class="copy-btn">ĐẾM VÒNG V2</div>
 <div class="copy-btn">SPEED IGG</div>
 </div>
-</div>
-
-<!-- DNS -->
-<div class="box">
+</div><!-- DNS --><div class="box">
 <div class="menu-title" onclick="toggleMenu('dns',this.querySelector('.arrow'))">
 <span>DNS CHẶN THU HỒI</span>
 <span class="arrow">▼</span>
-</div>
-
-<div id="dns" class="menu-content">
+</div><div id="dns" class="menu-content">
 <div class="copy-btn" onclick="downloadDNS()">📥 TẢI NHT DNS</div>
 </div>
-</div>
-
-<!-- ESIGN -->
-<div class="box">
+</div><!-- ESIGN --><div class="box">
 <div class="menu-title" onclick="toggleMenu('menu2',this.querySelector('.arrow'))">
-<span>ESIGN AXITAT 🔥</span>
+<span style="display:flex;align-items:center;gap:6px;">
+ESIGN AXITAT 
+<div class="live-dot"></div>
+</span>
 <span class="arrow">▼</span>
-</div>
-
-<div id="menu2" class="menu-content" style="text-align:center;">
-
-<img src="esign.png" class="esign-logo">
-
-<div class="esign-btn"
+</div><div id="menu2" class="menu-content" style="text-align:center;"><img src="esign.png" class="esign-logo"><div class="esign-btn"
 onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
 🚀 CÀI ĐẶT ESIGN
-</div>
-
-<div class="cert-btn"
+</div><div class="cert-btn"
 onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/refs/heads/main/CertificateAxitat.zip'">
 📥 TẢI CHỨNG CHỈ
-</div>
-
-</div>
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-
-<div class="footer-box">
+</div></div>
+</div><!-- FOOTER --><div class="footer"><div class="footer-box">
 <div class="footer-item">
 👥 Online: <span id="onlineFooter">0</span>
-</div>
-
-<div class="footer-item">
+</div><div class="footer-item">
 📥 DNS: <span id="dnsFooter">0</span>
 </div>
-</div>
-
-<div>Ngô Hồng Thái đang tập làm web lỏ 😅</div>
-
-</div>
-
-</body>
-</html> 
+</div><div>Ngô Hồng Thái đang tập làm web lỏ 😅</div></div></body>
+</html>
