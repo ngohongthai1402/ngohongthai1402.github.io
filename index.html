@@ -11,80 +11,28 @@
 
 <style>
 *{box-sizing:border-box;}
-
 body{
 margin:0;
 font-family:-apple-system;
 background:#0f0f0f;
 color:white;
-transition:0.3s;
+transition:.3s;
 }
-
-/* LIGHT */
-body.light{
-background:#fff;
-color:#000;
-}
+body.light{background:#fff;color:#000}
 
 /* HEADER */
-header{
-padding:12px;
-text-align:center;
-}
-
-/* TOP BAR */
 .header-top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:6px;
-}
-
-.counter{
+padding:10px;
 font-size:12px;
-opacity:0.9;
 }
-
-/* SWITCH iOS */
-.switch{
-width:42px;
-height:24px;
-background:#333;
-border-radius:20px;
-position:relative;
-cursor:pointer;
-transition:0.3s;
-}
-.switch::after{
-content:"";
-width:18px;
-height:18px;
-background:#fff;
-border-radius:50%;
-position:absolute;
-top:3px;
-left:3px;
-transition:0.3s;
-}
-.switch.active{
-background:#000;
-}
-.switch.active::after{
-left:21px;
-background:#fff;
-}
-
-.controls{
-display:flex;
-gap:8px;
-align-items:center;
-}
-
+.controls{display:flex;gap:6px;}
 .btn-mini{
 padding:5px 10px;
 border-radius:10px;
 background:#1c1c1e;
-font-size:12px;
 cursor:pointer;
 }
 body.light .btn-mini{background:#ddd;}
@@ -92,8 +40,7 @@ body.light .btn-mini{background:#ddd;}
 /* LOGO */
 .logo{text-align:center}
 .logo img{
-width:120px;
-border-radius:50%;
+width:120px;border-radius:50%;
 box-shadow:0 0 25px #0a84ff;
 }
 
@@ -113,19 +60,36 @@ justify-content:space-between;
 cursor:pointer;
 font-weight:700;
 }
-.arrow{transition:0.3s;}
-.arrow.rotate{transform:rotate(180deg);}
+.arrow{transition:.3s}
+.arrow.rotate{transform:rotate(180deg)}
 
 .menu-content{
 max-height:0;
 overflow:hidden;
 opacity:0;
-transition:0.4s;
+transition:.4s;
 }
 .menu-content.open{
-max-height:1200px;
+max-height:1500px;
 opacity:1;
 margin-top:10px;
+}
+
+/* APP ITEM (KHÔI PHỤC) */
+.app-item{
+display:flex;
+flex-direction:column;
+align-items:center;
+background:#2c2c2e;
+padding:15px;
+border-radius:18px;
+margin:12px 0;
+}
+.app-item img{
+width:60px;
+border-radius:15px;
+margin-bottom:10px;
+box-shadow:0 0 15px #0a84ff;
 }
 
 /* BUTTON */
@@ -133,9 +97,56 @@ margin-top:10px;
 background:#0a84ff;
 padding:14px;
 border-radius:14px;
+width:100%;
 text-align:center;
-margin-top:10px;
 cursor:pointer;
+margin-top:10px;
+}
+
+/* ESIGN */
+.esign-logo{
+width:90px;
+border-radius:20px;
+margin:15px auto;
+display:block;
+}
+.esign-btn,.cert-btn{
+background:#0a84ff;
+padding:14px;
+border-radius:14px;
+margin-top:10px;
+text-align:center;
+cursor:pointer;
+}
+
+/* VIDEO STORY */
+.video-btn{
+display:flex;
+justify-content:space-between;
+padding:14px;
+margin-top:10px;
+background:#2c2c2e;
+border-radius:14px;
+cursor:pointer;
+}
+.video-btn.active{background:#0a84ff}
+
+.video{
+max-height:0;
+overflow:hidden;
+opacity:0;
+transition:.4s;
+text-align:center;
+}
+.video.open{
+max-height:600px;
+opacity:1;
+}
+.video iframe{
+width:100%;
+max-width:320px;
+height:550px;
+border-radius:15px;
 }
 
 /* TOAST */
@@ -148,7 +159,7 @@ background:#111;
 padding:12px 20px;
 border-radius:14px;
 opacity:0;
-transition:0.3s;
+transition:.3s;
 }
 #toast.show{opacity:1;}
 </style>
@@ -157,9 +168,7 @@ transition:0.3s;
 /* FIREBASE */
 const firebaseConfig = {
 apiKey:"AIzaSyDcmYnUovHHHBWFATXuLG3o4oGcnLKhwnQ",
-authDomain:"iamnht.firebaseapp.com",
-databaseURL:"https://iamnht-default-rtdb.asia-southeast1.firebasedatabase.app",
-projectId:"iamnht"
+databaseURL:"https://iamnht-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
@@ -170,98 +179,90 @@ let userRef=onlineRef.push();
 userRef.set(true);
 userRef.onDisconnect().remove();
 
-onlineRef.on("value",snap=>{
-document.getElementById("online").innerText=snap.numChildren();
+onlineRef.on("value",s=>{
+document.getElementById("online").innerText=s.numChildren();
 });
 
 /* DNS */
 let dnsRef=db.ref("dns");
-dnsRef.on("value",snap=>{
-document.getElementById("dns").innerText=snap.val()||0;
+dnsRef.on("value",s=>{
+document.getElementById("dns").innerText=s.val()||0;
 });
 
-/* DOWNLOAD */
-function downloadDNS(btn){
+function downloadDNS(){
 dnsRef.transaction(n=>(n||0)+1);
 window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
 toast("📥 Đang tải DNS...");
 }
 
-/* MENU */
+/* UI */
 function toggleMenu(id,arrow){
 let el=document.getElementById(id);
 el.classList.toggle("open");
 arrow.classList.toggle("rotate");
 }
 
-/* THEME SWITCH */
-function toggleTheme(){
-let sw=document.getElementById("switch");
-
-if(document.body.classList.contains("light")){
-document.body.classList.remove("light");
-sw.classList.remove("active");
-localStorage.setItem("theme","dark");
-}else{
-document.body.classList.add("light");
-sw.classList.add("active");
-localStorage.setItem("theme","light");
-}
+function toggleTheme(btn){
+document.body.classList.toggle("light");
+btn.innerText=document.body.classList.contains("light")?"☀️":"🌙";
 }
 
-/* LOAD THEME */
-window.onload=()=>{
-let t=localStorage.getItem("theme");
-let sw=document.getElementById("switch");
-
-if(t==="light"){
-document.body.classList.add("light");
-sw.classList.add("active");
-}
-};
-
-/* LANGUAGE */
-function setLang(l){
-localStorage.setItem("lang",l);
+function setLang(lang){
+toast("🌐 "+(lang==="en"?"English":"Tiếng Việt"));
 }
 
-function loadLang(){
-let l=localStorage.getItem("lang")||"vi";
-document.documentElement.lang=l;
-}
-
-/* TOAST */
 function toast(msg){
 let t=document.getElementById("toast");
-t.innerText=msg;
+t.innerHTML=msg;
 t.classList.add("show");
 setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-loadLang();
+/* VIDEO */
+let currentVideo=null,players={};
+let tag=document.createElement('script');
+tag.src="https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+
+function onYouTubeIframeAPIReady(){
+["v1","v2"].forEach(id=>{
+players[id]=new YT.Player(id+"-frame");
+});
+}
+
+function toggleVideo(id,btn){
+if(currentVideo===id){
+players[id].pauseVideo();
+document.getElementById(id).classList.remove("open");
+btn.classList.remove("active");
+currentVideo=null;
+return;
+}
+for(let v in players){
+players[v].pauseVideo();
+document.getElementById(v).classList.remove("open");
+}
+document.getElementById(id).classList.add("open");
+players[id].playVideo();
+btn.classList.add("active");
+currentVideo=id;
+}
 </script>
 
 </head>
 
 <body>
 
-<header>
-
+<!-- HEADER -->
 <div class="header-top">
-<div class="counter">
-👥 <span id="online">0</span> | 📥 <span id="dns">0</span>
-</div>
+<div>👥 <span id="online">0</span> | 🔫 <span id="dns">0</span></div>
 
 <div class="controls">
 <div class="btn-mini" onclick="setLang('vi')">VI</div>
 <div class="btn-mini" onclick="setLang('en')">EN</div>
-<div class="switch" id="switch" onclick="toggleTheme()"></div>
+<div class="btn-mini" onclick="toggleTheme(this)">🌙</div>
 </div>
 </div>
-
-Ngô Hồng Thái <span class="tick"></span>
-
-</header>
 
 <div class="logo">
 <img src="logo.png">
@@ -273,21 +274,33 @@ Ngô Hồng Thái <span class="tick"></span>
 <span>DANH SÁCH SPEED</span>
 <span class="arrow">▼</span>
 </div>
+
 <div id="menu1" class="menu-content">
-<div class="copy-btn">SPEED V1</div>
-<div class="copy-btn">SPEED V2</div>
-<div class="copy-btn">SPEED IGG</div>
+
+<div class="app-item">
+<img src="logogame.png">
+<div>ĐẾM VÒNG V1</div>
+<div class="copy-btn">SAO CHÉP</div>
+</div>
+
+<div class="app-item">
+<img src="logogame.png">
+<div>ĐẾM VÒNG V2</div>
+<div class="copy-btn">SAO CHÉP</div>
+</div>
+
 </div>
 </div>
 
 <!-- DNS -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menuDNS',this.querySelector('.arrow'))">
-<span>DNS CHẶN THU HỒI</span>
+<span>DNS</span>
 <span class="arrow">▼</span>
 </div>
+
 <div id="menuDNS" class="menu-content">
-<div class="copy-btn" onclick="downloadDNS(this)">TẢI NHT DNS🔫</div>
+<div class="copy-btn" onclick="downloadDNS()">TẢI DNS</div>
 </div>
 </div>
 
@@ -297,9 +310,11 @@ Ngô Hồng Thái <span class="tick"></span>
 <span>ESIGN AXITAT</span>
 <span class="arrow">▼</span>
 </div>
+
 <div id="menu2" class="menu-content">
-<div class="copy-btn">CÀI ESIGN</div>
-<div class="copy-btn">TẢI CHỨNG CHỈ</div>
+<img src="esign.png" class="esign-logo">
+<div class="esign-btn">CÀI ESIGN</div>
+<div class="cert-btn">TẢI CHỨNG CHỈ</div>
 </div>
 </div>
 
@@ -309,9 +324,14 @@ Ngô Hồng Thái <span class="tick"></span>
 <span>VIDEO HƯỚNG DẪN</span>
 <span class="arrow">▼</span>
 </div>
+
 <div id="menu3" class="menu-content">
-<div class="copy-btn">VIDEO 1</div>
-<div class="copy-btn">VIDEO 2</div>
+
+<div class="video-btn" onclick="toggleVideo('v1',this)">VIDEO 1</div>
+<div id="v1" class="video">
+<iframe id="v1-frame" src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1"></iframe>
+</div>
+
 </div>
 </div>
 
