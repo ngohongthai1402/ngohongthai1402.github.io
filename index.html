@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPEED I AM NHT</title>
+<title>I AM NHT</title>
 
 <style>
 *{box-sizing:border-box;}
-
 body{
 margin:0;
 font-family:-apple-system;
@@ -22,61 +21,42 @@ background:#f2f2f7;
 color:#000;
 }
 body.light .box{background:#fff;}
-body.light .app-item{background:#e5e5ea;}
-body.light .video-btn{background:#e5e5ea;}
-body.light #toast{background:#ddd;color:#000;}
+body.light .app{background:#e5e5ea;}
+body.light .navbar{background:#fff;}
+body.light .btn{background:#000;color:#fff}
 
-/* HEADER */
-header{
+/* NAV */
+.navbar{
 display:flex;
-justify-content:center;
+justify-content:space-between;
 align-items:center;
-gap:6px;
-padding:15px;
-font-size:20px;
-font-weight:700;
-}
-
-/* TICK */
-.tick{
-width:18px;height:18px;position:relative;
-display:flex;align-items:center;justify-content:center;
-}
-.tick::before{
-content:"";
-position:absolute;
-width:100%;height:100%;
-background:#0a84ff;
-clip-path:polygon(50% 0%,65% 15%,85% 15%,90% 35%,100% 50%,90% 65%,85% 85%,65% 85%,50% 100%,35% 85%,15% 85%,10% 65%,0% 50%,10% 35%,15% 15%,35% 15%);
-box-shadow:0 0 10px #0a84ff;
-animation:spin 3s linear infinite;
-}
-.tick::after{content:"✔";font-size:10px;z-index:1;}
-@keyframes spin{100%{transform:rotate(360deg);}}
-
-/* LOGO */
-.logo{text-align:center}
-.logo img{
-width:120px;border-radius:50%;
-box-shadow:0 0 25px #0a84ff
-}
-
-/* CONTROL */
-.control{
-display:flex;
-justify-content:center;
-gap:10px;
-margin-top:10px;
-}
-.btn-mini{
-padding:10px 15px;
-border-radius:12px;
-cursor:pointer;
-font-weight:600;
+padding:12px;
 background:#1c1c1e;
 }
-#onlineBox{box-shadow:0 0 10px #00ffcc;}
-#dnsCount{box-shadow:0 0 10px #0a84ff;}
+
+.counter{
+font-size:13px;
+}
+
+.toggle{
+cursor:pointer;
+font-size:18px;
+}
+
+/* HEADER */
+header{text-align:center;font-size:20px;margin-top:10px;font-weight:700;}
+
+/* LOGO */
+.logo img{
+width:120px;
+height:120px;
+border-radius:50%;
+display:block;
+margin:10px auto;
+object-fit:cover;
+object-position:center top;
+box-shadow:0 0 25px #0a84ff;
+}
 
 /* BOX */
 .box{
@@ -84,185 +64,195 @@ margin:15px;
 background:#1c1c1e;
 border-radius:20px;
 padding:15px;
-overflow:hidden;
 }
 
-/* MENU */
 .menu-title{
 display:flex;
 justify-content:space-between;
-align-items:center;
 cursor:pointer;
 font-weight:700;
 }
-.arrow{transition:0.3s;}
-.arrow.rotate{transform:rotate(180deg);}
 
 .menu-content{
 max-height:0;
 overflow:hidden;
 opacity:0;
-transition:0.4s ease;
+transition:0.3s;
 }
 .menu-content.open{
-max-height:1200px;
+max-height:2000px;
 opacity:1;
 margin-top:10px;
 }
 
 /* APP */
-.app-item{
-display:flex;
-flex-direction:column;
-align-items:center;
+.app{
 background:#2c2c2e;
-padding:15px;
-border-radius:18px;
-margin:12px 0;
-}
-.app-item img{
-width:60px;border-radius:15px;
-margin-bottom:10px;
-box-shadow:0 0 15px #0a84ff;
+padding:12px;
+border-radius:14px;
+margin-top:10px;
+text-align:center;
 }
 
-/* BUTTON */
-.copy-btn{
+.btn{
 background:#0a84ff;
-box-shadow:0 0 15px #0a84ff;
-padding:14px;
-border-radius:14px;
-width:100%;
-text-align:center;
+padding:10px;
+border-radius:10px;
+margin-top:8px;
 cursor:pointer;
+}
+
+/* VIDEO */
+iframe{
+width:100%;
+height:200px;
+border-radius:12px;
 margin-top:10px;
 }
 
-/* TOAST */
-#toast{
-position:fixed;
-bottom:30px;
-left:50%;
-transform:translateX(-50%);
-background:#111;
-padding:12px 20px;
-border-radius:14px;
-opacity:0;
-transition:0.3s;
+/* FOOTER */
+.footer{
+text-align:center;
+margin:20px;
+font-size:13px;
 }
-#toast.show{opacity:1;}
 </style>
-
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-<script>
-function toggleMenu(id,arrow){
-let el=document.getElementById(id);
-el.classList.toggle("open");
-arrow.classList.toggle("rotate");
-}
-
-function copyLink(link,btn){
-navigator.clipboard.writeText(link);
-let t=document.getElementById("toast");
-t.innerHTML="✔ Đã sao chép";
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),2000);
-}
-
-/* DARK MODE */
-function toggleTheme(){
-document.body.classList.toggle("light");
-localStorage.setItem("theme",document.body.classList.contains("light"));
-}
-window.onload=()=>{
-if(localStorage.getItem("theme")==="true"){
-document.body.classList.add("light");
-}
-}
-
-/* FIREBASE */
-const firebaseConfig = {
-  apiKey: "AIzaSyDcmYnUovHHHBWFATXuLG3o4oGcnLKhwnQ",
-  authDomain: "iamnht.firebaseapp.com",
-  databaseURL: "https://iamnht-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "iamnht",
-  storageBucket: "iamnht.firebasestorage.app",
-  messagingSenderId: "359554660567",
-  appId: "1:359554660567:web:84c9b72e079067e6ef1892"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-/* ONLINE */
-const userRef = db.ref("online").push();
-userRef.set(true);
-userRef.onDisconnect().remove();
-
-db.ref("online").on("value", snap=>{
-document.getElementById("onlineBox").innerHTML =
-"👥 Online: " + (snap.numChildren() || 0);
-});
-
-/* DNS DOWNLOAD COUNT */
-function downloadDNS(btn){
-
-let ref = db.ref("dns_download");
-ref.transaction(n => (n||0)+1);
-
-window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
-
-let t=document.getElementById("toast");
-t.innerHTML="📥 Đang tải DNS...";
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),2000);
-}
-
-db.ref("dns_download").on("value", snap=>{
-document.getElementById("dnsCount").innerHTML =
-"📥 Đã tải DNS: " + (snap.val() || 0);
-});
-</script>
-
 </head>
 
 <body>
 
-<header>
-Ngô Hồng Thái <span class="tick"></span>
-</header>
+<!-- NAV -->
+<div class="navbar">
+
+<div class="counter">
+👥 <span id="online">0</span>
+</div>
+
+<div class="toggle" onclick="toggleTheme()" id="themeIcon">🌙</div>
+
+<div class="counter">
+📥 <span id="dns">0</span>
+</div>
+
+</div>
+
+<header>Ngô Hồng Thái ✔</header>
 
 <div class="logo">
 <img src="logo.png">
 </div>
 
-<!-- CONTROL -->
-<div class="control">
-<div class="btn-mini" onclick="toggleTheme()">🌙 / ☀️</div>
-<div class="btn-mini" id="onlineBox">👥 Online: 0</div>
-<div class="btn-mini" id="dnsCount">📥 Đã tải DNS: 0</div>
-</div>
-
-<!-- DNS -->
+<!-- SPEED -->
 <div class="box">
-<div class="menu-title" onclick="toggleMenu('menuDNS',this.querySelector('.arrow'))">
-<span>DNS CHẶN THU HỒI</span>
-<span class="arrow">▼</span>
+<div class="menu-title" onclick="toggleMenu('speed')">
+<span>DANH SÁCH SPEED</span><span>▼</span>
 </div>
 
-<div id="menuDNS" class="menu-content" style="text-align:center;">
+<div id="speed" class="menu-content">
 
-<div class="copy-btn" onclick="downloadDNS(this)">
-TẢI CẤU HÌNH NHT DNS🔫
+<div class="app">
+ĐẾM VÒNG V1
+<div class="btn">SAO CHÉP</div>
+</div>
+
+<div class="app">
+ĐẾM VÒNG V2
+<div class="btn">SAO CHÉP</div>
+</div>
+
+<div class="app">
+SPEED IGG
+<div class="btn">SAO CHÉP</div>
 </div>
 
 </div>
 </div>
 
-<div id="toast"></div>
+<!-- ESIGN -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('esign')">
+<span>ESIGN AXITAT</span><span style="color:#00ffcc">●</span>
+</div>
+
+<div id="esign" class="menu-content">
+
+<div class="btn"
+onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
+CÀI ESIGN
+</div>
+
+<div class="btn"
+onclick="window.location.href='https://github.com/ngohongthai1402/ngohongthai1402.github.io/raw/refs/heads/main/CertificateAxitat.zip'">
+TẢI CHỨNG CHỈ
+</div>
+
+</div>
+</div>
+
+<!-- VIDEO -->
+<div class="box">
+<div class="menu-title" onclick="toggleMenu('video')">
+<span>VIDEO HƯỚNG DẪN</span><span>▼</span>
+</div>
+
+<div id="video" class="menu-content">
+
+<iframe src="https://www.youtube.com/embed/8ynQoiww9d4"></iframe>
+<iframe src="https://www.youtube.com/embed/e74h1eb3b0c"></iframe>
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe>
+
+</div>
+</div>
+
+<div class="footer">
+Ngô Hồng Thái đang tập làm web lỏ 😆
+</div>
+
+<script>
+function toggleMenu(id){
+document.getElementById(id).classList.toggle("open");
+}
+
+/* DARK LIGHT */
+function toggleTheme(){
+document.body.classList.toggle("light");
+let icon=document.getElementById("themeIcon");
+icon.innerText=document.body.classList.contains("light")?"☀️":"🌙";
+}
+</script>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyDcmYnUovHHHBWFATXuLG3o4oGcnLKhwnQ",
+authDomain: "iamnht.firebaseapp.com",
+databaseURL: "https://iamnht-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId: "iamnht",
+storageBucket: "iamnht.firebasestorage.app",
+messagingSenderId: "359554660567",
+appId: "1:359554660567:web:84c9b72e079067e6ef1892"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* ONLINE */
+const userRef = ref(db, "online/" + Date.now());
+set(userRef, true);
+onDisconnect(userRef).remove();
+
+onValue(ref(db, "online"), snap=>{
+document.getElementById("online").innerText = snap.size || 0;
+});
+
+/* DNS */
+onValue(ref(db, "dns"), snap=>{
+document.getElementById("dns").innerText = snap.val() || 0;
+});
+</script>
 
 </body>
 </html>
