@@ -44,24 +44,33 @@ border-radius:12px;
 cursor:pointer;
 }
 
+/* LANG */
+.lang{
+display:flex;
+gap:10px;
+}
+.lang button{
+padding:8px 12px;
+border-radius:10px;
+border:none;
+}
+
 /* TITLE */
 .title{
 text-align:center;
 font-size:22px;
 font-weight:700;
-margin-top:5px;
 }
 
 .tick{
-margin-left:5px;
 color:#0a84ff;
 }
 
-/* AVATAR iOS 17 */
+/* AVATAR */
 .logo{
 display:flex;
 justify-content:center;
-margin-top:15px;
+margin-top:10px;
 }
 
 .logo img{
@@ -71,12 +80,24 @@ border-radius:50%;
 object-fit:cover;
 object-position:center 20%;
 transform:scale(1.15);
-
-/* glow viền */
 box-shadow:
 0 0 0 4px rgba(10,132,255,0.4),
 0 0 25px #0a84ff,
 0 0 60px rgba(10,132,255,0.5);
+}
+
+/* COUNTER TRÊN */
+.top-counter{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:15px;
+}
+
+.badge{
+background:#2c2c2e;
+padding:10px 15px;
+border-radius:14px;
 }
 
 /* BOX MENU */
@@ -85,20 +106,13 @@ margin:15px;
 padding:18px;
 border-radius:20px;
 background:#1c1c1e;
-transition:0.3s;
 }
 
-body.light .box{
-background:white;
-}
-
-/* MENU */
 .menu-title{
 display:flex;
 justify-content:space-between;
 cursor:pointer;
 font-weight:700;
-font-size:16px;
 }
 
 .menu-content{
@@ -125,7 +139,7 @@ cursor:pointer;
 box-shadow:0 0 15px #0a84ff;
 }
 
-/* ESIGN DOT */
+/* DOT */
 .dot{
 width:10px;
 height:10px;
@@ -133,7 +147,6 @@ background:#00ffcc;
 border-radius:50%;
 animation:blink 1s infinite;
 }
-
 @keyframes blink{
 0%{opacity:1}
 50%{opacity:0.3}
@@ -148,51 +161,19 @@ border-radius:18px;
 background:#1c1c1e;
 text-align:center;
 }
-
-.counter{
-display:flex;
-justify-content:center;
-gap:10px;
-margin-bottom:10px;
-}
-
-.badge{
-background:#2c2c2e;
-padding:10px 15px;
-border-radius:14px;
-}
-
-/* LANG */
-.lang{
-display:flex;
-gap:10px;
-}
-
-.lang button{
-padding:8px 12px;
-border-radius:10px;
-border:none;
-}
-
-/* LIGHT BTN */
-.switch{
-cursor:pointer;
-}
 </style>
 
 <script>
 function toggleMenu(id){
-let el=document.getElementById(id);
-el.classList.toggle("open");
+document.getElementById(id).classList.toggle("open");
 }
 
-/* DARK LIGHT */
+/* DARK MODE */
 function toggleTheme(){
 document.body.classList.toggle("light");
 }
 
-/* FAKE COUNTER */
-let online=4;
+/* COUNTER */
 let dns=0;
 
 function downloadDNS(){
@@ -226,7 +207,7 @@ document.getElementById("dnsText").innerText="DNS CHẶN THU HỒI";
 <button onclick="setLang('en')">EN</button>
 </div>
 
-<div class="toggle switch" onclick="toggleTheme()">🌙</div>
+<div class="toggle" onclick="toggleTheme()">🌙</div>
 </header>
 
 <div class="title">
@@ -235,6 +216,12 @@ Ngô Hồng Thái <span class="tick">✔</span>
 
 <div class="logo">
 <img src="logo3.png">
+</div>
+
+<!-- COUNTER TRÊN -->
+<div class="top-counter">
+<div class="badge">👥 Online: 4</div>
+<div class="badge">📦 DNS: <span id="dns">0</span></div>
 </div>
 
 <!-- SPEED -->
@@ -277,13 +264,8 @@ Ngô Hồng Thái <span class="tick">✔</span>
 
 <!-- FOOTER -->
 <div class="footer">
-<div class="counter">
-<div class="badge">👥 Online: 4</div>
-<div class="badge">📦 DNS: <span id="dns">0</span></div>
-</div>
-
-<div>Ngô Hồng Thái đang tập làm web lỏ 😆</div>
+Ngô Hồng Thái đang tập làm web lỏ 😆
 </div>
 
 </body>
-</html>
+>0
