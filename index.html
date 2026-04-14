@@ -6,7 +6,27 @@
 <title>SPEED I AM NHT</title>
 
 <style>
-	
+/* ===== ACTIVE MUSIC ITEM ===== */
+.song-item{
+padding:10px;
+border-radius:10px;
+margin:5px 0;
+background:#2c2c2e;
+cursor:pointer;
+transition:0.3s;
+}
+
+/* hover */
+.song-item:hover{
+background:#3a3a3c;
+}
+
+/* đang chọn */
+.song-item.active{
+background:#0a84ff;
+box-shadow:0 0 15px #0a84ff;
+color:#fff;
+}
 /* ===== HEADER SMART ===== */
 .footer-stats{
 position:fixed;
@@ -125,13 +145,21 @@ font-weight:700;
 max-height:0;
 overflow:hidden;
 opacity:0;
-transition:0.4s ease;
+transform:translateY(-10px);
+transition:all 0.4s ease;
 }
+
 .menu-content.open{
 max-height:1200px;
 opacity:1;
+transform:translateY(0);
 margin-top:10px;
 }
+
+.music-player.hide{
+display:none;
+}
+
 
 /* DOT */
 .menu-dot{
@@ -284,6 +312,15 @@ transition:0.3s;
 </style>
 
 <script>
+function updateActiveSong(){
+document.querySelectorAll(".song-item").forEach(e=>e.classList.remove("active"));
+
+let list = document.querySelectorAll(".song-item");
+if(list[index]){
+list[index].classList.add("active");
+}
+}
+
 let currentVideo=null;
 let players={};
 let muteState={};
@@ -300,9 +337,43 @@ muteState[id]=true;
 }
 
 function toggleMenu(id,arrow){
-let el=document.getElementById(id);
-el.classList.toggle("open");
-arrow.classList.toggle("rotate");
+
+let allMenus = document.querySelectorAll(".menu-content");
+let allArrows = document.querySelectorAll(".arrow");
+let current = document.getElementById(id);
+
+/* đóng menu khác */
+allMenus.forEach(m=>{
+if(m.id !== id){
+m.classList.remove("open");
+}
+});
+
+/* reset arrow */
+allArrows.forEach(a=>a.classList.remove("rotate"));
+
+/* toggle menu hiện tại */
+current.classList.toggle("open");
+
+/* xoay arrow */
+if(current.classList.contains("open")){
+arrow.classList.add("rotate");
+}
+
+/* ===== FIX MUSIC ===== */
+let music = document.getElementById("musicBox");
+
+/* check có menu nào đang mở không */
+let anyOpen = false;
+allMenus.forEach(m=>{
+if(m.classList.contains("open")) anyOpen = true;
+});
+
+if(anyOpen){
+music.classList.add("hide");
+}else{
+music.classList.remove("hide");
+}
 }
 
 function copyLink(link,btn){
@@ -377,7 +448,7 @@ muteState[id]=!muteState[id];
   <div id="text1" class="effect">
     Speed I AM NHT 🔫
   </div>
-</footer>
+</header>
 
 <style>
 .footer{
@@ -554,11 +625,10 @@ TẢI FILE CHỨNG CHỈ 📥
 
 </div>
 </div>
-<!-- ===== MUSIC PLAYER ===== -->
+<!-- ===== MUSIC PLAYER FULL FIX ===== -->
 <div class="music-player" id="musicBox">
   <div class="music-info">
     <div id="music-name">Đang tải...</div>
-<div id="now-playing">🎵 Đang nghe bài hát</div>
     <div id="music-time">00:00 / 00:00</div>
   </div>
 
@@ -616,19 +686,31 @@ max-height:120px;
 overflow:auto;
 }
 
-.song{
-padding:6px;
-border-bottom:1px solid rgba(255,255,255,0.1);
+/* ITEM */
+.song-item{
+padding:8px;
+border-radius:10px;
+margin:4px 0;
+background:#2c2c2e;
 cursor:pointer;
-font-size:13px;
+transition:0.3s;
 }
-.song:hover{color:#0a84ff;}
+
+.song-item:hover{
+background:#3a3a3c;
+}
+
+/* ACTIVE */
+.song-item.active{
+background:#0a84ff;
+box-shadow:0 0 10px #0a84ff;
+color:#fff;
+}
 </style>
 
 <script>
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
-const musicBox = document.getElementById("musicBox");
 
 let userPaused = false;
 
@@ -640,52 +722,67 @@ const playlist = [
 
 let index = 0;
 
-/* LOAD */
+/* ===== ACTIVE UI ===== */
+function updateActiveSong(){
+document.querySelectorAll(".song-item").forEach(e=>e.classList.remove("active"));
+
+let list = document.querySelectorAll(".song-item");
+if(list[index]){
+list[index].classList.add("active");
+}
+}
+
+/* ===== LOAD ===== */
 function loadSong(i){
 audio.src = playlist[i].src;
 
-document.getElementById("music-name").innerText = name;
+document.getElementById("music-name").innerText =
+"🎵 Đang phát: " + playlist[i].name;
 
-/* 🔥 cập nhật đang phát + tên bài */
-document.getElementById("now-playing").innerText = "🎵 ĐANG PHÁT: " + name;
-
-/* highlight */
-document.querySelectorAll(".song").forEach((el,idx)=>{
-el.classList.remove("active");
-if(idx===i) el.classList.add("active");
-});
+updateActiveSong();
 
 if(!userPaused){
 audio.play().catch(()=>{});
+playBtn.innerText="⏸";
 }
 }
 
-/* NEXT */
+/* ===== NEXT ===== */
 function nextSong(){
 index++;
 if(index >= playlist.length) index = 0;
+
 userPaused = false;
 loadSong(index);
 }
 
-/* PLAY */
-function togglePlay(){
-let name = playlist[index].name;
+/* ===== CLICK PLAY LIST ===== */
+function playSong(i){
+index = i;
+userPaused = false;
+loadSong(index);
+}
 
+/* ===== PLAY / PAUSE ===== */
+function togglePlay(){
 if(audio.paused){
 audio.play();
 playBtn.innerText = "⏸";
-document.getElementById("now-playing").innerText = "🎵 ĐANG PHÁT: " + name;
 userPaused = false;
+
+document.getElementById("music-name").innerText =
+"🎵 Đang phát: " + playlist[index].name;
+
 }else{
 audio.pause();
 playBtn.innerText = "▶";
-document.getElementById("now-playing").innerText = "⏸ ĐÃ DỪNG: " + name;
 userPaused = true;
+
+document.getElementById("music-name").innerText = "⏸ Đã dừng";
 }
 }
 
-/* TIME */
+/* ===== TIME ===== */
 audio.addEventListener("timeupdate",()=>{
 let cur = format(audio.currentTime);
 let dur = format(audio.duration);
@@ -699,47 +796,31 @@ let sec=Math.floor(s%60);
 return (m<10?"0":"")+m+":"+(sec<10?"0":"")+sec;
 }
 
-/* AUTO NEXT */
+/* ===== AUTO NEXT ===== */
 audio.addEventListener("ended",()=>{
 userPaused = false;
 nextSong();
 });
 
-/* AUTOPLAY FIX iOS */
+/* ===== iOS FIX ===== */
 document.addEventListener("click",()=>{
 if(!userPaused){
 audio.play().catch(()=>{});
 }
 });
 
-/* DANH SÁCH NHẠC */
+/* ===== RENDER LIST ===== */
 const songList = document.getElementById("songList");
 
 playlist.forEach((s,i)=>{
 let div=document.createElement("div");
-div.className="song";
+div.className="song-item";
 div.innerText=s.name;
-div.onclick=()=>{
-index=i;
-userPaused=false;
-loadSong(i);
-};
+
+div.onclick=()=>playSong(i);
+
 songList.appendChild(div);
 });
-
-/* 🔥 ẨN NHẠC KHI MỞ MENU */
-const oldToggle = toggleMenu;
-toggleMenu = function(id,arrow){
-oldToggle(id,arrow);
-
-let menu = document.getElementById(id);
-
-if(menu.classList.contains("open")){
-musicBox.classList.add("hide");
-}else{
-musicBox.classList.remove("hide");
-}
-}
 
 /* START */
 loadSong(index);
