@@ -554,24 +554,29 @@ TẢI FILE CHỨNG CHỈ 📥
 
 </div>
 </div>
-<!-- ===== MUSIC NHT VIP FINAL FIX ===== -->
+<!-- ===== MUSIC NHT VIP PRO MAX ===== -->
 <div class="music-player">
-  
+
   <div class="music-info">
     <div id="music-name">Đang tải...</div>
     <div id="music-time">00:00 / 00:00</div>
   </div>
 
+  <!-- VISUAL -->
   <div class="music-visual">
     <div class="bar"></div>
     <div class="bar"></div>
     <div class="bar"></div>
   </div>
 
+  <!-- CONTROL -->
   <div class="music-controls">
     <button onclick="togglePlay()" id="playBtn">⏸</button>
     <button onclick="nextSong()">⏭</button>
   </div>
+
+  <!-- DANH SÁCH -->
+  <div class="music-list" id="musicList"></div>
 
   <audio id="audio"></audio>
 </div>
@@ -582,14 +587,15 @@ position:fixed;
 bottom:70px;
 left:50%;
 transform:translateX(-50%);
-width:85%;
-max-width:300px;
+width:90%;
+max-width:320px;
 background:#1c1c1e;
-border-radius:14px;
-padding:10px;
-box-shadow:0 0 20px rgba(0,0,0,0.6);
+border-radius:16px;
+padding:12px;
+box-shadow:0 0 25px rgba(0,0,0,0.7);
 z-index:999;
 }
+
 .music-info{text-align:center;font-size:13px;}
 #music-name{font-weight:700;}
 #music-time{opacity:0.7;font-size:11px;}
@@ -612,6 +618,7 @@ animation:beat 0.6s infinite;
 display:flex;
 justify-content:center;
 gap:10px;
+margin-bottom:8px;
 }
 .music-controls button{
 background:#0a84ff;
@@ -621,31 +628,59 @@ border-radius:8px;
 color:#fff;
 font-size:14px;
 }
+
+/* LIST */
+.music-list{
+max-height:120px;
+overflow:auto;
+border-top:1px solid rgba(255,255,255,0.1);
+padding-top:6px;
+}
+
+.music-item{
+padding:6px;
+border-radius:8px;
+font-size:12px;
+cursor:pointer;
+opacity:0.8;
+}
+
+.music-item.active{
+background:#0a84ff;
+opacity:1;
+}
+
+.music-item:hover{
+background:#2c2c2e;
+}
 </style>
 
 <script>
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
 
-let userPaused = false; // 🔥 FIX CHÍNH
+let userPaused = false;
 
 const playlist = [
-{name:"Liên khúc nhạc DJ - PJ1 ",src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ1.mp3"},
-{name:"Liên khúc nhạc DJ - PJ2",src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ2.mp3"},
-{name:"Liên khúc nhạc DJ - PJ3",src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ3.mp3"}
+{name:"Liên khúc - DJ PJ P1🎵",src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ1.mp3"},
+{name:"Liên khúc - DJ PJ P2🎵",src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ2.mp3"},
+{name:"Liên khúc - DJ PJ P3🎵",src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ3.mp3"}
 ];
 
 let index = 0;
 
+/* LOAD */
 function loadSong(i){
 audio.src = playlist[i].src;
 document.getElementById("music-name").innerText = playlist[i].name;
+highlight();
 
 if(!userPaused){
 audio.play().catch(()=>{});
 }
 }
 
+/* NEXT */
 function nextSong(){
 index++;
 if(index >= playlist.length) index = 0;
@@ -653,6 +688,7 @@ userPaused = false;
 loadSong(index);
 }
 
+/* PLAY/PAUSE */
 function togglePlay(){
 if(audio.paused){
 audio.play();
@@ -661,18 +697,38 @@ userPaused = false;
 }else{
 audio.pause();
 playBtn.innerText = "▶";
-userPaused = true; // 🔥 QUAN TRỌNG
+userPaused = true;
 }
 }
 
-/* FIX iOS autoplay nhưng không phá pause */
-document.addEventListener("click",()=>{
-if(!userPaused){
-audio.play().catch(()=>{});
+/* CLICK CHỌN BÀI */
+function selectSong(i){
+index = i;
+userPaused = false;
+loadSong(index);
 }
+
+/* HIGHLIGHT */
+function highlight(){
+let items = document.querySelectorAll(".music-item");
+items.forEach((el,i)=>{
+el.classList.toggle("active", i===index);
 });
+}
 
-/* time */
+/* RENDER LIST */
+function renderList(){
+let list = document.getElementById("musicList");
+list.innerHTML = "";
+playlist.forEach((song,i)=>{
+list.innerHTML += `
+<div class="music-item" onclick="selectSong(${i})">
+${song.name}
+</div>`;
+});
+}
+
+/* TIME */
 audio.addEventListener("timeupdate",()=>{
 let cur = format(audio.currentTime);
 let dur = format(audio.duration);
@@ -686,18 +742,23 @@ let sec=Math.floor(s%60);
 return (m<10?"0":"")+m+":"+(sec<10?"0":"")+sec;
 }
 
-/* auto next */
+/* AUTO NEXT */
 audio.addEventListener("ended",()=>{
 userPaused = false;
 nextSong();
 });
 
-/* LOAD */
+/* FIX AUTOPLAY MOBILE */
+document.addEventListener("click",()=>{
+if(!userPaused){
+audio.play().catch(()=>{});
+}
+});
+
+/* INIT */
+renderList();
 loadSong(index);
 </script>
-<div id="toast"></div>
-<div class="footer-stats">
-  <footer class="footer">
 
 </div>
 </body>
