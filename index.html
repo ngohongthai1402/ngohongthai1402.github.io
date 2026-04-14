@@ -6,45 +6,99 @@
 <title>SPEED I AM NHT</title>
 
 <style>
-/* ===== ACTIVE MUSIC ITEM ===== */
-.song-item{
-padding:10px;
-border-radius:10px;
-margin:5px 0;
-background:#2c2c2e;
-cursor:pointer;
-transition:0.3s;
+<style>
+body{
+  margin:0;
+  background:#0f0f0f;
+  color:#fff;
+  font-family:Arial;
 }
 
-/* hover */
-.song-item:hover{
-background:#3a3a3c;
+/* ===== BOX ===== */
+.box{
+  margin:15px;
+  background:#1c1c1e;
+  border-radius:15px;
+  padding:15px;
 }
 
-/* đang chọn */
-.song-item.active{
-background:#0a84ff;
-box-shadow:0 0 15px #0a84ff;
-color:#fff;
-}
-/* ===== HEADER SMART ===== */
-.footer-stats{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-background:#1c1c1e;
-display:flex;
-justify-content:space-around;
-padding:10px 0;
-font-size:13px;
-border-top:1px solid rgba(255,255,255,0.1);
-z-index:999;
+/* ===== MENU TITLE ===== */
+.menu-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+  font-weight:bold;
 }
 
-.footer-stats div{
-text-align:center;
+/* arrow */
+.arrow{
+  transition:0.3s;
 }
+.arrow.rotate{
+  transform:rotate(180deg);
+}
+
+/* ===== LIST ===== */
+.menu-content{
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(-10px);
+  transition:0.3s;
+}
+
+.menu-content.open{
+  max-height:300px;
+  opacity:1;
+  transform:translateY(0);
+  margin-top:10px;
+}
+
+/* ===== SONG ===== */
+.song{
+  padding:10px;
+  background:#2c2c2e;
+  margin:5px 0;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.song:hover{
+  background:#0a84ff;
+}
+
+/* ===== MUSIC PLAYER ===== */
+.music-player{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  max-width:320px;
+  background:#1c1c1e;
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+  transition:0.3s;
+}
+
+.music-player.hide{
+  opacity:0;
+  transform:translate(-50%,30px);
+  pointer-events:none;
+}
+
+button{
+  padding:6px 12px;
+  border:none;
+  border-radius:8px;
+  background:#0a84ff;
+  color:#fff;
+  cursor:pointer;
+}
+
+<body>
 
 /* tránh bị che nội dung */
 body{
@@ -625,205 +679,79 @@ TẢI FILE CHỨNG CHỈ 📥
 
 </div>
 </div>
-<!-- ===== MUSIC PLAYER FULL FIX ===== -->
+<!-- ===== MENU NHẠC ===== -->
+<div class="box">
+
+  <div class="menu-title" onclick="toggleList(this)">
+    🎵 MENU NHẠC
+    <span class="arrow">▼</span>
+  </div>
+
+  <div id="songList" class="menu-content">
+    <div class="song" onclick="playSong(0)">DJ PJ1</div>
+    <div class="song" onclick="playSong(1)">DJ PJ2</div>
+    <div class="song" onclick="playSong(2)">DJ PJ3</div>
+  </div>
+
+</div>
+<!-- ===== MUSIC PLAYER ===== -->
 <div class="music-player" id="musicBox">
-  <div class="music-info">
-    <div id="music-name">Đang tải...</div>
-    <div id="music-time">00:00 / 00:00</div>
-  </div>
-
-  <div class="music-controls">
-    <button onclick="togglePlay()" id="playBtn">⏸</button>
-    <button onclick="nextSong()">⏭</button>
-  </div>
-
-  <div class="song-list" id="songList"></div>
-
-  <audio id="audio"></audio>
+  <div id="name">Chưa phát</div>
+  <br>
+  <button onclick="togglePlay()" id="playBtn">▶</button>
 </div>
 
-<style>
-.music-player{
-position:fixed;
-bottom:70px;
-left:50%;
-transform:translateX(-50%);
-width:90%;
-max-width:320px;
-background:#1c1c1e;
-border-radius:14px;
-padding:10px;
-z-index:999;
-}
-
-.music-player.hide{
-display:none;
-}
-
-.music-info{text-align:center;font-size:13px;}
-#music-name{font-weight:700;}
-#music-time{opacity:0.7;font-size:11px;}
-
-.music-controls{
-display:flex;
-justify-content:center;
-gap:10px;
-margin-top:5px;
-}
-
-.music-controls button{
-background:#0a84ff;
-border:none;
-padding:6px 12px;
-border-radius:8px;
-color:#fff;
-font-size:14px;
-}
-
-.song-list{
-margin-top:8px;
-max-height:120px;
-overflow:auto;
-}
-
-/* ITEM */
-.song-item{
-padding:8px;
-border-radius:10px;
-margin:4px 0;
-background:#2c2c2e;
-cursor:pointer;
-transition:0.3s;
-}
-
-.song-item:hover{
-background:#3a3a3c;
-}
-
-/* ACTIVE */
-.song-item.active{
-background:#0a84ff;
-box-shadow:0 0 10px #0a84ff;
-color:#fff;
-}
-</style>
+<audio id="audio"></audio>
 
 <script>
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
 
-let userPaused = false;
-
-const playlist = [
-{name:"Liên khúc DJ PJ1",src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ1.mp3"},
-{name:"Liên khúc DJ PJ2",src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ2.mp3"},
-{name:"Liên khúc DJ PJ3",src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ3.mp3"}
+let playlist = [
+  {name:"DJ PJ1", src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ1.mp3"},
+  {name:"DJ PJ2", src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ2.mp3"},
+  {name:"DJ PJ3", src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ3.mp3"}
 ];
 
 let index = 0;
 
-/* ===== ACTIVE UI ===== */
-function updateActiveSong(){
-document.querySelectorAll(".song-item").forEach(e=>e.classList.remove("active"));
-
-let list = document.querySelectorAll(".song-item");
-if(list[index]){
-list[index].classList.add("active");
-}
-}
-
-/* ===== LOAD ===== */
-function loadSong(i){
-audio.src = playlist[i].src;
-
-document.getElementById("music-name").innerText =
-"🎵 Đang phát: " + playlist[i].name;
-
-updateActiveSong();
-
-if(!userPaused){
-audio.play().catch(()=>{});
-playBtn.innerText="⏸";
-}
-}
-
-/* ===== NEXT ===== */
-function nextSong(){
-index++;
-if(index >= playlist.length) index = 0;
-
-userPaused = false;
-loadSong(index);
-}
-
-/* ===== CLICK PLAY LIST ===== */
+/* ===== PLAY SONG ===== */
 function playSong(i){
-index = i;
-userPaused = false;
-loadSong(index);
+  index = i;
+  audio.src = playlist[i].src;
+  audio.play();
+  playBtn.innerText = "⏸";
+  document.getElementById("name").innerText = playlist[i].name;
 }
 
 /* ===== PLAY / PAUSE ===== */
 function togglePlay(){
-if(audio.paused){
-audio.play();
-playBtn.innerText = "⏸";
-userPaused = false;
-
-document.getElementById("music-name").innerText =
-"🎵 Đang phát: " + playlist[index].name;
-
-}else{
-audio.pause();
-playBtn.innerText = "▶";
-userPaused = true;
-
-document.getElementById("music-name").innerText = "⏸ Đã dừng";
-}
+  if(audio.paused){
+    audio.play();
+    playBtn.innerText = "⏸";
+  }else{
+    audio.pause();
+    playBtn.innerText = "▶";
+  }
 }
 
-/* ===== TIME ===== */
-audio.addEventListener("timeupdate",()=>{
-let cur = format(audio.currentTime);
-let dur = format(audio.duration);
-document.getElementById("music-time").innerText = cur+" / "+dur;
-});
+/* ===== TOGGLE LIST + ẨN NHẠC ===== */
+function toggleList(el){
+  let list = document.getElementById("songList");
+  let arrow = el.querySelector(".arrow");
+  let music = document.getElementById("musicBox");
 
-function format(s){
-if(isNaN(s)) return "00:00";
-let m=Math.floor(s/60);
-let sec=Math.floor(s%60);
-return (m<10?"0":"")+m+":"+(sec<10?"0":"")+sec;
+  list.classList.toggle("open");
+  arrow.classList.toggle("rotate");
+
+  // ẩn / hiện music
+  if(list.classList.contains("open")){
+    music.classList.add("hide");
+  }else{
+    music.classList.remove("hide");
+  }
 }
-
-/* ===== AUTO NEXT ===== */
-audio.addEventListener("ended",()=>{
-userPaused = false;
-nextSong();
-});
-
-/* ===== iOS FIX ===== */
-document.addEventListener("click",()=>{
-if(!userPaused){
-audio.play().catch(()=>{});
-}
-});
-
-/* ===== RENDER LIST ===== */
-const songList = document.getElementById("songList");
-
-playlist.forEach((s,i)=>{
-let div=document.createElement("div");
-div.className="song-item";
-div.innerText=s.name;
-
-div.onclick=()=>playSong(i);
-
-songList.appendChild(div);
-});
-
-/* START */
-loadSong(index);
 </script>
-</body>  
+
+</body>
 </html>
