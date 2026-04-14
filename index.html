@@ -6,132 +6,6 @@
 <title>SPEED I AM NHT</title>
 
 <style>
-<style>
-body{
-  margin:0;
-  background:#0f0f0f;
-  color:#fff;
-  font-family:Arial;
-}
-
-/* ===== BOX ===== */
-.box{
-  margin:15px;
-  background:#1c1c1e;
-  border-radius:15px;
-  padding:15px;
-}
-
-/* ===== MENU TITLE ===== */
-.menu-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-/* arrow */
-.arrow{
-  transition:0.3s;
-}
-.arrow.rotate{
-  transform:rotate(180deg);
-}
-
-/* ===== LIST ===== */
-.menu-content{
-  max-height:0;
-  overflow:hidden;
-  opacity:0;
-  transform:translateY(-10px);
-  transition:0.3s;
-}
-
-.menu-content.open{
-  max-height:300px;
-  opacity:1;
-  transform:translateY(0);
-  margin-top:10px;
-}
-
-/* ===== SONG ===== */
-.song{
-  padding:10px;
-  background:#2c2c2e;
-  margin:5px 0;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.song:hover{
-  background:#0a84ff;
-}
-
-/* ===== MUSIC PLAYER ===== */
-.music-player{
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  width:90%;
-  max-width:320px;
-  background:#1c1c1e;
-  border-radius:12px;
-  padding:10px;
-  text-align:center;
-  transition:0.3s;
-}
-
-.music-player.hide{
-  opacity:0;
-  transform:translate(-50%,30px);
-  pointer-events:none;
-}
-
-button{
-  padding:6px 12px;
-  border:none;
-  border-radius:8px;
-  background:#0a84ff;
-  color:#fff;
-  cursor:pointer;
-}
-
-<body>
-
-/* tránh bị che nội dung */
-body{
-padding-bottom:60px;
-}
-
-.header-top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:6px;
-}
-
-.counter{
-font-size:12px;
-opacity:0.9;
-}
-
-.controls{
-display:flex;
-gap:8px;
-align-items:center;
-}
-
-.btn-mini{
-padding:5px 10px;
-border-radius:10px;
-background:#1c1c1e;
-font-size:12px;
-cursor:pointer;
-}
-body.light .btn-mini{background:#ddd;}
-*{box-sizing:border-box;}
 
 body{
 margin:0;
@@ -151,11 +25,6 @@ font-size:20px;
 font-weight:700;
 }
 
-/* TICK */
-.tick{
-width:18px;height:18px;position:relative;
-display:flex;align-items:center;justify-content:center;
-}
 .tick::before{
 content:"";
 position:absolute;
@@ -548,6 +417,79 @@ muteState[id]=!muteState[id];
     text-shadow: 0 0 10px #fff, 0 0 20px #00f, 0 0 30px #00f;
   }
 }
+
+margin:0;
+  background:#0f0f0f;
+  color:#fff;
+  font-family:Arial;
+}
+
+/* PLAYER */
+.music-player{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  max-width:340px;
+  background:#1c1c1e;
+  border-radius:15px;
+  padding:15px;
+  box-shadow:0 0 20px #0a84ff50;
+}
+
+/* NAME */
+#name{
+  text-align:center;
+  font-weight:bold;
+}
+
+/* TIME */
+#time{
+  font-size:12px;
+  opacity:0.7;
+  text-align:center;
+  margin:5px 0;
+}
+
+/* PROGRESS */
+.progress{
+  width:100%;
+}
+
+input[type=range]{
+  width:100%;
+}
+
+/* CONTROLS */
+.controls{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:10px;
+}
+
+button{
+  background:#0a84ff;
+  border:none;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* LIST */
+.song{
+  padding:8px;
+  background:#2c2c2e;
+  margin:5px 0;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.song.active{
+  background:#0a84ff;
+}
 </style>
 
 <script>
@@ -679,26 +621,27 @@ TẢI FILE CHỨNG CHỈ 📥
 
 </div>
 </div>
-<!-- ===== MENU NHẠC ===== -->
-<div class="box">
+<body>
 
-  <div class="menu-title" onclick="toggleList(this)">
-    🎵 MENU NHẠC
-    <span class="arrow">▼</span>
-  </div>
+<div class="music-player">
 
-  <div id="songList" class="menu-content">
-    <div class="song" onclick="playSong(0)">DJ PJ1</div>
-    <div class="song" onclick="playSong(1)">DJ PJ2</div>
-    <div class="song" onclick="playSong(2)">DJ PJ3</div>
-  </div>
-
-</div>
-<!-- ===== MUSIC PLAYER ===== -->
-<div class="music-player" id="musicBox">
   <div id="name">Chưa phát</div>
-  <br>
-  <button onclick="togglePlay()" id="playBtn">▶</button>
+
+  <div id="time">00:00 / 00:00</div>
+
+  <!-- PROGRESS -->
+  <input type="range" id="progress" value="0" min="0" max="100">
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button onclick="prevSong()">⏮</button>
+    <button onclick="togglePlay()" id="playBtn">▶</button>
+    <button onclick="nextSong()">⏭</button>
+  </div>
+
+  <!-- LIST -->
+  <div id="list"></div>
+
 </div>
 
 <audio id="audio"></audio>
@@ -706,6 +649,8 @@ TẢI FILE CHỨNG CHỈ 📥
 <script>
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
+const progress = document.getElementById("progress");
+const list = document.getElementById("list");
 
 let playlist = [
   {name:"DJ PJ1", src:"https://raw.githubusercontent.com/ngohongthai1402/mp3/ngohongthai/DJPJ1.mp3"},
@@ -715,16 +660,22 @@ let playlist = [
 
 let index = 0;
 
-/* ===== PLAY SONG ===== */
-function playSong(i){
-  index = i;
+/* ===== LOAD ===== */
+function loadSong(i){
   audio.src = playlist[i].src;
-  audio.play();
-  playBtn.innerText = "⏸";
   document.getElementById("name").innerText = playlist[i].name;
+  updateActive();
 }
 
-/* ===== PLAY / PAUSE ===== */
+/* ===== PLAY ===== */
+function playSong(i){
+  index = i;
+  loadSong(i);
+  audio.play();
+  playBtn.innerText = "⏸";
+}
+
+/* ===== PLAY/PAUSE ===== */
 function togglePlay(){
   if(audio.paused){
     audio.play();
@@ -735,22 +686,62 @@ function togglePlay(){
   }
 }
 
-/* ===== TOGGLE LIST + ẨN NHẠC ===== */
-function toggleList(el){
-  let list = document.getElementById("songList");
-  let arrow = el.querySelector(".arrow");
-  let music = document.getElementById("musicBox");
-
-  list.classList.toggle("open");
-  arrow.classList.toggle("rotate");
-
-  // ẩn / hiện music
-  if(list.classList.contains("open")){
-    music.classList.add("hide");
-  }else{
-    music.classList.remove("hide");
-  }
+/* ===== NEXT / PREV ===== */
+function nextSong(){
+  index++;
+  if(index >= playlist.length) index = 0;
+  playSong(index);
 }
+
+function prevSong(){
+  index--;
+  if(index < 0) index = playlist.length - 1;
+  playSong(index);
+}
+
+/* ===== TIME ===== */
+audio.addEventListener("timeupdate", () => {
+  let cur = format(audio.currentTime);
+  let dur = format(audio.duration);
+
+  document.getElementById("time").innerText = cur + " / " + dur;
+
+  progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+});
+
+/* ===== SEEK ===== */
+progress.addEventListener("input", () => {
+  audio.currentTime = (progress.value / 100) * audio.duration;
+});
+
+/* ===== AUTO NEXT ===== */
+audio.addEventListener("ended", nextSong);
+
+/* ===== FORMAT ===== */
+function format(s){
+  if(isNaN(s)) return "00:00";
+  let m = Math.floor(s/60);
+  let sec = Math.floor(s%60);
+  return (m<10?"0":"")+m+":"+(sec<10?"0":"")+sec;
+}
+
+/* ===== RENDER LIST ===== */
+playlist.forEach((song,i)=>{
+  let div = document.createElement("div");
+  div.className = "song";
+  div.innerText = song.name;
+  div.onclick = ()=>playSong(i);
+  list.appendChild(div);
+});
+
+/* ===== ACTIVE ===== */
+function updateActive(){
+  document.querySelectorAll(".song").forEach(e=>e.classList.remove("active"));
+  document.querySelectorAll(".song")[index].classList.add("active");
+}
+
+/* START */
+loadSong(index);
 </script>
 
 </body>
