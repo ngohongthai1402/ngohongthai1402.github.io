@@ -225,13 +225,16 @@ position:fixed;
 bottom:30px;
 left:50%;
 transform:translateX(-50%);
-background:#111;
+background:#0a84ff;
+color:#fff;
 padding:12px 20px;
 border-radius:14px;
 opacity:0;
 transition:0.3s;
+box-shadow:0 0 15px #0a84ff;
+z-index:9999;
+font-weight:600;
 }
-#toast.show{opacity:1;}
 </style>
 
 <script>
@@ -299,15 +302,38 @@ music.classList.remove("hide");
 }
 }
 
-function copyLink(link,btn){
-navigator.clipboard.writeText(link);
-btn.classList.add("ripple");
-setTimeout(()=>btn.classList.remove("ripple"),600);
+function copyLink(link, btn){
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(link).then(() => {
+      showDone(btn);
+    }).catch(() => {
+      fallback(link, btn);
+    });
+  } else {
+    fallback(link, btn);
+  }
 
-let t=document.getElementById("toast");
-t.innerHTML="✔ Đã sao chép link";
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),2000);
+  function fallback(link, btn){
+    let input = document.createElement("textarea");
+    input.value = link;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("copy");
+    document.body.removeChild(input);
+    showDone(btn);
+  }
+
+  function showDone(btn){
+    btn.classList.add("ripple");
+    setTimeout(() => btn.classList.remove("ripple"), 600);
+
+    let t = document.getElementById("toast");
+    if(!t) return; // tránh lỗi nếu thiếu toast
+
+    t.innerHTML = "✔ Đã sao chép link";
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 2000);
+  }
 }
 
 function downloadDNS(btn){
@@ -490,6 +516,17 @@ button{
 .song.active{
   background:#0a84ff;
 }
+
+  function show(msg){
+    t.innerHTML = msg;
+    t.style.opacity = "1";
+    t.classList.add("show");
+
+    setTimeout(()=>{
+      t.style.opacity = "0";
+      t.classList.remove("show");
+    },2000);
+  }
 </style>
 
 <script>
@@ -555,33 +592,50 @@ TẢI NHT DNS🔫
 
 </div>
 </div>
+<!-- ===== ESIGN AXITAT ===== -->  
+<div class="box">  
+  <div class="menu-title" onclick="toggleMenu('menuAxitat',this.querySelector('.arrow'))">  
+    <span style="display:flex;align-items:center;gap:6px;">  
+      ESIGN AXITAT <span class="menu-dot"></span>  
+    </span>  
+    <span class="arrow">▼</span>  
+  </div>    <div id="menuAxitat" class="menu-content" style="text-align:center;">  <img src="esign.png" class="esign-logo">  
 
-<!-- ESIGN -->
-<div class="box">
-<div class="menu-title" onclick="toggleMenu('menu2',this.querySelector('.arrow'))">
-<span style="display:flex;align-items:center;gap:6px;">
-ESIGN AXITAT <span class="menu-dot"></span>
-</span>
-<span class="arrow">▼</span>
+<div class="esign-btn"  
+onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">  
+CÀI ĐẶT ESIGN AXITAT <span class="active-dot"></span>  
+</div>  
+
+<div class="cert-btn"  
+onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertAxitat.zip'">  
+TẢI CHỨNG CHỈ AXITAT 📥  
 </div>
 
-<div id="menu2" class="menu-content" style="text-align:center;">
+  </div>  
+</div>  <!-- ===== ESIGN BEIJING ===== -->  <div class="box">  
+  <div class="menu-title" onclick="toggleMenu('menuBeijing',this.querySelector('.arrow'))">  
+    <span style="display:flex;align-items:center;gap:6px;">  
+      ESIGN BEIJING <span class="menu-dot"></span>  
+    </span>  
+    <span class="arrow">▼</span>  
+  </div>    <div id="menuBeijing" class="menu-content" style="text-align:center;">  <img src="esign.png" class="esign-logo">  
 
-<img src="esign.png" class="esign-logo">
+<div class="esign-btn"  
+onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign2.plist'">  
+CÀI ĐẶT ESIGN BEIJING <span class="active-dot"></span>  
+</div>  
 
-<div class="esign-btn"
-onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
-CÀI ĐẶT APP ESIGN <span class="active-dot"></span>
-</div>
-
-<div class="cert-btn"
-onclick="window.location.href='https://github.com/ngohongthai1402/dns/raw/refs/heads/ngohongthai/ChungChiAxitat.zip'">
-TẢI FILE CHỨNG CHỈ 📥
-</div>
-
-</div>
-</div>
-
+<div class="cert-btn"  
+onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertBeijing.zip'">  
+TẢI CHỨNG CHỈ BEIJING 📥  
+</div>  <!-- ===== PASSWORD CHUNG ===== -->  <div class="box">  
+  <div class="app-item">  
+    <div>Mật khẩu Certificate</div>  
+    <div class="copy-btn" onclick="copyLink('1402',this)">SAO CHÉP</div>  
+  </div>  
+</div>  
+</div>  
+</div>  
 <!-- VIDEO -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu3',this.querySelector('.arrow'))">
