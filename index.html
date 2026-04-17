@@ -35,18 +35,6 @@ font-size:20px;
 font-weight:700;
 }
 
-.tick::before{
-content:"";
-position:absolute;
-width:100%;height:100%;
-background:#0a84ff;
-clip-path:polygon(50% 0%,65% 15%,85% 15%,90% 35%,100% 50%,90% 65%,85% 85%,65% 85%,50% 100%,35% 85%,15% 85%,10% 65%,0% 50%,10% 35%,15% 15%,35% 15%);
-box-shadow:0 0 10px #0a84ff;
-animation:spin 3s linear infinite;
-}
-.tick::after{content:"✔";font-size:10px;z-index:1;}
-@keyframes spin{100%{transform:rotate(360deg);}}
-
 /* LOGO */
 .logo{text-align:center}
 .logo img{
@@ -111,6 +99,7 @@ animation:blink 1s infinite;
 50%{opacity:0.3}
 100%{opacity:1}
 }
+
 
 /* SPEED */
 .app-item{
@@ -505,20 +494,6 @@ margin:0;
   font-family:Arial;
 }
 
-/* PLAYER */
-.music-player{
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  width:90%;
-  max-width:340px;
-  background:#1c1c1e;
-  border-radius:15px;
-  padding:15px;
-  box-shadow:0 0 20px #0a84ff50;
-}
-
 /* NAME */
 #name{
   text-align:center;
@@ -548,63 +523,6 @@ input[type=range]{
   justify-content:center;
   gap:10px;
   margin-top:10px;
-}
-
-button{
-  background:#0a84ff;
-  border:none;
-  color:#fff;
-  padding:8px 12px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-/* LIST */
-.song{
-  padding:8px;
-  background:#2c2c2e;
-  margin:5px 0;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.song.active{
-  background:#0a84ff;
-}
-
-  function show(msg){
-    t.innerHTML = msg;
-    t.style.opacity = "1";
-    t.classList.add("show");
-
-    setTimeout(()=>{
-      t.style.opacity = "0";
-      t.classList.remove("show");
-    },2000);
-  }
-  
-  .dns-pro{
-backdrop-filter:blur(20px);
-background:rgba(255,255,255,0.05);
-border-radius:20px;
-padding:18px;
-margin-top:10px;
-box-shadow:0 0 30px #0a84ff40;
-}
-
-/* header */
-.dns-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:10px;
-}
-
-.dns-left{
-font-weight:bold;
-display:flex;
-gap:5px;
-align-items:center;
 }
 
 .NHT-live{
@@ -655,59 +573,36 @@ font-weight:bold;
 letter-spacing:1px;
 }
 
-/* sub button */
-.dns-sub{
-padding:12px;
-border-radius:12px;
-background:#2c2c2e;
-text-align:center;
-cursor:pointer;
-transition:0.3s;
-}
-
 .dns-sub:active{
 transform:scale(0.95);
 background:#0a84ff;
 box-shadow:0 0 10px #0a84ff;
 }
 
-.NHT-live{
-font-size:14px;
-font-weight:700;
-color:#00ffcc;
-text-shadow:0 0 10px #00ffcc, 0 0 20px #00ffcc;
-letter-spacing:1px;
-}
-/* nhấp nháy */
-@keyframes blinkGlow{
+@keyframes glowPulse{
   0%{
-    opacity:1;
+    transform:scale(1);
     text-shadow:0 0 5px #00ffcc, 0 0 10px #00ffcc;
   }
   50%{
-    opacity:0.4;
-    text-shadow:0 0 2px #00ffcc;
+    transform:scale(1.08);
+    text-shadow:0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 30px #00ffcc;
   }
   100%{
-    opacity:1;
+    transform:scale(1);
     text-shadow:0 0 5px #00ffcc, 0 0 10px #00ffcc;
   }
 }
 
-.dns-live{
+.thai-live{
   font-size:16px;
   font-weight:700;
   color:#00ffcc;
-  animation:blinkGlow 1s infinite;
+  display:inline-block;
+  animation:glowPulse 1.2s infinite;
 }
 
-@keyframes colorBlink{
-  0%{color:#00ffcc;}
-  50%{color:#0a84ff;}
-  100%{color:#00ffcc;}
-}
-
-.dns-live{
+.NHT-live{
   font-size:16px;
   font-weight:700;
   animation:blinkGlow 1s infinite, colorBlink 2s infinite;
@@ -825,29 +720,17 @@ TẢI CHỨNG CHỈ BEIJING 📥
   <div class="dns-pro">
     <div class="dns-header">
       <div class="dns-left">
-      <span>NHT DNS🔫</span>
       </div>
       <div class="NHT-live">● đang bảo trì</div>
     </div>
-
-    <div class="dns-desc">
     	<div class="NHT-live">● Chống thu hồi chứng chỉ • ESIGN</div>
     </div>
-
-    <!-- loading bar -->
-    <div class="dns-bar">
-      <div class="dns-bar-fill"></div>
-    </div>
-
     <div class="dns-actions">
 
       <div class="copy-btn dns-main"
       onclick="downloadDNS(this)">
         📥 TẢI DNS NGAY
       </div>
-
-      <div class="dns-sub" onclick="checkDNS(this)">
-        ⚡ KIỂM TRA KẾT NỐI
       </div>
 
     </div>
@@ -869,7 +752,7 @@ TẢI CHỨNG CHỈ BEIJING 📥
 </div>
 
 <div id="menu1" class="menu-content">
-
+	
 <div class="app-item">
 <img src="logogame.png">
 <div class="NHT-live">● ĐẾM VÒNG - V1</div>
@@ -900,7 +783,7 @@ TẢI CHỨNG CHỈ BEIJING 📥
 <div class="video-btn" data-id="v1">
 <div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
 <span class="play">▶</span>
-<span>TẢI ESIGN SPEED MIỄN PHÍ</span>
+<div class="NHT-live">● Tải Esign Speed Free ( miễn phí ) </div>
 </div>
 <div class="video-controls">
 <span onclick="toggleSound('v1',this)">🔇</span>
@@ -914,20 +797,14 @@ TẢI CHỨNG CHỈ BEIJING 📥
 <div class="video-btn" data-id="v2">
 <div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
 <span class="play">▶</span>
-<span>CẬP NHẬT COIN MASTER</span>
+<div class="NHT-live">● Hướng dẫn cập nhật • Coin Master</div>
 </div>
 <div class="video-controls">
 <span onclick="toggleSound('v2',this)">🔇</span>
 </div>
 </div>
-
 <div id="v2" class="video">
 <iframe id="v2-frame" src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1"></iframe>
 </div>
-
-</div>
-</div>
-<body>
-<div id="toast"></div>
 </body>
 </html>
