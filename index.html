@@ -489,6 +489,27 @@ gap:10px;
 box-shadow:0 0 10px #0a84ff30 inset;
 }
 
+.pass-wrap{
+  position:relative;
+}
+
+.pass-wrap input{
+  text-align:center;
+  font-weight:bold;
+  letter-spacing:3px;
+}
+
+.pass-wrap span{
+  position:absolute;
+  right:10px;
+}
+
+/* khi mở mật khẩu */
+.pass-wrap input[type="text"]{
+  color:#00ffcc;
+  text-shadow:0 0 10px #00ffcc;
+}
+
 /* input */
 .pass-wrap input{
 flex:1;
@@ -982,42 +1003,49 @@ setTimeout(()=>{
 <div class="box">
   <div class="menu-title" onclick="toggleMenu('menuPass',this.querySelector('.arrow'))">
     <span style="display:flex;align-items:center;gap:6px;">
-      MẬT KHẨU CHỨNG CHỈ 🔐<span class="menu-dot"></span>
-</span>
+      MẬT KHẨU CHỨNG CHỈ 🔐 <span class="menu-dot"></span>
+    </span>
     <span class="arrow">▼</span>
   </div>
-  
+
   <div id="menuPass" class="menu-content" style="text-align:center;">
+
     <!-- AXITAT -->
     <div class="app-item">
-<div> 
-<div class="NHT-live">ĐỂ XEM MẬT KHẨU AXITAT👁<span id="lock1">🔒</span></div>
-<div class="pass-wrap">
-  <input id="pass2" type="password" value="1402" readonly>
-  <span onclick="togglePass('pass2',this,'lock2')">👁</span>
-</div>
+      <div class="NHT-live">
+        XEM MẬT KHẨU AXITAT ▶👁<span id="lockAxitat">🔒</span>
+      </div>
+
+      <div class="pass-wrap">
+        <input id="passAxitat" type="password" value="1402" readonly>
+        <span onclick="togglePass('passAxitat',this,'lockAxitat')">👁</span>
+      </div>
 
       <div class="copy-btn"
-      onclick="copyLink('1402',this,'Đã sao chép mật khẩu AXITAT')">
-      SAO CHÉP
+        onclick="copyLink('1402',this,'Đã sao chép mật khẩu AXITAT')">
+        📋 SAO CHÉP
       </div>
     </div>
 
     <!-- BEIJING -->
     <div class="app-item">
-<div class="NHT-live">ĐỂ XEM MẬT KHẨU BEIJING👁<span id="lock1">🔒</span></div>
+      <div class="NHT-live">
+        XEM MẬT KHẨU AXITAT ▶👁<span id="lockBeijing">🔒</span>
+      </div>
 
-<div class="pass-wrap">
-  <input id="pass1" type="password" value="1402" readonly>
-  <span onclick="togglePass('pass1',this,'lock1')">👁</span>
-</div>
+      <div class="pass-wrap">
+        <input id="passBeijing" type="password" value="1402" readonly>
+        <span onclick="togglePass('passBeijing',this,'lockBeijing')">👁</span>
       </div>
 
       <div class="copy-btn"
-      onclick="copyLink('1402',this,'Đã sao chép mật khẩu BEIJING')">
-      SAO CHÉP
+        onclick="copyLink('1402',this,'Đã sao chép mật khẩu BEIJING')">
+        📋 SAO CHÉP
       </div>
     </div>
+
+  </div>
+</div>
 
   </div>
 </div>
