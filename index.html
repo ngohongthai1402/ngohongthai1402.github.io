@@ -3,9 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPEED I AM NHT</title>
 
+<link rel="preload" as="image" href="logo.png">
+
+<title>SPEED I AM NHT</title>
 <style>
+	html{
+  scroll-behavior:smooth;
+}
+
 /* copy sao chép nền gradient + glow chạy */
 .copy-btn.copied{
   background: linear-gradient(270deg,#00c853,#00ffcc,#0a84ff);
@@ -139,6 +145,20 @@ font-weight:700;
   overflow: hidden;
   transition: 0.4s;
 }
+
+.menu-content,
+.sub-menu{
+  will-change: max-height;
+}
+
+.menu-content{
+  transition: max-height 0.4s ease, opacity 0.3s;
+  opacity:0;
+}
+
+.menu-content.open{
+  opacity:1;
+}
 /* ===== STYLE RIÊNG 3 MENU ===== */
 .menu-title.vip{
   border-radius:18px;
@@ -163,47 +183,6 @@ font-weight:700;
 /* khi mở */
 .sub-menu.active{
   max-height:800px;
-}
-
-/* fix item bên trong */
-.sub-menu .app-item{
-  margin:10px 0;
-  border-radius:14px;
-}
-
-/* ===== FIX MÀU KHỐI KHÔNG LỆCH ===== */
-.menu-igg,
-.menu-dv,
-.menu-plus{
-  width:100%;
-  box-sizing:border-box;
-  margin:10px 0 0 0; /* bỏ margin-top riêng */
-  padding:12px;
-  border-radius:16px;
-}
-
-/* màu IGG */
-.menu-igg{
-  background: linear-gradient(135deg,#00c6ff,#0072ff);
-}
-
-/* màu Đếm vòng */
-.menu-dv{
-  background: linear-gradient(135deg,#ff9800,#ff5722);
-}
-
-/* PLUS VIP */
-.menu-plus{
-  background: linear-gradient(270deg,#ffd700,#fff176,#ff9800,#ffd700);
-  background-size:400% 400%;
-  animation: goldMove 3s linear infinite;
-  box-shadow:0 0 12px gold;
-}
-
-/* animation gold */
-@keyframes goldMove{
-  0%{background-position:0%}
-  100%{background-position:100%}
 }
 /* ===== FIX CHUNG ITEM TRONG IGG / DV / PLUS ===== */
 #menuFree .app-item,
@@ -265,17 +244,13 @@ font-weight:700;
 
 /* PLUS luôn có màu */
 .menu-plus{
-  background: linear-gradient(135deg,#ffd700,#ff9800);
+  background: linear-gradient(270deg,#ffd700,#fff176,#ff9800,#ffd700);
+  background-size:400% 400%;
+  animation: goldMove 3s linear infinite;
   border-radius:14px;
   padding:12px;
   margin-top:10px;
   box-shadow:0 0 15px gold;
-}
-
-.menu-plus{
-  background: linear-gradient(270deg,#ffd700,#fff176,#ff9800,#ffd700);
-  background-size:400% 400%;
-  animation: goldMove 3s linear infinite;
 }
 
 @keyframes goldMove{
@@ -288,10 +263,6 @@ font-weight:700;
   margin-top:10px;
 }
 /* khi menu mở */
-.menu-title.vip.active{
-  border-radius:18px 18px 0 0;
-}
-
 .arrow{
   float: right;
   transition: 0.3s;
@@ -504,10 +475,17 @@ box-shadow:0 0 10px #0a84ff30 inset;
   right:10px;
 }
 
+.pass-wrap input{
+  transition:0.3s;
+}
+
+.pass-wrap input[type="text"]{
+  transform:scale(1.05);
+}
+
 /* khi mở mật khẩu */
 .pass-wrap input[type="text"]{
-  color:#00ffcc;
-  text-shadow:0 0 10px #00ffcc;
+  box-shadow:0 0 10px #00ffcc;
 }
 
 /* input */
@@ -542,6 +520,10 @@ var currentVideo = null;
 function togglePass(id, el, lockId){
   let input = document.getElementById(id);
   let lock = document.getElementById(lockId);
+
+if(navigator.vibrate){
+  navigator.vibrate(20);
+}
 
   if(input.type === "password"){
     input.type = "text";
@@ -815,13 +797,6 @@ muteState[id]=!muteState[id];
   }
 }
 
-body{
-  margin:0;
-  background:#0f0f0f;
-  color:#fff;
-  font-family:Arial;
-}
-
 /* NAME */
 #name{
   text-align:center;
@@ -851,12 +826,6 @@ input[type=range]{
   justify-content:center;
   gap:10px;
   margin-top:10px;
-}
-
-.NHT-live{
-font-size:12px;
-color:#00ffcc;
-text-shadow:0 0 8px #00ffcc;
 }
 
 /* desc */
@@ -922,18 +891,11 @@ box-shadow:0 0 10px #0a84ff;
   }
 }
 
-.thai-live{
+.NHT-live{
   font-size:16px;
   font-weight:700;
   color:#00ffcc;
   display:inline-block;
-  animation:glowPulse 1.2s infinite;
-}
-
-.NHT-live{
-  font-size:16px;
-  font-weight:700;
-  animation:blinkGlow 1s infinite, colorBlink 2s infinite;
 }
 </style>
 
@@ -942,60 +904,59 @@ setTimeout(()=>{
   document.getElementById("text1").style.display = "block";
 },0); // phải khớp với thời gian animation (0s)
 </script>
-</header>
-</header>
-
 <div class="logo">
 <img src="logo.png">
 </div>
 
-<!-- ===== ESIGN AXITAT ===== -->  
-<div class="box">  
-  <div class="menu-title" onclick="toggleMenu('menuAxitat',this.querySelector('.arrow'))">  
-    <span style="display:flex;align-items:center;gap:6px;">  
-      ESIGN AXITAT <span class="menu-dot"></span>  
+<!-- ===== ESIGN AXITAT ===== -->
+<div class="box">
+  <div class="menu-title" onclick="toggleMenu('menuAxitat',this.querySelector('.arrow'))">
+    <div style="display:flex;align-items:center;gap:6px;">
+      ESIGN AXITAT
+      <span class="menu-dot"></span>
       <div class="NHT-live">● đang hoạt động</div>
-    </span>  
-    <span class="arrow">▼</span>  
-  </div>  
-
-  <div id="menuAxitat" class="menu-content" style="text-align:center;">  
-    <img src="esign.png" class="esign-logo">  
-
-    <div class="esign-btn"
-      onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">  
-      CÀI ĐẶT ESIGN AXITAT <span class="active-dot"></span>  
-    </div>  
-
-    <div class="cert-btn"
-      onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertAxitat.zip'">  
-      TẢI CHỨNG CHỈ AXITAT 📥  
     </div>
-      </div>
-          </div>
-<!-- ===== ESIGN BEIJING ===== -->  
-<div class="box">  
-  <div class="menu-title" onclick="toggleMenu('menuBeijing',this.querySelector('.arrow'))">  
-    <span style="display:flex;align-items:center;gap:6px;">  
-      ESIGN BEIJING 
-<span class="menu-dot"></span>  
-      <div class="NHT-live">● đang hoạt động</div>
-    </span>  
-    <span class="arrow">▼</span>  
-  </div>  
+    <span class="arrow">▼</span>
+  </div>
 
-  <div id="menuBeijing" class="menu-content" style="text-align:center;">  
-    <img src="esign.png" class="esign-logo">  
+  <div id="menuAxitat" class="menu-content" style="text-align:center;">
+    <img src="esign.png" class="esign-logo">
 
     <div class="esign-btn"
-      onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign2.plist'">  
-      CÀI ĐẶT ESIGN BEIJING <span class="active-dot"></span>  
-    </div>  
+      onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">
+      CÀI ĐẶT ESIGN AXITAT <span class="active-dot"></span>
+    </div>
 
     <div class="cert-btn"
-      onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertBeijing.zip'">  
-      TẢI CHỨNG CHỈ BEIJING 📥  
-    </div>  
+      onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertAxitat.zip'">
+      TẢI CHỨNG CHỈ AXITAT 📥
+    </div>
+  </div>
+</div>
+
+<!-- ===== ESIGN BEIJING ===== -->
+<div class="box">
+  <div class="menu-title" onclick="toggleMenu('menuBeijing',this.querySelector('.arrow'))">
+    <div style="display:flex;align-items:center;gap:6px;">
+      ESIGN BEIJING
+      <span class="menu-dot"></span>
+      <div class="NHT-live">● đang hoạt động</div>
+    </div>
+    <span class="arrow">▼</span>
+  </div>
+
+  <div id="menuBeijing" class="menu-content" style="text-align:center;">
+    <img src="esign.png" class="esign-logo">
+
+    <div class="esign-btn"
+      onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign2.plist'">
+      CÀI ĐẶT ESIGN BEIJING <span class="active-dot"></span>
+    </div>
+
+    <div class="cert-btn"
+      onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertBeijing.zip'">
+      TẢI CHỨNG CHỈ BEIJING 📥
+    </div>
   </div>
 </div>
 
@@ -1030,8 +991,8 @@ setTimeout(()=>{
     <!-- BEIJING -->
     <div class="app-item">
       <div class="NHT-live">
-        XEM MẬT KHẨU AXITAT ▶👁<span id="lockBeijing">🔒</span>
-      </div>
+  XEM MẬT KHẨU BEIJING ▶👁<span id="lockBeijing">🔒</span>
+</div>
 
       <div class="pass-wrap">
         <input id="passBeijing" type="password" value="1402" readonly>
@@ -1043,15 +1004,9 @@ setTimeout(()=>{
         📋 SAO CHÉP
       </div>
     </div>
-
-  </div>
-</div>
-
-  </div>
-</div>
-</div>
-</div>
-</div>
+    
+ </div>
+ </div>
 <!-- DNS -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menuDNS',this.querySelector('.arrow'))">
@@ -1084,8 +1039,7 @@ setTimeout(()=>{
 
 
 </div>
-</div>
-</div>
+
 <div class="box" id="speed-update">
 <!-- MENU CHA -->
 <div class="menu-title"
@@ -1175,14 +1129,14 @@ setTimeout(()=>{
   <!-- PLUS -->
   <div class="menu-title vip menu-plus"
     onclick="toggleSubMenu('menuPlus', this)">
-    <span>👑 SPEED PLUS VIP</span>
+    <span>👑 SPEED PLUS</span>
     <span class="arrow">▼</span>
   </div>
 
   <div id="menuPlus" class="sub-menu">
     <div class="app-item">
       <div class="NHT-live">SPEED ● PLUS 👑</div>
-      <div class="version">3.5.2500</div>
+<div class="version">Phiên bản: 3.5.2500</div>
 
       <div class="copy-btn"
         onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d542c82b34c_Plus2500.ipa', this)">
@@ -1265,8 +1219,11 @@ window.onload = function(){
     const menu = document.getElementById("menuSpeed");
     const title = document.querySelector("[onclick*='menuSpeed']");
     if(menu && title){
-      menu.style.display = "block";
+      menu.classList.add("open");
       title.classList.add("active");
+
+      let arrow = title.querySelector(".arrow");
+      if(arrow) arrow.classList.add("rotate");
     }
   }
 
@@ -1274,8 +1231,11 @@ window.onload = function(){
     const sub = document.getElementById(id);
     const title = document.querySelector(selector);
     if(sub && title){
-      sub.style.display = "block";
+      sub.classList.add("active");
       title.classList.add("active");
+
+      let arrow = title.querySelector(".arrow");
+      if(arrow) arrow.classList.add("rotate");
     }
   }
 
@@ -1297,6 +1257,35 @@ window.onload = function(){
   if(hash === "#speed-update"){
     openMain();
   }
+
+  /* 🔥 AUTO SCROLL XỊN */
+  setTimeout(() => {
+    if(hash === "#speed-plus"){
+      document.getElementById("menuPlus")?.scrollIntoView({
+        behavior: "smooth",
+  block: "center",
+  inline: "nearest"
+      });
+    }
+
+    if(hash === "#speed-igg"){
+      document.getElementById("menuFree")?.scrollIntoView({
+        behavior: "smooth",
+  block: "center",
+  inline: "nearest"
+      });
+    }
+
+    if(hash === "#speed-dv"){
+      document.getElementById("menuDemVong")?.scrollIntoView({
+        behavior: "smooth",
+  block: "center",
+  inline: "nearest"
+      });
+    }
+
+  }, 300);
+
 }
 </script>
 </body>
