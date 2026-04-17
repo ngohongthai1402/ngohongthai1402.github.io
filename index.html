@@ -6,11 +6,75 @@
 <title>SPEED I AM NHT</title>
 
 <style>
-
-/* COPY SUCCESS */
+/* copy sao chép nền gradient + glow chạy */
 .copy-btn.copied{
-background:#00c853 !important;
-box-shadow:0 0 15px #00c853 !important;
+  background: linear-gradient(270deg,#00c853,#00ffcc,#0a84ff);
+  background-size: 400% 400%;
+  animation: gradientMove 2s ease infinite;
+  box-shadow: 0 0 20px #00ffcc, 0 0 40px #00c853;
+}
+
+/* layout nội dung */
+.success-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+/* icon check */
+.check{
+  font-size:18px;
+  animation: checkFly 0.4s ease;
+}
+
+/* chữ */
+.text{
+  letter-spacing:1px;
+  animation: textGlow 1s infinite alternate;
+}
+
+/* phóng nhẹ */
+.success-anim{
+  animation: scaleUp 0.25s ease;
+}
+
+/* fade */
+.fade-out{
+  animation: fadeOut 0.3s forwards;
+}
+
+/* ===== KEYFRAMES ===== */
+
+/* nền chạy */
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  100%{background-position:100% 50%;}
+}
+
+/* icon bay */
+@keyframes checkFly{
+  0%{transform:translateY(10px) scale(0);opacity:0;}
+  100%{transform:translateY(0) scale(1);opacity:1;}
+}
+
+/* glow chữ */
+@keyframes textGlow{
+  from{text-shadow:0 0 5px #00ffcc;}
+  to{text-shadow:0 0 15px #00ffcc,0 0 25px #00ffcc;}
+}
+
+/* scale */
+@keyframes scaleUp{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.15);}
+  100%{transform:scale(1);}
+}
+
+/* fade */
+@keyframes fadeOut{
+  0%{opacity:1;}
+  100%{opacity:0;}
 }
 
 /* TOAST SHOW */
@@ -283,6 +347,10 @@ transform:scale(1.2);
 </style>
 
 <script>
+	var players = {};
+var muteState = {};
+var currentVideo = null;
+
 function togglePass(id, el, lockId){
   let input = document.getElementById(id);
   let lock = document.getElementById(lockId);
@@ -353,30 +421,33 @@ function copyLink(link, btn, message = "Đã sao chép link"){
 
   function showDone(btn, message){
 
-    // ripple
-    btn.classList.add("ripple");
-    setTimeout(() => btn.classList.remove("ripple"), 600);
+let oldText = btn.innerHTML;
 
-    // đổi nút
-    let oldText = btn.innerHTML;
-    btn.innerHTML = "✔ ĐÃ COPY";
-    btn.classList.add("copied");
+// rung nhẹ (mobile)
+if(navigator.vibrate){
+  navigator.vibrate(30);
+}
 
-    setTimeout(()=>{
-      btn.innerHTML = oldText;
-      btn.classList.remove("copied");
-    },1500);
+// hiệu ứng vào
+btn.classList.add("copied","success-anim");
 
-    // toast
-    let t = document.getElementById("toast");
-    if(!t) return;
+btn.innerHTML = `
+<span class="success-wrap">
+  <span class="check">✔</span>
+  <span class="text">ĐÃ SAO CHÉP</span>
+</span>
+`;
 
-    t.innerHTML = "✔" + message;
-    t.classList.add("show");
+// reset mượt
+setTimeout(()=>{
+  btn.classList.add("fade-out");
 
-    setTimeout(()=>{
-      t.classList.remove("show");
-    },2000);
+  setTimeout(()=>{
+    btn.innerHTML = oldText;
+    btn.classList.remove("copied","success-anim","fade-out");
+  },300);
+
+},1500);
   }
 }
 
@@ -744,7 +815,8 @@ TẢI CHỨNG CHỈ BEIJING 📥
 </div>
 </div>
 </div>
-<!-- SPEED -->
+
+<!-- MENU CẬP NHẬT FREE -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu1',this.querySelector('.arrow'))">
 <span>FILE CẬP NHẬT SPEED</span>
@@ -756,22 +828,27 @@ TẢI CHỨNG CHỈ BEIJING 📥
 <div class="app-item">
 <img src="logogame.png">
 <div class="NHT-live">● ĐẾM VÒNG - V1</div>
-<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa',this)">SAO CHÉP LINK</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa',this)"><div class="NHT-live">COPY LINK CẬP NHẬT ● COIN MASTER
 </div>
-
+</div>
+</div>
 <div class="app-item">
 <img src="logogame.png">
 <div class="NHT-live">● ĐẾM VÒNG - V2</div>
-<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa',this)">SAO CHÉP LINK</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa',this)"><div class="NHT-live">COPY LINK CẬP NHẬT ● COIN MASTER
+</div>
+</div>
 </div>
 <div class="app-item">
 <img src="logogame.png">
 <div class="NHT-live">● SPEED - IGG</div>
-<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa',this)">SAO CHÉP LINK</div>
+<div class="copy-btn" onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa',this)"><div class="NHT-live">COPY LINK CẬP NHẬT ● COIN MASTER
 </div>
 </div>
 </div>
-<!-- VIDEO -->
+</div>
+</div>
+</div><!-- VIDEO -->
 <div class="box">
 <div class="menu-title" onclick="toggleMenu('menu3',this.querySelector('.arrow'))">
 <span>VIDEO HƯỚNG DẪN</span>
@@ -783,7 +860,7 @@ TẢI CHỨNG CHỈ BEIJING 📥
 <div class="video-btn" data-id="v1">
 <div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
 <span class="play">▶</span>
-<div class="NHT-live">● Tải Esign Speed Free ( miễn phí ) </div>
+<div class="NHT-live">● Tải Esign Speed Free ( Miễn phí ) </div>
 </div>
 <div class="video-controls">
 <span onclick="toggleSound('v1',this)">🔇</span>
@@ -797,14 +874,19 @@ TẢI CHỨNG CHỈ BEIJING 📥
 <div class="video-btn" data-id="v2">
 <div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
 <span class="play">▶</span>
-<div class="NHT-live">● Hướng dẫn cập nhật • Coin Master</div>
+<div class="NHT-live">● Hướng dẫn cập nhật • Coin Master </div>
 </div>
 <div class="video-controls">
 <span onclick="toggleSound('v2',this)">🔇</span>
 </div>
 </div>
+
 <div id="v2" class="video">
 <iframe id="v2-frame" src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1"></iframe>
 </div>
+</div>
+</div>
+<body><div id="toast"></div>
+<script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
