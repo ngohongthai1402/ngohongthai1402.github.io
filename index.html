@@ -164,7 +164,6 @@ font-weight:700;
 .sub-menu.active{
   max-height:800px;
 }
-}
 
 /* fix item bên trong */
 .sub-menu .app-item{
@@ -937,38 +936,48 @@ setTimeout(()=>{
       <div class="NHT-live">● đang hoạt động</div>
     </span>  
     <span class="arrow">▼</span>  
-  </div>    <div id="menuAxitat" class="menu-content" style="text-align:center;">  <img src="esign.png" class="esign-logo">  
-
-<div class="esign-btn"  
-onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">  
-CÀI ĐẶT ESIGN AXITAT <span class="active-dot"></span>  
-</div>  
-<div class="cert-btn"  
-onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertAxitat.zip'">  
-TẢI CHỨNG CHỈ AXITAT 📥  
-</div>  
-    </div>
-</div>
-</div>
-</div>
-</div>
   </div>  
-</div>  <!-- ===== ESIGN BEIJING ===== -->  <div class="box">  
+
+  <div id="menuAxitat" class="menu-content" style="text-align:center;">  
+    <img src="esign.png" class="esign-logo">  
+
+    <div class="esign-btn"
+      onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign.plist'">  
+      CÀI ĐẶT ESIGN AXITAT <span class="active-dot"></span>  
+    </div>  
+
+    <div class="cert-btn"
+      onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertAxitat.zip'">  
+      TẢI CHỨNG CHỈ AXITAT 📥  
+    </div>
+      </div>
+          </div>
+<!-- ===== ESIGN BEIJING ===== -->  
+<div class="box">  
   <div class="menu-title" onclick="toggleMenu('menuBeijing',this.querySelector('.arrow'))">  
     <span style="display:flex;align-items:center;gap:6px;">  
-      ESIGN BEIJING <span class="menu-dot"></span>  <div class="NHT-live">● đang hoạt động</div>
+      ESIGN BEIJING 
+<span class="menu-dot"></span>  
+      <div class="NHT-live">● đang hoạt động</div>
     </span>  
     <span class="arrow">▼</span>  
-  </div>    <div id="menuBeijing" class="menu-content" style="text-align:center;">  <img src="esign.png" class="esign-logo">  
+  </div>  
 
-<div class="esign-btn"  
-onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign2.plist'">  
-CÀI ĐẶT ESIGN BEIJING <span class="active-dot"></span>  
-</div>  
+  <div id="menuBeijing" class="menu-content" style="text-align:center;">  
+    <img src="esign.png" class="esign-logo">  
 
-<div class="cert-btn"  
-onclick="window.location.href=' https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertBeijing.zip'">  
-TẢI CHỨNG CHỈ BEIJING 📥  
+    <div class="esign-btn"
+      onclick="window.location.href='itms-services://?action=download-manifest&url=https://ngohongthai1402.github.io/esign2.plist'">  
+      CÀI ĐẶT ESIGN BEIJING <span class="active-dot"></span>  
+    </div>  
+
+    <div class="cert-btn"
+      onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertBeijing.zip'">  
+      TẢI CHỨNG CHỈ BEIJING 📥  
+    </div>  
+  </div>
+</div>
+
 </div>
 <div class="box">
   <div class="menu-title" onclick="toggleMenu('menuPass',this.querySelector('.arrow'))">
@@ -979,10 +988,10 @@ TẢI CHỨNG CHỈ BEIJING 📥
   </div>
   
   <div id="menuPass" class="menu-content" style="text-align:center;">
-    <div class="NHT-live">xem mật khẩu click vào 👁 hoặc sao chép</div>
     <!-- AXITAT -->
     <div class="app-item">
-<div>AXITAT<span id="lock2">🔒</span></div>
+<div> 
+<div class="NHT-live">ĐỂ XEM MẬT KHẨU AXITAT👁<span id="lock1">🔒</span></div>
 <div class="pass-wrap">
   <input id="pass2" type="password" value="1402" readonly>
   <span onclick="togglePass('pass2',this,'lock2')">👁</span>
@@ -996,7 +1005,7 @@ TẢI CHỨNG CHỈ BEIJING 📥
 
     <!-- BEIJING -->
     <div class="app-item">
-<div>BEIJING <span id="lock1">🔒</span></div>
+<div class="NHT-live">ĐỂ XEM MẬT KHẨU BEIJING👁<span id="lock1">🔒</span></div>
 
 <div class="pass-wrap">
   <input id="pass1" type="password" value="1402" readonly>
@@ -1049,8 +1058,7 @@ TẢI CHỨNG CHỈ BEIJING 📥
 </div>
 </div>
 </div>
-<div class="box">
-
+<div class="box" id="speed-update">
 <!-- MENU CHA -->
 <div class="menu-title"
   onclick="toggleMenu('menuSpeed',this.querySelector('.arrow'))">
@@ -1081,14 +1089,14 @@ TẢI CHỨNG CHỈ BEIJING 📥
     <div class="app-item">
       <button class="copy-btn"
         onclick="window.location.href='https://zalo.me/g/ccltdg215'">
-        NHÓM ZALO IGG
+        <div class="NHT-live"> NHÓM ZALO CẬP NHẬT SPEED</div>
       </button>
     </div>
 
     <div class="app-item">
       <button class="copy-btn"
         onclick="window.location.href='https://t.me/nhtupdate/4'">
-        NHÓM TELEGRAM IGG
+        <div class="NHT-live">TELEGRAM CẬP NHẬT SPEED</div>
       </button>
     </div>
   </div>
@@ -1124,14 +1132,14 @@ TẢI CHỨNG CHỈ BEIJING 📥
     <div class="app-item">
       <button class="copy-btn"
         onclick="window.location.href='https://zalo.me/g/ccltdg215'">
-        NHÓM ZALO ĐẾM VÒNG
+                <div class="NHT-live">NHÓM ZALO CẬP NHẬT SPEED</div>
       </button>
     </div>
 
     <div class="app-item">
       <button class="copy-btn"
         onclick="window.location.href='https://t.me/nhtupdate'">
-        NHÓM TELEGRAM ĐẾM VÒNG
+        <div class="NHT-live">TELEGRAM CẬP NHẬT SPEED</div>
       </button>
     </div>
   </div>
@@ -1157,21 +1165,23 @@ TẢI CHỨNG CHỈ BEIJING 📥
     <div class="app-item">
       <button class="copy-btn"
         onclick="window.location.href='https://zalo.me/g/xxxole131'">
-        NHÓM ZALO PLUS 👑
+                <div class="NHT-live">NHÓM ZALO CẬP NHẬT PLUS👑</div>
       </button>
     </div>
 
     <div class="app-item">
       <button class="copy-btn"
         onclick="window.location.href='https://t.me/Coin_Master_Speed_IOS_IAMNHTV1'">
-        NHÓM TELEGRAM PLUS 👑
+        <div class="NHT-live">TELEGRAM CẬP NHẬT PLUS👑</div>
       </button>
       </div>
       
 <div class="buy-note">
-      <button class="copy-btn"
-onclick="window.location.href='https://zalo.me/ngohongthai97'">
-💬Mua Speed Plus nhắn Zalo mình
+  <button class="copy-btn"
+    onclick="window.location.href='https://zalo.me/ngohongthai97'">
+            <div class="NHT-live">💬 Mua Speed Plus nhắn Zalo mình</div>
+  </button>
+</div>
 </div>
 </div>
 </div>
@@ -1218,6 +1228,48 @@ onclick="window.location.href='https://zalo.me/ngohongthai97'">
 </div>
 </div>
 <script src="https://www.youtube.com/iframe_api">
+</script>
+<script>
+window.onload = function(){
+  const hash = window.location.hash;
+
+  const openMain = () => {
+    const menu = document.getElementById("menuSpeed");
+    const title = document.querySelector("[onclick*='menuSpeed']");
+    if(menu && title){
+      menu.style.display = "block";
+      title.classList.add("active");
+    }
+  }
+
+  const openSub = (id, selector) => {
+    const sub = document.getElementById(id);
+    const title = document.querySelector(selector);
+    if(sub && title){
+      sub.style.display = "block";
+      title.classList.add("active");
+    }
+  }
+
+  if(hash === "#speed-igg"){
+    openMain();
+    openSub("menuFree", "[onclick*='menuFree']");
+  }
+
+  if(hash === "#speed-dv"){
+    openMain();
+    openSub("menuDemVong", "[onclick*='menuDemVong']");
+  }
+
+  if(hash === "#speed-plus"){
+    openMain();
+    openSub("menuPlus", "[onclick*='menuPlus']");
+  }
+
+  if(hash === "#speed-update"){
+    openMain();
+  }
+}
 </script>
 </body>
 </html>
