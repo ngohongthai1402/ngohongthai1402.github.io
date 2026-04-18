@@ -288,10 +288,6 @@ max-width:100%;
 box-sizing:border-box;
 }
 
-.copy-btn:active{
-  transform:scale(0.96);
-}
-
 /* DOT */
 .menu-dot{
 width:10px;height:10px;
@@ -517,6 +513,23 @@ transform:scale(1.2);
 </style>
 
 <script>
+	function goDownload(){
+
+  // rung nhẹ
+  if(navigator.vibrate){
+    navigator.vibrate(30);
+  }
+
+  // hiệu ứng mờ mượt
+  document.body.style.transition = "0.25s";
+  document.body.style.opacity = "0.5";
+
+  // chuyển trang
+  setTimeout(()=>{
+    window.location.href = "https://ngohongthai1402.github.io/download";
+  },200);
+}
+
 function togglePass(id, el, lockId){
   let input = document.getElementById(id);
   let lock = document.getElementById(lockId);
@@ -543,99 +556,58 @@ muteState[id]=true;
 });
 }
 
-// ===== VIDEO CORE =====
-var players = {};
-var muteState = {};
-var currentVideo = null;
-
-// 🛑 DỪNG TẤT CẢ VIDEO
-function stopAllVideos(){
-  for(let v in players){
-    players[v]?.pauseVideo();
-
-    document.getElementById(v)?.classList.remove("open");
-
-    let b = document.querySelector(`[data-id="${v}"]`);
-    if(b){
-      b.classList.remove("active");
-      let play = b.querySelector(".play");
-      if(play) play.innerHTML = "▶";
-    }
-  }
-  currentVideo = null;
-}
-
-function showToast(msg){
-  let t = document.getElementById("toast");
-
-  if(!t) return;
-
-  t.innerHTML = msg;
-  t.classList.add("show");
-
-  setTimeout(()=>{
-    t.classList.remove("show");
-  },3000);
-}
-// ===== MENU CHA =====
 function toggleMenu(id,arrow){
-
-  stopAllVideos();
-
-  let allMenus = document.querySelectorAll(".menu-content");
+  let allMenus = document.querySelectorAll(".menu-content");;
   let allArrows = document.querySelectorAll(".arrow");
   let current = document.getElementById(id);
 
+  /* 🛑 TẮT VIDEO KHI MỞ MENU KHÁC */
+  if(currentVideo){
+    players[currentVideo].pauseVideo();
+    document.getElementById(currentVideo).classList.remove("open");
+
+    let btn = document.querySelector(`[data-id="${currentVideo}"]`);
+    if(btn){
+      btn.classList.remove("active");
+      btn.querySelector(".play").innerHTML = "▶";
+    }
+
+    currentVideo = null;
+  }
+
+  /* đóng menu khác */
   allMenus.forEach(m=>{
     if(m.id !== id){
       m.classList.remove("open");
     }
   });
 
+  /* reset arrow */
   allArrows.forEach(a=>a.classList.remove("rotate"));
 
+  /* toggle menu hiện tại */
   current.classList.toggle("open");
 
+  /* xoay arrow */
   if(current.classList.contains("open")){
     arrow.classList.add("rotate");
-
-    // 👉 MENU MẬT KHẨU
-    if(id === "menuPass"){
-      showToast(`📋 Sao chép <span style="opacity:0.6">hoặc</span> ấn <b style="color:#00ffcc">👁</b> để hiện mật khẩu`);
-
-      let eyes = document.querySelectorAll(".eye");
-
-      eyes.forEach(e=>{
-        e.classList.add("eye-anim");
-      });
-
-      setTimeout(()=>{
-        eyes.forEach(e=>{
-          e.classList.remove("eye-anim");
-        });
-      },5000); // 👉 số giây nhấp nháy
-    }
-
   }
 }
-// ===== MENU CON =====
+
 function toggleSubMenu(id, el){
-
-  // 🛑 DỪNG VIDEO LUÔN
-  stopAllVideos();
-
   let allSub = document.querySelectorAll(".sub-menu");
   let allTitles = document.querySelectorAll(".menu-title.vip");
+
   let current = document.getElementById(id);
 
-  // 👉 đóng menu khác
+  // 👉 ĐÓNG TẤT CẢ MENU KHÁC
   allSub.forEach(m=>{
     if(m.id !== id){
       m.classList.remove("active");
     }
   });
 
-  // 👉 reset UI
+  // 👉 RESET UI (viền + arrow)
   allTitles.forEach(t=>{
     if(t !== el){
       t.classList.remove("active");
@@ -644,7 +616,7 @@ function toggleSubMenu(id, el){
     }
   });
 
-  // 👉 toggle
+  // 👉 TOGGLE MENU HIỆN TẠI
   current.classList.toggle("active");
   el.classList.toggle("active");
 
@@ -652,42 +624,7 @@ function toggleSubMenu(id, el){
   arrow.classList.toggle("rotate");
 }
 
-// ===== VIDEO =====
-function toggleVideo(id,btn){
-
-  // 👉 nếu bấm lại → tắt
-  if(currentVideo === id){
-    stopAllVideos();
-    return;
-  }
-
-  // 🛑 DỪNG TẤT CẢ TRƯỚC
-  stopAllVideos();
-
-  // ▶ mở video mới
-  document.getElementById(id).classList.add("open");
-  players[id]?.playVideo();
-
-  btn.classList.add("active");
-  btn.querySelector(".play").innerHTML = "⏸";
-
-  currentVideo = id;
-}
-
-// ===== SOUND =====
-function toggleSound(id,icon){
-  if(muteState[id]){
-    players[id]?.unMute();
-    icon.innerHTML="🔊";
-  }else{
-    players[id]?.mute();
-    icon.innerHTML="🔇";
-  }
-  muteState[id]=!muteState[id];
-}
-
-// ===== COPY =====
-function copyLink(link, btn, message = "Đã sao chép"){
+function copyLink(link, btn, message = "Đã sao chép link"){
   if (navigator.clipboard) {
     navigator.clipboard.writeText(link).then(() => {
       showDone(btn, message);
@@ -709,44 +646,47 @@ function copyLink(link, btn, message = "Đã sao chép"){
   }
 
   function showDone(btn, message){
-    let oldText = btn.innerHTML;
 
-    if(navigator.vibrate){
-      navigator.vibrate(30);
-    }
+let oldText = btn.innerHTML;
 
-    btn.classList.add("copied","success-anim");
+// rung nhẹ (mobile)
+if(navigator.vibrate){
+  navigator.vibrate(30);
+}
 
-    btn.innerHTML = `
-    <span class="success-wrap">
-      <span class="check">✔</span>
-      <span class="text">${message.toUpperCase()}</span>
-    </span>
-    `;
+// hiệu ứng vào
+btn.classList.add("copied","success-anim");
 
-    setTimeout(()=>{
-      btn.classList.add("fade-out");
+btn.innerHTML = `
+<span class="success-wrap">
+  <span class="check">✔</span>
+  <span class="text">ĐÃ SAO CHÉP</span>
+</span>
+`;
 
-      setTimeout(()=>{
-        btn.innerHTML = oldText;
-        btn.classList.remove("copied","success-anim","fade-out");
-      },300);
+// reset mượt
+setTimeout(()=>{
+  btn.classList.add("fade-out");
 
-    },1500);
+  setTimeout(()=>{
+    btn.innerHTML = oldText;
+    btn.classList.remove("copied","success-anim","fade-out");
+  },300);
+
+},1500);
   }
 }
 
-// ===== DNS =====
 function downloadDNS(btn){
-  btn.classList.add("ripple");
-  setTimeout(()=>btn.classList.remove("ripple"),600);
+btn.classList.add("ripple");
+setTimeout(()=>btn.classList.remove("ripple"),600);
 
-  window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
+window.location.href='https://raw.githubusercontent.com/ngohongthai1402/dns/ngohongthai/dns.mobileconfig';
 
-  let t=document.getElementById("toast");
-  t.innerHTML="📥 Đang tải NHT DNS...";
-  t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),2000);
+let t=document.getElementById("toast");
+t.innerHTML="📥 Đang tải NHT DNS...";
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),2000);
 }
 </script>
 
@@ -798,16 +738,6 @@ function downloadDNS(btn){
 @keyframes chaychu{
   0%{ transform:translateX(0); }
   100%{ transform:translateX(-100%); }
-}
-
-@keyframes eyeBlink {
-  0%{opacity:1; transform:scale(1);}
-  50%{opacity:0.3; transform:scale(1.3);}
-  100%{opacity:1; transform:scale(1);}
-}
-
-.eye-anim{
-  animation: eyeBlink 0.8s infinite;
 }
 
 /* hiệu ứng chữ sau khi chạy xong */
@@ -961,10 +891,6 @@ setTimeout(()=>{
     <div class="cert-btn"
       onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertAxitat.zip'">
       TẢI CHỨNG CHỈ AXITAT 📥
-      </div>
-      <div class="buy-note"
-  onclick="window.location.href='https://zalo.me/ngohongthai97'">
-  💬 Mua chứng chỉ (certificate) nhắn Zalo: <b>0349 3333 97</b>
     </div>
   </div>
 </div>
@@ -991,10 +917,6 @@ setTimeout(()=>{
     <div class="cert-btn"
       onclick="window.location.href='https://raw.githubusercontent.com/ngohongthai1402/ngohongthai1402.github.io/main/CertBeijing.zip'">
       TẢI CHỨNG CHỈ BEIJING 📥
-            </div>
-      <div class="buy-note"
-  onclick="window.location.href='https://zalo.me/ngohongthai97'">
-  💬 Mua chứng chỉ (certificate) nhắn Zalo: <b>0349 3333 97</b>
     </div>
   </div>
 </div>
@@ -1012,12 +934,13 @@ setTimeout(()=>{
 
     <!-- AXITAT -->
     <div class="app-item">
-      <div class="NHT-live">MẬT KHẨU CHỨNG CHỈ AXITAT<span id="lockAxitat">🔒</span>
-</div>
+      <div class="NHT-live">
+        XEM MẬT KHẨU AXITAT ▶👁<span id="lockAxitat">🔒</span>
+      </div>
 
       <div class="pass-wrap">
         <input id="passAxitat" type="password" value="1402" readonly>
-<span class="eye" onclick="togglePass('passAxitat',this,'lockAxitat')">👁</span>
+        <span onclick="togglePass('passAxitat',this,'lockAxitat')">👁</span>
       </div>
 
       <div class="copy-btn"
@@ -1028,18 +951,18 @@ setTimeout(()=>{
 
     <!-- BEIJING -->
     <div class="app-item">
-      <div class="NHT-live">MẬT KHẨU CHỨNG CHỈ BEIJING<span id="lockBeijing">🔒</span>
+      <div class="NHT-live">
+  XEM MẬT KHẨU BEIJING ▶👁<span id="lockBeijing">🔒</span>
 </div>
 
       <div class="pass-wrap">
         <input id="passBeijing" type="password" value="1402" readonly>
-<span class="eye" onclick="togglePass('passBeijing',this,'lockBeijing')">👁</span>
+        <span onclick="togglePass('passBeijing',this,'lockBeijing')">👁</span>
       </div>
 
       <div class="copy-btn"
         onclick="copyLink('1402',this,'Đã sao chép mật khẩu BEIJING')">
         📋 SAO CHÉP
-         </div>
       </div>
     </div>
     
@@ -1164,54 +1087,74 @@ setTimeout(()=>{
     </div>
   </div>
 
-  <!-- CHỈ ĐƯA PHẦN ĐÃ FIX QUAN TRỌNG (mày giữ nguyên file, thay đoạn dưới) -->
+  <!-- PLUS -->
+  <div class="menu-title vip menu-plus"
+    onclick="toggleSubMenu('menuPlus', this)">
+    <span>👑 SPEED PLUS VIP</span>
+    <span class="arrow">▼</span>
+  </div>
 
-<!-- ===== PLUS ===== -->
-<div class="menu-title vip menu-plus"
-  onclick="toggleSubMenu('menuPlus', this)">
-  <span>👑 SPEED PLUS</span>
-  <span class="arrow">▼</span>
-</div>
+  <div id="menuPlus" class="sub-menu">
 
-<div id="menuPlus" class="sub-menu">
+    <div class="app-item">
+      <div class="NHT-live">SPEED ● PLUS 👑</div>
+      <div class="version">3.5.2500</div>
 
-  <div class="app-item">
-    <div class="NHT-live">SPEED ● PLUS 👑</div>
-    <div class="version">Phiên bản: 3.5.2500</div>
-
-    <div class="copy-btn"
-      onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d542c82b34c_Plus2500.ipa', this)">
-      <div class="NHT-live">COPY LINK ● SPEED PLUS</div>
+      <div class="copy-btn"
+        onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d542c82b34c_Plus2500.ipa', this)">
+        <div class="NHT-live">COPY LINK ● SPEED PLUS</div>
+      </div>
     </div>
 
-    <!-- 🔥 DÒNG MUA PLUS -->
+    <div class="app-item">
+      <button class="copy-btn"
+        onclick="window.location.href='https://zalo.me/g/xxxole131'">
+        <div class="NHT-live">NHÓM ZALO CẬP NHẬT PLUS👑</div>
+      </button>
+    </div>
+
+    <div class="app-item">
+      <button class="copy-btn"
+        onclick="window.location.href='https://t.me/Coin_Master_Speed_IOS_IAMNHTV1'">
+        <div class="NHT-live">TELEGRAM CẬP NHẬT PLUS👑</div>
+      </button>
+    </div>
+
     <div class="buy-note"
       onclick="window.location.href='https://zalo.me/ngohongthai97'">
-      💬 Mua Speed Plus nhắn Zalo: <b>0349 3333 97</b>
+      💬 Mua Speed Plus nhắn Zalo: <b>034 3333 97</b>
     </div>
 
+  </div> <!-- ✅ ĐÓNG menuPlus -->
+
+  <!-- 🔥 MENU 4 IN 1 -->
+  <div class="menu-title vip menu-plus"
+    onclick="toggleSubMenu('menu4in1', this)">
+    <span>📦LINK UPDATE 4 IN 1 SPEED</span>
+    <span class="arrow">▼</span>
   </div>
 
-  <div class="app-item">
-    <button class="copy-btn"
-      onclick="window.location.href='https://zalo.me/g/xxxole131'">
-      <div class="NHT-live">NHÓM ZALO CẬP NHẬT PLUS👑</div>
-    </button>
-  </div>
+  <div id="menu4in1" class="sub-menu">
 
-  <div class="app-item">
-    <button class="copy-btn"
-      onclick="window.location.href='https://t.me/Coin_Master_Speed_IOS_IAMNHTV1'">
-      <div class="NHT-live">TELEGRAM CẬP NHẬT PLUS👑</div>
-    </button>
-  </div>
+    <!-- MỞ WEB -->
+    <div class="app-item">
+      <button class="copy-btn"
+        onclick="window.location.href='https://ngohongthai1402.github.io/download'">
+<div class="NHT-live">MỞ TRANG LINK 4 IN 1</div>
+      </button>
+    </div>
 
+    <!-- COPY LINK -->
+    <div class="app-item">
+      <div class="copy-btn"
+        onclick="copyLink('https://ngohongthai1402.github.io/download', this)">
+       <div class="NHT-live">COPY LINK 4 IN 1</div>
+    </div>
 </div>
 </div>
 </div>
 </div>
 
-</div>
 <div class="box">
 
 <div class="menu-title"
@@ -1222,116 +1165,181 @@ setTimeout(()=>{
 
 <div id="menu3" class="menu-content">
 
+<!-- VIDEO 1 -->
 <div class="video-btn" data-id="v1">
-<div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
-<span class="play">▶</span>
-<div class="NHT-live">● Tải Esign Speed Free ( Miễn phí ) </div>
-</div>
-<div class="video-controls">
-<span onclick="toggleSound('v1',this)">🔇</span>
-</div>
+  <div class="video-left" onclick="toggleVideo('v1',this.parentElement)">
+    <span class="play">▶</span>
+    <div class="NHT-live">● Tải Esign Speed Free ( Miễn phí )</div>
+  </div>
+  <div class="video-controls">
+    <span onclick="toggleSound('v1',this)">🔇</span>
+  </div>
 </div>
 
 <div id="v1" class="video">
-<iframe id="v1-frame" src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1"></iframe>
+  <iframe 
+    id="v1-frame"
+    data-src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1">
+  </iframe>
 </div>
 
+<!-- VIDEO 2 -->
 <div class="video-btn" data-id="v2">
-<div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
-<span class="play">▶</span>
-<div class="NHT-live">● Hướng dẫn cập nhật • Coin Master </div>
-</div>
-<div class="video-controls">
-<span onclick="toggleSound('v2',this)">🔇</span>
-</div>
+  <div class="video-left" onclick="toggleVideo('v2',this.parentElement)">
+    <span class="play">▶</span>
+    <div class="NHT-live">● Hướng dẫn cập nhật • Coin Master</div>
+  </div>
+  <div class="video-controls">
+    <span onclick="toggleSound('v2',this)">🔇</span>
+  </div>
 </div>
 
 <div id="v2" class="video">
-<iframe id="v2-frame" src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1"></iframe>
+  <iframe 
+    id="v2-frame"
+    data-src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1">
+  </iframe>
 </div>
 
 </div>
 </div>
-<script src="https://www.youtube.com/iframe_api">
-</script>
+<!-- YOUTUBE API -->
 <script>
+var players = {};
+var muteState = {};
+var currentVideo = null;
+
+// 👉 TOGGLE VIDEO (TỐI ƯU NHẤT)
+function toggleVideo(id,btn){
+
+  let frame = document.getElementById(id + "-frame");
+
+  // 👉 load video + tạo player lần đầu
+  if(frame && !frame.src){
+    frame.src = frame.dataset.src;
+
+    // đợi iframe load rồi mới tạo player
+    setTimeout(()=>{
+      players[id] = new YT.Player(id+"-frame");
+      muteState[id] = true;
+    },400);
+  }
+
+  // 👉 nếu bấm lại → tắt
+  if(currentVideo === id){
+    players[id]?.pauseVideo();
+    document.getElementById(id).classList.remove("open");
+    btn.classList.remove("active");
+    btn.querySelector(".play").innerHTML = "▶";
+    currentVideo = null;
+    return;
+  }
+
+  // 👉 tắt tất cả video khác
+  for(let v in players){
+    players[v]?.pauseVideo();
+
+    document.getElementById(v)?.classList.remove("open");
+
+    let b = document.querySelector(`[data-id="${v}"]`);
+    if(b){
+      b.classList.remove("active");
+      let play = b.querySelector(".play");
+      if(play) play.innerHTML = "▶";
+    }
+  }
+
+  // 👉 mở video
+  document.getElementById(id).classList.add("open");
+
+  setTimeout(()=>{
+    players[id]?.playVideo();
+  },500);
+
+  btn.classList.add("active");
+  btn.querySelector(".play").innerHTML = "⏸";
+
+  currentVideo = id;
+}
+
+// 👉 SOUND
+function toggleSound(id,icon){
+  if(muteState[id]){
+    players[id]?.unMute();
+    icon.innerHTML="🔊";
+  }else{
+    players[id]?.mute();
+    icon.innerHTML="🔇";
+  }
+  muteState[id]=!muteState[id];
+}
+// 👉 HASH SPEED (mượt + nhanh)
 window.onload = function(){
   const hash = window.location.hash;
 
-  const openMain = () => {
-    const menu = document.getElementById("menuSpeed");
-    const title = document.querySelector("[onclick*='menuSpeed']");
-    if(menu && title){
-      menu.classList.add("open");
-      title.classList.add("active");
+  if(!hash || !hash.includes("speed")) return;
 
+  const openMain = () => {
+    let main = document.getElementById("menuSpeed");
+    let title = document.querySelector("[onclick*='menuSpeed']");
+
+    if(main) main.classList.add("open");
+
+    if(title){
       let arrow = title.querySelector(".arrow");
       if(arrow) arrow.classList.add("rotate");
     }
   }
 
   const openSub = (id, selector) => {
-    const sub = document.getElementById(id);
-    const title = document.querySelector(selector);
-    if(sub && title){
-      sub.classList.add("active");
-      title.classList.add("active");
+    let sub = document.getElementById(id);
+    let title = document.querySelector(selector);
 
+    if(sub) sub.classList.add("active");
+
+    if(title){
       let arrow = title.querySelector(".arrow");
       if(arrow) arrow.classList.add("rotate");
     }
   }
 
+  let target = null;
+
+  if(hash === "#speed-update"){
+    openMain();
+    target = "menuSpeed";
+  }
+
   if(hash === "#speed-igg"){
     openMain();
     openSub("menuFree", "[onclick*='menuFree']");
+    target = "menuFree";
   }
 
   if(hash === "#speed-dv"){
     openMain();
     openSub("menuDemVong", "[onclick*='menuDemVong']");
+    target = "menuDemVong";
   }
 
   if(hash === "#speed-plus"){
     openMain();
     openSub("menuPlus", "[onclick*='menuPlus']");
+    target = "menuPlus";
   }
 
-  if(hash === "#speed-update"){
-    openMain();
+  if(target){
+    setTimeout(()=>{
+      document.getElementById(target)?.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+      });
+    },200);
   }
-
-  /* 🔥 AUTO SCROLL XỊN */
-  setTimeout(() => {
-    if(hash === "#speed-plus"){
-      document.getElementById("menuPlus")?.scrollIntoView({
-        behavior: "smooth",
-  block: "center",
-  inline: "nearest"
-      });
-    }
-
-    if(hash === "#speed-igg"){
-      document.getElementById("menuFree")?.scrollIntoView({
-        behavior: "smooth",
-  block: "center",
-  inline: "nearest"
-      });
-    }
-
-    if(hash === "#speed-dv"){
-      document.getElementById("menuDemVong")?.scrollIntoView({
-        behavior: "smooth",
-  block: "center",
-  inline: "nearest"
-      });
-    }
-
-  }, 300);
-
 }
 </script>
-<div id="toast"></div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
 
 </body>
 </html>
