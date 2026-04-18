@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TẢI SPEED - NHT</title>
+
+<style>
+body{
+  margin:0;
+  background:#0f0f0f;
+  color:#fff;
+  font-family:-apple-system;
+  text-align:center;
+}
+
+/* tiêu đề */
+.title{
+  font-size:22px;
+  font-weight:bold;
+  margin:20px 0;
+  text-shadow:0 0 10px #0a84ff;
+}
+
+/* box */
+.container{
+  padding:15px;
+}
+
+/* nút */
+.btn{
+  padding:18px;
+  border-radius:18px;
+  margin:15px 0;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s;
+  box-shadow:0 0 15px rgba(0,0,0,0.4);
+}
+
+/* hiệu ứng click */
+.btn.clicked{
+  transform:scale(0.95);
+  box-shadow:0 0 25px #00ffcc;
+}
+
+/* IGG */
+.igg{
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  box-shadow:0 0 20px #00c6ff;
+}
+
+/* DV */
+.dv{
+  background:linear-gradient(135deg,#ff9800,#ff5722);
+  box-shadow:0 0 20px #ff9800;
+}
+
+/* PLUS */
+.plus{
+  background:linear-gradient(270deg,#ffd700,#fff176,#ff9800,#ffd700);
+  background-size:400% 400%;
+  animation:goldMove 3s linear infinite;
+  box-shadow:0 0 20px gold;
+}
+
+@keyframes goldMove{
+  0%{background-position:0%}
+  100%{background-position:100%}
+}
+
+/* note */
+.note{
+  font-size:13px;
+  opacity:0.7;
+  margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="title">🔥 CHỌN BẢN CẬP NHẬT COIN MASTER</div>
+
+<div class="container">
+
+<!-- IGG -->
+<div class="btn igg"
+onclick="go('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d542c82b34c_Plus2500.ipa', this)">
+  🔵 TẢI SPEED IGG
+</div>
+
+<!-- DV1 -->
+<div class="btn dv"
+onclick="go('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa', this)">
+  🟠 TẢI ĐẾM VÒNG V1
+</div>
+
+<!-- DV2 -->
+<div class="btn dv"
+onclick="go('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa', this)">
+  🟠 TẢI ĐẾM VÒNG V2
+</div>
+
+<!-- PLUS -->
+<div class="btn plus"
+onclick="go('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d542c82b34c_Plus2500.ipa', this)">
+  👑 TẢI SPEED PLUS
+</div>
+
+<div class="note">
+👉 copy link cập nhật  → mở ESIGN → vào mục "Tải xuống" dán URL để tải
+</div>
+
+</div>
+
+<script>
+function go(link, el){
+  if(navigator.vibrate){
+    navigator.vibrate(30);
+  }
+
+  el.classList.add("clicked");
+
+  setTimeout(()=>{
+    window.location.href = link;
+  },120);
+}
+</script>
+
+</body>
+</html>
