@@ -8,6 +8,33 @@
 
 <title>SPEED I AM NHT</title>
 <style>
+	#floatingBtn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#ff5722;
+  color:white;
+  padding:12px 16px;
+  border-radius:50px;
+  font-weight:bold;
+  box-shadow:0 0 15px rgba(255,87,34,0.8);
+  z-index:9999;
+  cursor:pointer;
+}
+
+#floatingMenu{
+  position:fixed;
+  bottom:80px;
+  right:20px;
+  background:#111;
+  border-radius:12px;
+  padding:10px;
+  width:220px;
+  display:none;
+  box-shadow:0 0 20px #000;
+  z-index:9999;
+}
+
 	html{
   scroll-behavior:smooth;
 }
@@ -18,6 +45,45 @@
   background-size: 400% 400%;
   animation: gradientMove 2s ease infinite;
   box-shadow: 0 0 20px #00ffcc, 0 0 40px #00c853;
+}
+
+/* VIDEO - style giống IGG nhưng đỏ xịn */
+.menu-video{
+  background: linear-gradient(135deg,#ff2a2a,#ff6b6b);
+  box-shadow: 0 0 12px rgba(255,0,0,0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+/* hiệu ứng ánh sáng chạy (giống IGG nâng cấp) */
+.menu-video::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background: linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent);
+  transition:0.5s;
+}
+
+/* khi hover sẽ chạy ánh sáng */
+.menu-video:hover::before{
+  left:100%;
+}
+
+/* glow nhấp nháy nhẹ */
+.menu-video{
+  animation: glowVideo 2s infinite alternate;
+}
+
+@keyframes glowVideo{
+  from{
+    box-shadow: 0 0 10px rgba(255,0,0,0.5);
+  }
+  to{
+    box-shadow: 0 0 20px rgba(255,0,0,0.9);
+  }
 }
 
 /* layout nội dung */
@@ -240,6 +306,11 @@ font-weight:700;
   border-radius:14px;
   padding:12px;
   margin-top:10px;
+}
+
+.menu-plus.unlocked{
+  filter:brightness(1);
+  box-shadow:0 0 20px gold;
 }
 
 /* PLUS luôn có màu */
@@ -510,6 +581,62 @@ transition:0.2s;
 opacity:1;
 transform:scale(1.2);
 }
+
+/* ===== BASE CHUNG ===== */
+.menu-title.vip{
+  border-radius:18px;
+  margin-top:10px;
+  padding:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:600;
+  background-size:400% 400%;
+  animation: gradientMove 6s ease infinite;
+  transition:0.3s;
+}
+
+.menu-title.vip:hover{
+  transform:scale(1.02);
+}
+
+/* ===== ANIMATION CHẠY MÀU ===== */
+@keyframes gradientMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* ===== 4 IN 1 (đã có) ===== */
+.menu-main{
+  background: linear-gradient(270deg,#ff0000,#00ffcc,#0a84ff);
+  box-shadow:0 0 15px rgba(0,200,255,0.7);
+}
+
+/* ===== ESIGN BEIJING (xanh neon) ===== */
+.menu-beijing{
+  background: linear-gradient(270deg,#00ffcc,#00c853,#00e5ff);
+  box-shadow:0 0 15px rgba(0,255,200,0.7);
+}
+
+/* ===== ESIGN AXITAT (tím hồng) ===== */
+.menu-axitat{
+  background: linear-gradient(270deg,#ff00cc,#7b2cff,#ff4dff);
+  box-shadow:0 0 15px rgba(255,0,200,0.7);
+}
+
+/* ===== MẬT KHẨU CHỨNG CHỈ (vàng VIP) ===== */
+.menu-pass{
+  background: linear-gradient(270deg,#ffd700,#ffb300,#fff176);
+  color:#000;
+  box-shadow:0 0 15px rgba(255,215,0,0.8);
+}
+
+/* ===== DNS CHẶN THU HỒI (đỏ cảnh báo) ===== */
+.menu-dns{
+  background: linear-gradient(270deg,#ff0000,#ff5722,#ff1744);
+  box-shadow:0 0 15px rgba(255,0,0,0.8);
+}
 </style>
 
 <script>
@@ -528,6 +655,36 @@ transform:scale(1.2);
   setTimeout(()=>{
     window.location.href = "https://ngohongthai1402.github.io/download";
   },200);
+}
+
+async function checkPassPlus(el){
+
+  const KEY = "plus_unlocked_nht";
+
+  if(localStorage.getItem(KEY) === "true"){
+    toggleSubMenu('menuPlus', el);
+    el.classList.add("unlocked");
+    return;
+  }
+
+  let input = prompt("🔒Nhập mật khẩu để mở Plus:");
+
+  const BASE = atob("bmh0");
+
+  let now = new Date();
+  let day = now.getDate();
+  let month = now.getMonth() + 1;
+
+  let todayPass = BASE + day + month;
+
+  if(input === todayPass){
+    localStorage.setItem(KEY, "true");
+    toggleSubMenu('menuPlus', el);
+    el.classList.add("unlocked");
+    alert("✅ Mở khóa thành công (đã lưu thiết bị)");
+  } else {
+    alert("❌ Sai mật khẩu");
+  }
 }
 
 function togglePass(id, el, lockId){
@@ -869,13 +1026,11 @@ setTimeout(()=>{
 <img src="logo.png">
 </div>
 
-<!-- ===== ESIGN AXITAT ===== -->
-<div class="box">
-  <div class="menu-title" onclick="toggleMenu('menuAxitat',this.querySelector('.arrow'))">
+<!-- ESIGN AXITAT -->
+<div class="menu-title vip menu-axitat"onclick="toggleMenu('menuAxitat',this.querySelector('.arrow'))">
     <div style="display:flex;align-items:center;gap:6px;">
       ESIGN AXITAT
       <span class="menu-dot"></span>
-      <div class="NHT-live">● đang hoạt động</div>
     </div>
     <span class="arrow">▼</span>
   </div>
@@ -895,13 +1050,11 @@ setTimeout(()=>{
   </div>
 </div>
 
-<!-- ===== ESIGN BEIJING ===== -->
-<div class="box">
-  <div class="menu-title" onclick="toggleMenu('menuBeijing',this.querySelector('.arrow'))">
+<!-- ESIGN BEIJING -->
+<div class="menu-title vip menu-beijing"onclick="toggleMenu('menuBeijing',this.querySelector('.arrow'))">
     <div style="display:flex;align-items:center;gap:6px;">
       ESIGN BEIJING
       <span class="menu-dot"></span>
-      <div class="NHT-live">● đang hoạt động</div>
     </div>
     <span class="arrow">▼</span>
   </div>
@@ -922,8 +1075,8 @@ setTimeout(()=>{
 </div>
 
 </div>
-<div class="box">
-  <div class="menu-title" onclick="toggleMenu('menuPass',this.querySelector('.arrow'))">
+<!-- MẬT KHẨU -->
+<div class="menu-title vip menu-pass"onclick="toggleMenu('menuPass',this.querySelector('.arrow'))">
     <span style="display:flex;align-items:center;gap:6px;">
       MẬT KHẨU CHỨNG CHỈ 🔐 <span class="menu-dot"></span>
     </span>
@@ -965,12 +1118,12 @@ setTimeout(()=>{
         📋 SAO CHÉP
       </div>
     </div>
-    
+      </div>
+      
  </div>
  </div>
 <!-- DNS -->
-<div class="box">
-<div class="menu-title" onclick="toggleMenu('menuDNS',this.querySelector('.arrow'))">
+<div class="menu-title vip menu-dns"onclick="toggleMenu('menuDNS',this.querySelector('.arrow'))">
 <span>DNS CHẶN THU HỒI</span>
 <span class="arrow">▼</span>
 </div>
@@ -991,26 +1144,29 @@ setTimeout(()=>{
       </div>
       </div>
 
-    </div>
-
   </div>
 
 </div>
-</div>
 
-
-</div>
-
-<div class="box" id="speed-update">
-<!-- MENU CHA -->
-<div class="menu-title"
-  onclick="toggleMenu('menuSpeed',this.querySelector('.arrow'))">
-  <span>BẢN CẬP NHẬT COIN MASTER</span>
+<!-- 🔥 MENU 4 IN 1 -->
+<div class="menu-title vip menu-main"onclick="toggleSubMenu('menu4in1', this)">
+  <span>📦 LINK UPDATE SPEED 4 IN 1</span>
   <span class="arrow">▼</span>
 </div>
 
-<div id="menuSpeed" class="menu-content">
+<div id="menu4in1" class="sub-menu">
+	
+    <button class="copy-btn"
+      onclick="window.location.href='https://ngohongthai1402.github.io/download'">
+      <div class="NHT-live">● MỞ LINK TẢI SPEED 4 IN 1</div>
+    </button>
 
+      <button class="copy-btn"
+        onclick="copyLink('https://ngohongthai1402.github.io/download', this)">
+        <div class="NHT-live">COPY LINK SPEED 4 IN 1</div>
+      </button>
+    </div>
+    
   <!-- IGG -->
   <div class="menu-title vip menu-igg"
     onclick="toggleSubMenu('menuFree', this)">
@@ -1023,26 +1179,21 @@ setTimeout(()=>{
       <div class="NHT-live">SPEED ● IGG</div>
       <div class="version">Phiên bản: 3.5.2500</div>
 
-      <div class="copy-btn"
+      <button class="copy-btn"
         onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d5415744fd8_IGG2500.ipa', this)">
-<div class="NHT-live">COPY LINK ● SPEED IGG</div>
-      </div>
-    </div>
-
-    <div class="app-item">
-      <button class="copy-btn"
-        onclick="window.location.href='https://zalo.me/g/ccltdg215'">
-        <div class="NHT-live"> NHÓM ZALO CẬP NHẬT SPEED</div>
+         <div class="NHT-live">● COPY LINK ● SPEED IGG</div>
       </button>
     </div>
 
-    <div class="app-item">
-      <button class="copy-btn"
-        onclick="window.location.href='https://t.me/nhtupdate/4'">
-        <div class="NHT-live">TELEGRAM CẬP NHẬT SPEED</div>
-      </button>
-    </div>
+    <button class="copy-btn" onclick="window.location.href='https://zalo.me/g/ccltdg215'">
+      <div class="NHT-live">● NHÓM ZALO CẬP NHẬT SPEED</div>
+    </button>
+
+    <button class="copy-btn" onclick="window.location.href='https://t.me/nhtupdate/4'">
+      <div class="NHT-live">● TELEGRAM CẬP NHẬT SPEED</div>
+    </button>
   </div>
+
 
   <!-- ĐẾM VÒNG -->
   <div class="menu-title vip menu-dv"
@@ -1056,148 +1207,108 @@ setTimeout(()=>{
       <div class="NHT-live">ĐẾM VÒNG ● V1</div>
       <div class="version">Phiên bản: 3.5.2500</div>
 
-      <div class="copy-btn"
+      <button class="copy-btn"
         onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d541a1e17ae_DV12500.ipa', this)">
-<div class="NHT-live">COPY LINK ● ĐẾM VÒNG V1</div>
-      </div>
+        <div class="NHT-live">● COPY LINK ● V1</div>
+      </button>
     </div>
 
     <div class="app-item">
-      <div class="NHT-live">ĐẾM VÒNG ● V2 </div>
+      <div class="NHT-live">ĐẾM VÒNG ● V2</div>
       <div class="version">Phiên bản: 3.5.2500</div>
 
-      <div class="copy-btn"
+      <button class="copy-btn"
         onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa', this)">
-<div class="NHT-live">COPY LINK ● ĐẾM VÒNG V2</div>
-      </div>
-    </div>
-
-    <div class="app-item">
-      <button class="copy-btn"
-        onclick="window.location.href='https://zalo.me/g/ccltdg215'">
-                <div class="NHT-live">NHÓM ZALO CẬP NHẬT SPEED</div>
+       <div class="NHT-live">● COPY LINK ● V2</div> 
       </button>
     </div>
 
-    <div class="app-item">
-      <button class="copy-btn"
-        onclick="window.location.href='https://t.me/nhtupdate'">
-        <div class="NHT-live">TELEGRAM CẬP NHẬT SPEED</div>
-      </button>
-    </div>
+    <button class="copy-btn" onclick="window.location.href='https://zalo.me/g/ccltdg215'">
+      <div class="NHT-live">● NHÓM ZALO CẬP NHẬT SPEED</div>
+    </button>
+
+    <button class="copy-btn" onclick="window.location.href='https://t.me/nhtupdate'">
+      <div class="NHT-live">TELEGRAM CẬP NHẬT SPEED</div>
+    </button>
   </div>
-
-  <!-- PLUS -->
-  <div class="menu-title vip menu-plus"
-    onclick="toggleSubMenu('menuPlus', this)">
-    <span>👑 SPEED PLUS VIP</span>
-    <span class="arrow">▼</span>
-  </div>
-
-  <div id="menuPlus" class="sub-menu">
-
-    <div class="app-item">
-      <div class="NHT-live">SPEED ● PLUS 👑</div>
-      <div class="version">3.5.2500</div>
-
-      <div class="copy-btn"
-        onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d542c82b34c_Plus2500.ipa', this)">
-        <div class="NHT-live">COPY LINK ● SPEED PLUS</div>
-      </div>
-    </div>
-
-    <div class="app-item">
-      <button class="copy-btn"
-        onclick="window.location.href='https://zalo.me/g/xxxole131'">
-        <div class="NHT-live">NHÓM ZALO CẬP NHẬT PLUS👑</div>
-      </button>
-    </div>
-
-    <div class="app-item">
-      <button class="copy-btn"
-        onclick="window.location.href='https://t.me/Coin_Master_Speed_IOS_IAMNHTV1'">
-        <div class="NHT-live">TELEGRAM CẬP NHẬT PLUS👑</div>
-      </button>
-    </div>
-
-    <div class="buy-note"
-      onclick="window.location.href='https://zalo.me/ngohongthai97'">
-      💬 Mua Speed Plus nhắn Zalo: <b>034 3333 97</b>
-    </div>
-
-  </div> <!-- ✅ ĐÓNG menuPlus -->
-
-  <!-- 🔥 MENU 4 IN 1 -->
-  <div class="menu-title vip menu-plus"
-    onclick="toggleSubMenu('menu4in1', this)">
-    <span>📦LINK UPDATE 4 IN 1 SPEED</span>
-    <span class="arrow">▼</span>
-  </div>
-
-  <div id="menu4in1" class="sub-menu">
-
-    <!-- MỞ WEB -->
-    <div class="app-item">
-      <button class="copy-btn"
-        onclick="window.location.href='https://ngohongthai1402.github.io/download'">
-<div class="NHT-live">MỞ TRANG LINK 4 IN 1</div>
-      </button>
-    </div>
-
-    <!-- COPY LINK -->
-    <div class="app-item">
-      <div class="copy-btn"
-        onclick="copyLink('https://ngohongthai1402.github.io/download', this)">
-       <div class="NHT-live">COPY LINK 4 IN 1</div>
-    </div>
-</div>
-</div>
-</div>
-</div>
-
-<div class="box">
-
-<div class="menu-title"
-  onclick="toggleMenu('menu3',this.querySelector('.arrow'))">
-  <span>VIDEO HƯỚNG DẪN ● COIN MASTER</span>
+  
+<!-- PLUS -->
+<div class="menu-title vip menu-plus"
+  onclick="checkPassPlus(this)">
+  <span>👑 SPEED PLUS VIP</span>
   <span class="arrow">▼</span>
 </div>
 
-<div id="menu3" class="menu-content">
+<div id="menuPlus" class="sub-menu">
 
-<!-- VIDEO 1 -->
-<div class="video-btn">
-  <div class="video-left" onclick="toggleVideo('v1')">
-    <span class="play">▶</span>
-    <div class="NHT-live">● Tải Esign Speed Free ( Miễn phí )</div>
+  <div class="app-item">
+    <div class="NHT-live">SPEED ● PLUS 👑</div>
+    <div class="version">3.5.2500</div>
+
+    <button class="copy-btn"
+      onclick="copyLink('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d542c82b34c_Plus2500.ipa', this)">
+        <div class="NHT-live">●COPY LINK SPEED PLUS</div>
+    </button>
   </div>
-  <span onclick="toggleSound('v1',this)">🔇</span>
-</div>
 
-<div id="v1" class="video">
-  <iframe id="v1-frame"
-    src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1">
-  </iframe>
-</div>
+  <button class="copy-btn"
+    onclick="window.location.href='https://zalo.me/g/xxxole131'">
+    <div class="NHT-live">●NHÓM ZALO PLUS</div>
+  </button>
 
-<!-- VIDEO 2 -->
-<div class="video-btn">
-  <div class="video-left" onclick="toggleVideo('v2')">
-    <span class="play">▶</span>
-    <div class="NHT-live">● Hướng dẫn cập nhật • Coin Master</div>
+  <button class="copy-btn"
+    onclick="window.location.href='https://t.me/Coin_Master_Speed_IOS_IAMNHTV1'">
+    <div class="NHT-live">●TELEGRAM PLUS</div>
+  </button>
+
+  <button class="copy-btn"
+    onclick="window.location.href='https://zalo.me/ngohongthai97'">
+    <div class="NHT-live">● Liên hệ mua VIP</div>
   </div>
-  <span onclick="toggleSound('v2',this)">🔇</span>
+
+<!-- VIDEO HƯỚNG DẪN -->
+<div class="menu-title vip menu-video"
+  onclick="toggleSubMenu('menuVideo', this)">
+  <span>🎬 VIDEO HƯỚNG DẪN ● COIN MASTER</span>
+  <span class="arrow">▼</span>
 </div>
 
-<div id="v2" class="video">
-  <iframe id="v2-frame"
-    src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1">
-  </iframe>
-</div>
+<div id="menuVideo" class="sub-menu">
+
+  <!-- VIDEO 1 -->
+  <div class="video-btn">
+    <div class="video-left" onclick="toggleVideo('v1')">
+      <span class="play">▶</span>
+      <div class="NHT-live">● Tải Esign Speed Free</div>
+    </div>
+    <span onclick="toggleSound('v1',this)">🔇</span>
+  </div>
+
+  <div id="v1" class="video">
+    <iframe id="v1-frame"
+      src="https://www.youtube.com/embed/8ynQoiww9d4?enablejsapi=1">
+    </iframe>
+  </div>
+
+  <!-- VIDEO 2 -->
+  <div class="video-btn">
+    <div class="video-left" onclick="toggleVideo('v2')">
+      <span class="play">▶</span>
+      <div class="NHT-live">● Hướng dẫn cập nhật</div>
+    </div>
+    <span onclick="toggleSound('v2',this)">🔇</span>
+  </div>
+
+  <div id="v2" class="video">
+    <iframe id="v2-frame"
+      src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1">
+    </iframe>
+  </div>
 
 </div>
-</div>
 
+</div> <!-- đóng menuVideo -->
+	
 <!-- YOUTUBE API -->
 <script>
 var players = {};
@@ -1335,6 +1446,6 @@ window.onload = function(){
 </script>
 
 <script src="https://www.youtube.com/iframe_api"></script>
-
+</script>
 </body>
 </html>
