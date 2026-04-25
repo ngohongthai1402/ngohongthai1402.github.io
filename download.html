@@ -3,257 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I AM NHT STORE</title>
+<title>TẢI CẬP NHẬT SPEED - I AM NHT</title>
 
 <style>
 
-/* ===== BASE ===== */
+/* ===== TEXT EFFECT ===== */
+.effect{
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  margin-top:10px;
+  letter-spacing:2px;
+
+  background:linear-gradient(
+    270deg,
+    #ff0000,#ff7300,#fffb00,#48ff00,
+    #00ffd5,#002bff,#7a00ff,#ff00c8,#ff0000
+  );
+  background-size:800% 800%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  animation:rainbowMove 6s linear infinite, glowPulse 1.5s infinite;
+}
+@keyframes rainbowMove{
+  0%{background-position:0%}
+  100%{background-position:100%}
+}
+@keyframes glowPulse{
+  0%,100%{filter:drop-shadow(0 0 5px #00ffff);}
+  50%{filter:drop-shadow(0 0 15px #00ffff);}
+}
+
+/* ===== BODY ===== */
 body{
   margin:0;
-  font-family:-apple-system, BlinkMacSystemFont;
   background:#000;
+  font-family:-apple-system;
   color:#fff;
 }
 
-/* ===== HEADER ===== */
-.header{
-  padding:20px;
-}
-
-.title{
-  font-size:26px;
-  font-weight:700;
-}
-
-.sub{
-  font-size:13px;
-  color:#aaa;
-  margin-top:5px;
-}
-
-/* ===== BANNER ===== */
-.banner{
-  margin:15px;
-  height:160px;
-  border-radius:20px;
-  background:linear-gradient(135deg,#00c6ff,#0072ff);
-  display:flex;
-  align-items:flex-end;
-  padding:15px;
-  font-weight:600;
-}
-
-/* ===== SECTION ===== */
-.section{
-  padding:10px 15px;
-  font-size:18px;
-  font-weight:600;
-}
-
-/* ===== APP CARD ===== */
-.app{
-  display:flex;
-  align-items:center;
-  padding:12px 15px;
-  border-bottom:1px solid #111;
-}
-
-/* ICON */
-.icon{
-  width:60px;
-  height:60px;
-  border-radius:16px;
-  background:#222;
-  margin-right:12px;
-}
-
-/* INFO */
-.info{
-  flex:1;
-}
-
-.name{
-  font-size:16px;
-  font-weight:600;
-}
-
-.desc{
-  font-size:12px;
-  color:#aaa;
-  margin-top:3px;
-}
-
-/* BUTTON */
-.get{
-  background:#fff;
-  color:#000;
-  padding:6px 14px;
-  border-radius:20px;
-  font-weight:600;
-  font-size:13px;
-  cursor:pointer;
-}
-
 /* ===== VIDEO ===== */
-.video-box{
-  margin:15px;
-  border-radius:20px;
-  overflow:hidden;
-  position:relative;
-}
-
-video{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-}
-
-/* control */
-.controls{
-  position:absolute;
-  bottom:10px;
-  right:10px;
+.story-wrap{
   display:flex;
-  gap:8px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  height:100vh;
+}
+.story{
+  min-width:100%;
+  height:100vh;
+  position:relative;
+  scroll-snap-align:start;
+}
+.story iframe{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:177.77vh;
+  height:100vh;
+  transform:translate(-50%, -50%);
+  border:none;
 }
 
-.controls div{
-  width:40px;
-  height:40px;
-  background:rgba(0,0,0,0.6);
+/* ===== CONTROL ===== */
+.replay-btn,.sound-btn,.play-btn{
+  position:absolute;
+  bottom:80px;
+  width:45px;
+  height:45px;
   border-radius:50%;
+  background:rgba(0,0,0,0.6);
   display:flex;
   align-items:center;
   justify-content:center;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow:0 0 10px #0ff;
 }
+.replay-btn{ right:20px; }
+.sound-btn{ right:75px; }
+.play-btn{ right:130px; }
 
-/* ===== COPY ===== */
-.copy{
-  margin:15px;
-  background:#111;
-  padding:15px;
-  border-radius:15px;
+/* ===== MENU ===== */
+.main-ui{
+  background:#0f0f0f;
+  padding:20px;
+  text-align:center;
 }
+.btn{
+  padding:18px;
+  border-radius:18px;
+  margin:15px 0;
+  font-weight:bold;
+  cursor:pointer;
+}
+.plus{background:gold;color:#000;}
 
-.copy-btn{
+.loading{opacity:0;color:#0ff;}
+.loading.show{opacity:1;}
+
+.swipe-tip{
   margin-top:10px;
-  background:#00c853;
-  padding:10px;
-  text-align:center;
-  border-radius:10px;
+  color:#00ffcc;
+  animation:blink 1.5s infinite;
+}
+@keyframes blink{
+  0%,100%{opacity:0.5;}
+  50%{opacity:1;}
 }
 
-/* ===== LOADING ===== */
-.loading{
-  text-align:center;
-  color:#0ff;
-  display:none;
+.note{
+  margin-top:15px;
+  font-size:13px;
 }
-.loading.show{display:block;}
+
+/* ===== COPY MENU ===== */
+.copy-menu{
+  margin:15px;
+  padding:12px;
+  background:#111;
+  border-radius:16px;
+}
+.copy-link{
+  font-size:12px;
+  color:#aaa;
+  word-break:break-all;
+  margin-bottom:10px;
+}
+.copy-btn{
+  padding:12px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  font-weight:bold;
+  cursor:pointer;
+  text-align:center;
+}
+.copy-btn.copied{
+  background:#00c853;
+}
 
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="title">🚀 I AM NHT</div>
-  <div class="sub">Kho ứng dụng IPA</div>
-</div>
+<div class="effect">Speed I AM NHT 🔫</div>
 
-<!-- BANNER -->
-<div class="banner">
-  App VIP • Cập nhật liên tục
+<!-- MENU -->
+<div class="main-ui">
+
+  <div class="btn plus"onclick="install('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69ebe30ebf4b2_Plus2510.ipa')">👑SPEED PLUS•3.5.2510</div>
+
+  <div id="loading" class="loading">📥 Đang tải xuống...</div>
+
+  <div class="swipe-tip">⬆️ Vuốt lên để xem video hướng dẫn</div>
+
+  <div class="note">
+    👉 Mở ESIGN → vào mục tải xuống →URL dán link tải👇
+<!-- COPY -->
+  <div class="copy-link" id="linkText">
+    https://ngohongthai1402.github.io/download
+  </div>
+  <div class="copy-btn" onclick="copyLink()">SAO CHÉP LINK</div>
 </div>
 
 <!-- VIDEO -->
-<div class="video-box">
-  <video id="video" autoplay muted loop playsinline>
-    <source src="video.mp4" type="video/mp4">
-  </video>
+<div class="story-wrap">
+  <div class="story">
 
-  <div class="controls">
-    <div onclick="togglePlay()" id="play">⏸</div>
-    <div onclick="toggleSound()" id="sound">🔇</div>
+    <iframe data-src="https://www.youtube.com/embed/e74h1eb3b0c?enablejsapi=1&playsinline=1"></iframe>
+
+    <div class="replay-btn" onclick="replayVideo(this)">🔄</div>
+    <div class="sound-btn" onclick="toggleSound(this)">🔇</div>
+    <div class="play-btn" onclick="togglePlay(this)">⏸</div>
+
   </div>
-</div>
-
-<div class="section">Ứng dụng nổi bật</div>
-
-<!-- APP LIST -->
-<div class="app">
-  <div class="icon"></div>
-  <div class="info">
-    <div class="name">Speed IGG</div>
-    <div class="desc">v3.5.2510 • Mod speed</div>
-  </div>
-  <div class="get" onclick="install('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69ebe3d609142_IGG2510.ipa')">Nhận</div>
-</div>
-
-<div class="app">
-  <div class="icon"></div>
-  <div class="info">
-    <div class="name">Đếm vòng V1</div>
-    <div class="desc">v3.5.2510</div>
-  </div>
-  <div class="get" onclick="install('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69ebe4b8c70d8_DV12510.ipa')">Nhận</div>
-</div>
-
-<div class="app">
-  <div class="icon"></div>
-  <div class="info">
-    <div class="name">Đếm vòng V2</div>
-    <div class="desc">v3.5.2500</div>
-  </div>
-  <div class="get" onclick="install('https://zsign.s3.vn-hcm-1.vietnix.cloud/ipa/69d54260994f0_DV2-KHOI2500.ipa')">Nhận</div>
-</div>
-
-<div id="loading" class="loading">📥 Đang mở link...</div>
-
-<!-- COPY -->
-<div class="copy">
-  https://ngohongthai1402.github.io/download
-  <div class="copy-btn" onclick="copyLink()">📋 Sao chép</div>
 </div>
 
 <script>
 
+/* CHO PHÉP ÂM SAU KHI CHẠM */
+let allowSound = false;
+document.addEventListener("click", ()=>{ allowSound = true });
+
 /* INSTALL */
 function install(url){
-  const loading = document.getElementById("loading");
-  loading.classList.add("show");
-
-  window.open(url,"_blank");
-
-  setTimeout(()=>{
-    loading.classList.remove("show");
-  },3000);
-}
-
-/* VIDEO */
-const video = document.getElementById("video");
-
-function togglePlay(){
-  if(video.paused){
-    video.play();
-    play.innerText="⏸";
-  }else{
-    video.pause();
-    play.innerText="▶️";
-  }
-}
-
-function toggleSound(){
-  video.muted=!video.muted;
-  sound.innerText=video.muted?"🔇":"🔊";
+  document.getElementById("loading").classList.add("show");
+  setTimeout(()=>{ window.location.href = url; },1000);
 }
 
 /* COPY */
 function copyLink(){
-  navigator.clipboard.writeText("https://ngohongthai1402.github.io/download");
-  alert("Đã sao chép!");
+  const text = document.getElementById("linkText").innerText;
+  navigator.clipboard.writeText(text);
+
+  const btn = document.querySelector(".copy-btn");
+  btn.innerText = "✅ ĐÃ SAO CHÉP";
+  btn.classList.add("copied");
+
+  setTimeout(()=>{
+    btn.innerText = "📋 SAO CHÉP LINK";
+    btn.classList.remove("copied");
+  },2000);
 }
+
+/* REPLAY */
+function replayVideo(btn){
+  const iframe = btn.closest(".story").querySelector("iframe");
+  iframe.contentWindow.postMessage('{"event":"command","func":"seekTo","args":[0,true]}','*');
+  iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}','*');
+}
+
+/* SOUND */
+function toggleSound(btn){
+  const iframe = btn.closest(".story").querySelector("iframe");
+
+  if(btn.classList.contains("on")){
+    iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":""}','*');
+    btn.innerText="🔇";
+    btn.classList.remove("on");
+  }else{
+    iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}','*');
+    btn.innerText="🔊";
+    btn.classList.add("on");
+  }
+}
+
+/* PLAY */
+function togglePlay(btn){
+  const iframe = btn.closest(".story").querySelector("iframe");
+
+  if(btn.classList.contains("pause")){
+    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}','*');
+    btn.innerText="⏸";
+    btn.classList.remove("pause");
+  }else{
+    iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}','*');
+    btn.innerText="▶️";
+    btn.classList.add("pause");
+  }
+}
+
+/* AUTO PLAY + AUTO SOUND */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const iframe = entry.target.querySelector("iframe");
+
+    if(entry.isIntersecting){
+      if(!iframe.src){
+        iframe.src = iframe.dataset.src + "&autoplay=1&mute=1";
+      }else{
+        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}','*');
+      }
+
+      if(allowSound){
+        setTimeout(()=>{
+          iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}','*');
+        },400);
+      }
+
+    }else{
+      iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}','*');
+    }
+  });
+},{threshold:0.7});
+
+document.querySelectorAll(".story").forEach(el=>observer.observe(el));
 
 </script>
 
